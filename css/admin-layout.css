@@ -1,0 +1,159 @@
+/* =====================================================
+   ADMIN LAYOUT BASE
+===================================================== */
+
+/* Body Layout */
+body {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.admin-sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, var(--brand-light), var(--brand-dark));
+    color: white;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-right: 2px solid var(--btn-right);
+    overflow-y: auto;
+}
+
+/* Logo */
+.admin-sidebar .logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.admin-sidebar .logo h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.admin-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    padding: 12px 14px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Icons */
+.admin-nav a i {
+    font-size: 18px;
+}
+
+/* Hover + Active */
+.admin-nav a:hover,
+.admin-nav a.active {
+    background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+    transform: translateX(6px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* =====================================================
+   BADGE (For Vendor Count etc.)
+===================================================== */
+
+.badge {
+    background: #ff4757;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    display: none;
+    /* Default hidden, shown via JS */
+}
+
+/* Ensure no red dot "blink" on click */
+.admin-nav a:active .badge {
+    transform: none;
+}
+
+/* =====================================================
+   RESPONSIVE SIDEBAR
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .admin-sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        width: 260px;
+        height: 100vh;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+
+    .admin-sidebar.active {
+        left: 0;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(13, 34, 97, 0.4);
+        backdrop-filter: blur(3px);
+        z-index: 999;
+        display: none;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 1001;
+        background: var(--brand-light);
+        color: #fff;
+        border: none;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+}
+
+/* Hide toggle on desktop */
+.menu-toggle,
+.sidebar-overlay {
+    display: none;
+}

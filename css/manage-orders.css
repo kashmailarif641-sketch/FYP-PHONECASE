@@ -1,0 +1,331 @@
+/* Manage Orders Specifically */
+
+/* ===== Body ===== */
+/* Page content is scoped inside the admin layout; avoid overriding body layout */
+
+/* Use `.admin-main` as the page content container when sidebar is present */
+
+/* ===== Header ===== */
+.site-header {
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-mid));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 30px;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.site-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fdfdfd;
+}
+
+.site-header nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.site-header nav a:hover {
+  color: var(--btn-right);
+  transform: translateY(-2px);
+}
+
+/* ===== Main Content ===== */
+.admin-main h2 {
+  color: var(--brand-light);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  /* increased space between title and table */
+  text-align: center;
+}
+
+/* ===== Table Container ===== */
+.table-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 6px 18px rgba(13, 146, 202, 0.06);
+  overflow-x: auto;
+  animation: fadeIn 0.8s ease;
+  margin-top: 8px;
+  /* small gap from the title */
+  margin-bottom: 28px;
+  /* space before footer */
+}
+
+/* ===== Table ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  color: #fff;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--light-grey);
+}
+
+th {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+tbody tr {
+  transition: background 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: #f3f7fc;
+}
+
+/* ===== Design Image ===== */
+td img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Status Badges ===== */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+}
+
+.status.pending {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.status.processing {
+  background: rgba(13, 146, 202, 0.12);
+  color: var(--btn-right);
+}
+
+.status.shipped {
+  background: rgba(6, 110, 155, 0.12);
+  color: var(--brand-dark);
+}
+
+.status.delivered {
+  background: #DCFCE7;
+  color: #166534;
+}
+
+/* ===== Update Button ===== */
+.update-btn {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  border: none;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(6, 174, 204, 0.18);
+}
+
+.update-btn:hover {
+  background: linear-gradient(90deg, var(--btn-right), var(--btn-left));
+  transform: scale(1.08);
+}
+
+/* ===== Toast Notification ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.25s ease;
+  z-index: 9999;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  background: var(--brand-light);
+  color: white;
+  padding: 12px 0;
+  font-size: 13px;
+  box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.08);
+  margin-top: 20px;
+  /* ensure footer separates from content */
+}
+
+/* ===== Animations ===== */
+
+/* ===== Modal Styles ===== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Black w/ opacity */
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+  text-align: center;
+  animation: slideIn 0.3s;
+}
+
+.close-btn {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: var(--brand-dark);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  color: var(--brand-light);
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+#vendorSelect {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--light-grey);
+  margin-bottom: 25px;
+  font-size: 15px;
+  outline: none;
+}
+
+#vendorSelect:focus {
+  border-color: var(--btn-right);
+  box-shadow: 0 0 5px rgba(6, 174, 204, 0.3);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.action-btn {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Assign Button - Theme Cyan */
+.assign-btn {
+  background: var(--btn-right);
+  margin-right: 0;
+  /* Handled by gap */
+}
+
+/* Update Status Button - Theme Dark Blue */
+.status-btn {
+  background: var(--brand-mid);
+}
+
+.vendor-badge {
+  background: #e0f2fe;
+  color: #0284c7;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Create SlideIn Animation if not exists */
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

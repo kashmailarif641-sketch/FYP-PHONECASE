@@ -1,0 +1,153 @@
+/* ===== General Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f3f7fcfb;
+  color: #111111;
+  line-height: 1.6;
+}
+
+/* ===== Dashboard Wrapper ===== */
+/* Sidebar styles inherited from user-dashboard.css */
+
+/* ===== Main Content Area ===== */
+.content-area {
+  flex: 1;
+  padding: 40px 30px;
+  background: #f3f7fcfb;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Page Header ===== */
+.page-header {
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0d2261;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  font-size: 16px;
+  color: #1d5474;
+}
+
+/* ===== Designs Container ===== */
+.designs-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.design-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.design-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.design-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.design-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0d2261;
+  margin-bottom: 10px;
+}
+
+/* ===== Edit Button ===== */
+.design-card .edit-btn {
+  padding: 10px 18px;
+  background: linear-gradient(90deg, #03095a, #06aecc);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.design-card .edit-btn:hover {
+  background: #1d5474;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Footer ===== */
+.footer {
+  margin-top: auto;
+  background: #076e9b;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .content-area {
+    padding: 30px 20px;
+  }
+
+  .page-header h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 15px 0;
+  }
+
+  .sidebar .menu {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    padding: 0;
+  }
+
+  .sidebar .menu li {
+    margin: 0 5px;
+  }
+
+  .content-area {
+    padding: 20px 15px;
+  }
+
+  .designs-container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}

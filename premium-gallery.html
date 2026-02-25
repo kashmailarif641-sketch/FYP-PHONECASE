@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Gallery | CaseCraft</title>
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/premium-gallery.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script defer src="js/premium-gallery.js"></script>
+</head>
+
+<body>
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="logo">CaseCraft</div>
+  </header>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>🌟 Premium Gallery</h1>
+      <p>Explore top-rated, admin-approved designs ready for ordering.</p>
+    </div>
+    <div class="hero-image">
+      <img src="images/premium.png" alt="Premium Designs" />
+    </div>
+  </section>
+
+  <!-- ===== Gallery Section ===== -->
+  <section class="gallery">
+    <!-- Filters will be injected here by JS -->
+    <div class="filter-container" id="categoryFilters"
+      style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;"></div>
+
+    <h2>Featured Premium Designs</h2>
+    <p>Choose a premium design and order it instantly!</p>
+
+    <div class="design-grid">
+      <div class="design-card" data-category="Abstract">
+        <img src="images/abstract neon.jpg" alt="Design 1" />
+        <h3>Abstract Neon</h3>
+        <p>Bright and futuristic design for bold personalities.</p>
+        <p class="price">Rs. 1,499.00</p>
+        <button class="order-btn" onclick="orderDesign('Abstract Neon', '1499.00', 'images/abstract neon.jpg')">Order
+          This Design</button>
+      </div>
+
+      <div class="design-card" data-category="Abstract">
+        <img src="images/galaxy.jpg" alt="Design 2" />
+        <h3>Galaxy Dream</h3>
+        <p>Cosmic vibes that reflect your inner universe.</p>
+        <p class="price">Rs. 1,499.00</p>
+        <button class="order-btn" onclick="orderDesign('Galaxy Dream', '1499.00', 'images/galaxy.jpg')">Order This
+          Design</button>
+      </div>
+
+      <div class="design-card" data-category="Minimalist">
+        <img src="images/marbel black.webp" alt="Design 3" />
+        <h3>Minimal Marble</h3>
+        <p>Elegant and classy — for those who love simplicity.</p>
+        <p class="price">Rs. 1,299.00</p>
+        <button class="order-btn" onclick="orderDesign('Minimal Marble', '1299.00', 'images/marbel black.webp')">Order
+          This Design</button>
+      </div>
+
+      <div class="design-card" data-category="Abstract">
+        <img src="images/cyberwave.webp" alt="Design 4" />
+        <h3>Cyber Wave</h3>
+        <p>Modern abstract patterns for tech enthusiasts.</p>
+        <p class="price">Rs. 1,599.00</p>
+        <button class="order-btn" onclick="orderDesign('Cyber Wave', '1599.00', 'images/design-cyber.jpg')">Order This
+          Design</button>
+      </div>
+
+      <!-- Designs synced from Home Page -->
+      <div class="design-card" data-category="Anime">
+        <img src="images/anime.jpg" alt="Qrioh Anime Cases">
+        <h3>Qrioh Anime Cases</h3>
+        <p>Vibrant anime art for fans.</p>
+        <p class="price">Rs. 1,499.00</p>
+        <button class="order-btn" onclick="orderDesign('Qrioh Anime Cases', '1499.00', 'images/anime.jpg')">Order This
+          Design</button>
+      </div>
+
+      <div class="design-card" data-category="Traditional">
+        <img src="images/ajrak.jpg" alt="Ajrak Design Phone Case">
+        <h3>Ajrak Design Phone Case</h3>
+        <p>Traditional Sindhi Ajrak pattern.</p>
+        <p class="price">Rs. 1,499.00</p>
+        <button class="order-btn" onclick="orderDesign('Ajrak Design Phone Case', '1499.00', 'images/ajrak.jpg')">Order
+          This Design</button>
+      </div>
+
+      <div class="design-card" data-category="Traditional">
+        <img src="images/persian rug.jpg" alt="Persian Rugs Design Case">
+        <h3>Persian Rugs Design Case</h3>
+        <p>Classic Persian rug aesthetics.</p>
+        <p class="price">Rs. 1,499.00</p>
+        <button class="order-btn"
+          onclick="orderDesign('Persian Rugs Design Case', '1499.00', 'images/persian rug.jpg')">Order This
+          Design</button>
+      </div>
+
+      <div class="design-card" data-category="Abstract">
+        <img src="images/download (4).jpg" alt="Shadow Racer">
+        <h3>Shadow Racer - Ultra Shine</h3>
+        <p>High quality ultra shine finish.</p>
+        <p class="price">Rs. 1,499.00</p>
+        <button class="order-btn"
+          onclick="orderDesign('Shadow Racer - Ultra Shine', '1499.00', 'images/download (4).jpg')">Order This
+          Design</button>
+      </div>
+
+      <div class="design-card" data-category="Superhero">
+        <img src="images/gotham.webp" alt="Batman Gotham Grit">
+        <h3>Batman Gotham Grit Glass Case</h3>
+        <p>Dark and gritty Gotham vibes.</p>
+        <p class="price">Rs. 1,499.00</p>
+        <button class="order-btn"
+          onclick="orderDesign('Batman Gotham Grit Glass Case', '1499.00', 'images/gotham.webp')">Order This
+          Design</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <p>© 2025 CaseCraft. All Rights Reserved.</p>
+  </footer>
+</body>
+
+</html>

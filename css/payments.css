@@ -1,0 +1,317 @@
+/* Payments Page Specific Styles */
+
+.dashboard-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--brand-light);
+}
+
+.dashboard-header p {
+  margin-top: 6px;
+  color: #444;
+}
+
+/* ===================================================================
+   CONTAINER BOX
+=================================================================== */
+.recent-activity {
+  margin-top: 25px;
+  background: var(--white);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border);
+  animation: fadeIn 0.8s ease;
+}
+
+.recent-activity h2 {
+  font-size: 22px;
+  color: var(--brand-light);
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* ===================================================================
+   TABLE THEME UPDATED
+=================================================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+thead {
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-mid));
+  color: white;
+}
+
+thead th {
+  padding: 14px 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+tbody td {
+  padding: 12px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+  background: #eef5ff;
+}
+
+/* ===================================================================
+   STATUS BADGES (THEME COLORS APPLIED)
+=================================================================== */
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.success {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.status.pending {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.status.failed {
+  background: #FFE1E1;
+  color: #D93030;
+}
+
+/* ===================================================================
+   BUTTONS (THEME COLORS)
+=================================================================== */
+button {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 13px;
+  margin-right: 6px;
+  transition: 0.2s ease;
+}
+
+button.confirm {
+  background: linear-gradient(90deg, #059669, #10b981);
+}
+
+button.reject {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* ===================================================================
+   RESPONSIVE TABLE
+=================================================================== */
+@media (max-width: 768px) {
+
+  table,
+  thead,
+  tbody,
+  tr,
+  td,
+  th {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border-radius: 12px;
+    background: white;
+    padding: 12px;
+  }
+
+  td {
+    padding: 10px;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--brand-light);
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+}
+
+/* ===================================================================
+   ANIMATIONS
+=================================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===================================================================
+   VENDOR PAYOUT SECTION (Matches Recent Activity)
+=================================================================== */
+.vendor-payout-section {
+  margin-top: 25px;
+  background: var(--white);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border);
+  animation: fadeIn 0.8s ease;
+}
+
+.vendor-payout-section h2 {
+  font-size: 22px;
+  color: var(--brand-light);
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.btn-paid {
+  background: linear-gradient(90deg, #059669, #10b981);
+}
+
+.btn-disabled {
+  background: #cbd5e1;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+
+/* ===================================================================
+   PAYOUT MODAL & FORMS
+=================================================================== */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  background: var(--brand-mid);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Modal Overlay */
+.modal {
+  display: none;
+  /* Toggled via JS */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content */
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  animation: slideDown 0.3s ease;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: var(--brand-light);
+  font-size: 20px;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--white);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--brand-mid);
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background: #e2e8f0;
+  color: #333;
+}
+
+.btn-confirm {
+  background: var(--brand-mid);
+  color: white;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

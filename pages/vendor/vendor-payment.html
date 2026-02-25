@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vendor Payment | CaseCraft</title>
+    <link rel="stylesheet" href="../../css/vendor-payment.css">
+    <!-- Flaticon Uicons -->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="vendor-sidebar">
+        <h2 class="logo">Vendor Panel</h2>
+        <nav class="vendor-nav">
+            <ul>
+                <li><a href="vendor-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard</a></li>
+                <li><a href="assigned-orders.html"><i class="fi fi-rr-clipboard-list"></i> Assigned Orders</a></li>
+                <li><a href="vendor-payment.html" class="active"><i class="fi fi-rr-dollar"></i> Payments</a></li>
+                <li><a href="vendor-profile.html"><i class="fi fi-rr-user"></i> Profile</a></li>
+                <li><a href="../../login.html"><i class="fi fi-rr-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="vendor-main">
+
+        <!-- Page Header -->
+        <header class="dashboard-header">
+            <h1>Vendor Payments</h1>
+            <p>View and confirm payments received from Admin.</p>
+        </header>
+
+        <!-- Summary Cards -->
+        <section class="payment-summary">
+            <div class="summary-card">
+                <h3>Total Earnings</h3>
+                <p id="totalEarnings">Rs. 0</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Pending Confirmation</h3>
+                <p id="pendingPayments">0</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Confirmed Payments</h3>
+                <p id="confirmedPayments">0</p>
+            </div>
+        </section>
+
+        <!-- Payments Table -->
+        <section class="overview-cards">
+            <div class="payments-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Order ID</th>
+                            <th>User Name</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Admin Payment Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <!-- Example Row -->
+                        <tr>
+                            <td>#P-101</td>
+                            <td>#101</td>
+                            <td>John Doe</td>
+                            <td>Rs. 1500</td>
+                            <td>Bank Transfer</td>
+                            <td>2026-02-10</td>
+                            <td>
+                                <span class="status payment-sent">Payment Sent</span>
+                            </td>
+                            <td>
+                                <button class="confirm-btn">Confirm Received</button>
+                            </td>
+                        </tr>
+
+                        <!-- More rows will be added dynamically via JS -->
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="../../js/vendor-payment.js"></script>
+
+</body>
+
+</html>

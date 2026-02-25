@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CaseCraft | Manage Vendors</title>
+    <link rel="stylesheet" href="../../css/admin-layout.css">
+    <link rel="stylesheet" href="../../css/admin-dashboard.css" />
+    <link rel="stylesheet" href="../../css/manage-vendors.css" />
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+    <!-- ===== Sidebar ===== -->
+    <aside class="admin-sidebar">
+        <div class="logo">
+            <h2>CaseCraft Admin</h2>
+        </div>
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
+                <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
+                <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Orders</a></li>
+                <li>
+                    <a href="manage-vendors.html" class="active">
+                        <i class="fi fi-rr-shop"></i> Manage Vendors
+                        <span id="vendorBadge" class="badge">0</span>
+                    </a>
+                </li>
+                <li><a href="payments.html"><i class="fi fi-rr-dollar"></i> Payments & Transactions</a></li>
+                <li><a href="review-premium-designs.html"><i class="fi fi-rr-palette"></i> Review Premium Designs</a>
+                </li>
+                <li><a href="manage-gallery.html"><i class="fi fi-rr-picture"></i> Manage Gallery</a></li>
+                <li><a href="reports-analytics.html"><i class="fi fi-rr-chart-histogram"></i> Reports & Analytics</a>
+                </li>
+                <li><a href="content-management.html"><i class="fi fi-rr-folder"></i> Content Management</a></li>
+                <li>
+                    <a href="#" id="adminLogout">
+                        <i class="fi fi-rr-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- ===== Main Content ===== -->
+    <main class="admin-main">
+        <button class="menu-toggle">☰</button>
+        <!-- ===== Header (top bar) ===== -->
+        <header class="admin-header">
+            <h1 class="page-title">Manage Vendors</h1>
+            <div class="header-actions">
+                <input type="text" id="searchVendor" placeholder="Search vendor...">
+            </div>
+        </header>
+
+        <div class="user-table-container">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Vendor ID</th>
+                        <th>Name</th>
+                        <th>Shop</th>
+                        <th>City</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="vendorTableBody">
+                    <!-- Rows rendered by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="admin-footer">
+            <p>© 2025 CaseCraft. All Rights Reserved.</p>
+        </footer>
+    </main>
+
+    <div class="sidebar-overlay"></div>
+    <script src="../../js/admin-common.js"></script>
+    <script src="../../js/manage-vendors.js"></script>
+</body>
+
+</html>

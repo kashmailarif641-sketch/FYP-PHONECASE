@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CaseCraft | Track Order</title>
+  <link rel="stylesheet" href="../../css/track-order.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <div class="logo">CaseCraft</div>
+  </header>
+
+  <!-- ===== Order Tracking Section ===== -->
+  <section class="tracking-section">
+    <div class="tracking-card">
+      <h1>Track Your Order</h1>
+      <div id="orderDetails" class="order-summary"
+        style="margin-bottom: 30px; background: #f3f4f6; padding: 15px; border-radius: 10px; display: none;">
+        <h3 style="color: #1e40af; margin-bottom: 10px;">Order Details</h3>
+        <p><strong>Design:</strong> <span id="orderDesignName">Loading...</span></p>
+        <p><strong>Total Amount:</strong> <span id="orderPrice">Loading...</span></p>
+        <p><strong>Date:</strong> <span id="orderDate">Loading...</span></p>
+        <p><strong>Status:</strong> <span id="paymentStatus" style="font-weight: 600; color: #d97706;">Loading...</span>
+        </p>
+      </div>
+
+      <!-- Order Progress Steps -->
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="step active">
+          <div class="icon">🕒</div>
+          <p>Pending</p>
+        </div>
+        <div class="step">
+          <div class="icon">⚙️</div>
+          <p>Processing</p>
+        </div>
+        <div class="step">
+          <div class="icon">🚚</div>
+          <p>Shipped</p>
+        </div>
+        <div class="step">
+          <div class="icon">📦</div>
+          <p>Delivered</p>
+        </div>
+      </div>
+
+      <button id="backHomeBtn">Back to Dashboard</button>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <p>© 2025 <span>CaseCraft</span>. All rights reserved.</p>
+  </footer>
+
+  <script src="../../js/track-order.js"></script>
+</body>
+
+</html>

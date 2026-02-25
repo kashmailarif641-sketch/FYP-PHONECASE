@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaseCraft | Manage Premium Gallery</title>
+  <link rel="stylesheet" href="../../css/admin-layout.css">
+  <link rel="stylesheet" href="../../css/admin-dashboard.css">
+  <link rel="stylesheet" href="../../css/manage-gallery.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+  <!-- ===== Sidebar ===== -->
+  <aside class="admin-sidebar">
+    <div class="logo">
+      <h2>CaseCraft Admin</h2>
+    </div>
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
+        <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
+        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Orders</a></li>
+        <li>
+          <a href="manage-vendors.html">
+            <i class="fi fi-rr-shop"></i> Manage Vendors
+            <span id="vendorBadge" class="badge">0</span>
+          </a>
+        </li>
+        <li><a href="payments.html"><i class="fi fi-rr-dollar"></i> Payments & Transactions</a></li>
+        <li><a href="review-premium-designs.html"><i class="fi fi-rr-palette"></i> Review Premium Designs</a></li>
+        <li><a href="manage-gallery.html" class="active"><i class="fi fi-rr-picture"></i> Manage Gallery</a></li>
+        <li><a href="reports-analytics.html"><i class="fi fi-rr-chart-histogram"></i> Reports & Analytics</a></li>
+        <li><a href="content-management.html"><i class="fi fi-rr-folder"></i> Content Management</a></li>
+        <li>
+          <a href="#" id="adminLogout">
+            <i class="fi fi-rr-sign-out-alt"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ===== Main Content ===== -->
+  <main class="admin-main">
+    <button class="menu-toggle">☰</button>
+    <header class="dashboard-header">
+      <h1>Manage Premium Gallery</h1>
+      <p>Add, edit, or delete designs that users can view and purchase.</p>
+      <div style="display:flex; gap:12px; align-items:center; margin-top:12px;">
+        <button id="addDesignBtn" class="approve-btn">Add New Design</button>
+        <input id="gallerySearch" type="search" placeholder="Search designs..."
+          style="padding:8px 10px; border-radius:8px; border:1px solid #ddd; width:260px;">
+        <div id="undoContainer" style="margin-left:12px; font-size:13px; color:#444;"></div>
+      </div>
+    </header>
+
+    <!-- Gallery Cards Container -->
+    <div class="gallery-cards" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:16px;">
+      <!-- Cards will be rendered dynamically here -->
+    </div>
+
+    <!-- Modal for Add/Edit -->
+    <div id="designModal" class="modal" aria-hidden="true">
+      <div class="modal-overlay" data-close></div>
+      <div class="modal-content">
+        <button class="modal-close" data-close aria-label="Close">×</button>
+        <h3 id="modalTitle">Add New Design</h3>
+        <label for="designName">Design Name</label>
+        <input type="text" id="designName" placeholder="Enter design name">
+        <label for="designPrice">Price (Rs)</label>
+        <input type="number" id="designPrice" min="0" step="0.01" placeholder="Enter price">
+        <label for="designFile">Upload Image (or paste URL)</label>
+        <input type="file" id="designFile" accept="image/*">
+        <input type="text" id="designImage" placeholder="Or paste image URL (optional)">
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+          <button id="saveDesignBtn" class="approve-btn">Save</button>
+          <button class="reject-btn" data-close>Cancel</button>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="admin-footer">
+      <p>© 2025 CaseCraft. All Rights Reserved.</p>
+    </footer>
+  </main>
+  <div class="sidebar-overlay"></div>
+  <script src="../../js/admin-common.js"></script>
+  <script src="../../js/manage-gallery.js"></script>
+</body>
+
+</html>

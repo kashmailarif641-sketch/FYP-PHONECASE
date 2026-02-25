@@ -1,0 +1,69 @@
+// ===============================
+// CaseCraft | Payment Confirmation Page
+// ===============================
+
+// Run once the page content is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Select Track Order button
+  const trackOrderBtn = document.getElementById("trackOrderBtn");
+
+  // Animate success icon smoothly when page loads
+  const checkmark = document.querySelector(".checkmark");
+  if (checkmark) {
+    checkmark.style.opacity = "0";
+    checkmark.style.transform = "scale(0.8)";
+    setTimeout(() => {
+      checkmark.style.transition = "all 0.6s ease";
+      checkmark.style.opacity = "1";
+      checkmark.style.transform = "scale(1)";
+    }, 200);
+  }
+
+  // Small fade-in animation for the confirmation card
+  const confirmationCard = document.querySelector(".confirmation-card");
+  if (confirmationCard) {
+    confirmationCard.style.opacity = "0";
+    confirmationCard.style.transform = "translateY(30px)";
+    setTimeout(() => {
+      confirmationCard.style.transition = "all 0.8s ease";
+      confirmationCard.style.opacity = "1";
+      confirmationCard.style.transform = "translateY(0)";
+    }, 400);
+  }
+
+  // Handle "Track Order" button click
+  if (trackOrderBtn) {
+    trackOrderBtn.addEventListener("click", () => {
+      // Add a small button animation
+      trackOrderBtn.classList.add("clicked");
+      setTimeout(() => {
+        // Redirect to track order page
+        window.location.href = "track-order.html";
+      }, 500);
+    });
+  }
+
+  // Dynamic Status Message Logic
+  const statusTitle = document.getElementById("statusTitle");
+  const statusMessage = document.getElementById("statusMessage");
+  const confirmedOrder = JSON.parse(localStorage.getItem("confirmedOrder"));
+
+  if (confirmedOrder && statusTitle && statusMessage) {
+    // Determine message based on payment mode/status
+    const paymentMode = confirmedOrder.payment ? confirmedOrder.payment.mode : null;
+
+    if (paymentMode === "cod") {
+      statusTitle.textContent = "Order Placed Successfully!";
+      statusMessage.innerHTML = `Thank you, <strong>${confirmedOrder.userDetails.name}</strong>. Your order has been placed.<br>
+      Please pay <strong>Rs. ${confirmedOrder.design.price}</strong> to the rider upon delivery.`;
+    } else if (paymentMode === "jazzcash") {
+      statusTitle.textContent = "Payment Submitted!";
+      statusMessage.innerHTML = `Thank you! We have received your payment details.<br>
+      We will verify Transaction ID: <strong>${confirmedOrder.payment.trxId}</strong> and ship your order shortly.`;
+    }
+  }
+
+  // Optional: auto-scroll to top when page loads
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});

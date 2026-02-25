@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaseCraft | Admin Dashboard</title>
+  <link rel="stylesheet" href="../../css/admin-layout.css">
+  <link rel="stylesheet" href="../../css/admin-dashboard.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="admin-sidebar">
+    <div class="logo">
+      <h2>CaseCraft Admin</h2>
+    </div>
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="admin-dashboard.html" class="active"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
+        <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
+        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Orders</a></li>
+        <li>
+          <a href="manage-vendors.html">
+            <i class="fi fi-rr-shop"></i> Manage Vendors
+            <span id="vendorBadge" class="badge">0</span>
+          </a>
+        </li>
+        <li><a href="payments.html"><i class="fi fi-rr-dollar"></i> Payments & Transactions</a></li>
+        <li><a href="review-premium-designs.html"><i class="fi fi-rr-palette"></i> Review Premium Designs</a></li>
+        <li><a href="manage-gallery.html"><i class="fi fi-rr-picture"></i> Manage Gallery</a></li>
+        <li><a href="reports-analytics.html"><i class="fi fi-rr-chart-histogram"></i> Reports & Analytics</a></li>
+        <li><a href="content-management.html"><i class="fi fi-rr-folder"></i> Content Management</a></li>
+        <li>
+          <a href="#" id="adminLogout">
+            <i class="fi fi-rr-sign-out-alt"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ===== Main Content ===== -->
+  <main class="admin-main">
+    <button class="menu-toggle">☰</button>
+    <header class="dashboard-header">
+      <h2 id="welcomeText">Welcome</h2>
+      <h1>Dashboard Overview</h1>
+      <p>Welcome back, Admin! Here’s the latest CaseCraft summary.</p>
+    </header>
+
+    <!-- ===== Overview Cards ===== -->
+    <section class="overview-cards">
+
+      <div class="card">
+        <div class="card-title">Total Users</div>
+        <div class="card-value" id="totalUsersCount">0</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Approved Vendors</div>
+        <div class="card-value" id="totalVendorsCount">0</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Pending Vendors</div>
+        <div class="card-value" id="pendingVendorsStats">0</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Total Orders</div>
+        <div class="card-value" id="totalOrdersStats">0</div>
+      </div>
+
+    </section>
+
+    <!-- ===== Recent Activity ===== -->
+    <section class="recent-activity">
+      <h2>Recent Activities</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Activity</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentActivityTable">
+          <!-- Real activity will be logged here -->
+          <tr>
+            <td colspan="3" style="text-align: center; color: var(--text-light); padding: 40px;">No recent activities
+              found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+  <div class="sidebar-overlay"></div>
+  <script src="../../js/admin-common.js"></script>
+  <script src="../../js/admin-dashboard.js"></script>
+
+</body>
+
+</html>

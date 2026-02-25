@@ -1,0 +1,331 @@
+/* ===== Content Management Specific Styles ===== */
+
+/* Note: General resets and :root variables are inherited from admin-dashboard.css */
+
+.admin-main .content-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  /* padding is handled by .admin-main in dashboard css */
+}
+
+/* Header Adjustments */
+/* Header content flows naturally now */
+
+/* ===== Content Cards ===== */
+.content-card {
+  background: #fff;
+  border-radius: 18px;
+  /* Match dashboard .card */
+  /* Match dashboard .card */
+  padding: 30px;
+  /* Increased padding */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  /* Slightly adjusted shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--card-highlight);
+  /* Added theme border */
+  border-top: 5px solid transparent;
+  background-image: linear-gradient(#fff, #fff), linear-gradient(90deg, var(--brand-light), var(--brand-dark));
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  /* Gradient top border trick */
+  margin-bottom: 25px;
+  /* Added row spacing */
+}
+
+/* ===== Footer ===== */
+/* Admin page footer placed inside `.admin-main` */
+
+.content-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(13, 34, 97, 0.15);
+  /* More subtle, premium shadow */
+}
+
+.content-card h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--brand-light);
+  /* Darker, more premium color */
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 12px;
+}
+
+/* ===== Inputs, Textarea, Buttons ===== */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.input-group input,
+textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font-size: 0.95rem;
+  outline: none;
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus,
+textarea:focus {
+  border-color: var(--btn-right);
+  box-shadow: 0 0 0 3px rgba(6, 174, 204, 0.1);
+  background: #fff;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.input-group button {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s ease;
+  align-self: flex-start;
+  /* Prevent full width if in flex col */
+  min-width: 150px;
+}
+
+.input-group button:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(6, 174, 204, 0.2);
+}
+
+/* ===== Lists ===== */
+.item-list {
+  list-style: none;
+  margin-top: 15px;
+}
+
+.item-list li {
+  background: #fff;
+  padding: 14px 20px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 5px solid var(--brand-light);
+  /* Dark blue default */
+  border: 1px solid var(--light-grey);
+  /* Add thin border all around */
+  border-left-width: 5px;
+  /* Keep accent thicker */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.item-list li:hover {
+  background: #fdfdfd;
+  transform: translateX(6px);
+  border-left-color: var(--btn-right);
+  /* Bright blue on hover */
+  box-shadow: 0 4px 12px rgba(6, 174, 204, 0.15);
+}
+
+.delete-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* ===== Template Gallery ===== */
+.upload-section {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 2px dashed var(--light-grey);
+  border-radius: 15px;
+  background: #fafafa;
+  transition: 0.3s ease;
+}
+
+.upload-section:hover {
+  border-color: var(--btn-right);
+  background: #f0f9ff;
+}
+
+.upload-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--btn-right), var(--btn-left));
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.template-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.template-card {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid var(--light-grey);
+}
+
+.template-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.template-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.template-card .delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  /* Solid white for better contrast */
+  color: #dc2626;
+  font-size: 1rem;
+  opacity: 1;
+  /* Always visible */
+  transform: translateY(0);
+  /* Always in place */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  /* Ensure on top */
+  cursor: pointer;
+}
+
+.template-card:hover .delete-btn {
+  /* Hover effect only changes color/scale now */
+  transform: scale(1.1);
+}
+
+.template-card .delete-btn:hover {
+  background: #dc2626;
+  color: #fff;
+  transform: scale(1.1) rotate(90deg);
+  /* Playful rotation */
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+
+  /* Header Alignment */
+  .dashboard-header {
+    text-align: center;
+  }
+
+  /* Input Groups: Mobile Stack */
+  .input-group {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .input-group input,
+  .input-group textarea {
+    width: 100%;
+  }
+
+  /* Full Width Buttons for Touch */
+  .input-group button {
+    width: 100%;
+    align-self: center;
+    padding: 14px;
+    /* Larger touch target */
+    font-size: 1rem;
+  }
+
+  /* List Items Mobile Layout */
+  .item-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .item-list li .delete-btn {
+    align-self: flex-end;
+    /* Align delete button to right */
+    width: 100%;
+    /* Or could be auto, but wide is easier to tap */
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* Grid Adjustments */
+  .content-container {
+    grid-template-columns: 1fr;
+    /* Stack cards */
+  }
+
+  .template-gallery {
+    /* Ensure even small screens fit 2 columns if possible, else 1 */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+  }
+
+  /* Template Delete Button Visible on Mobile rule removed as it is now global */
+}
+
+@media (max-width: 480px) {
+
+  /* Extra Polish for very small screens */
+  .content-card {
+    padding: 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+}

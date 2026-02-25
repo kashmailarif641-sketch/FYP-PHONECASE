@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CaseCraft | Payment Confirmation</title>
+  <link rel="stylesheet" href="../../css/payment-confirmation.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="logo">CaseCraft</div>
+  </header>
+
+  <section class="confirmation-section">
+    <div class="confirmation-card">
+      <div class="success-icon">
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+          <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+          <path class="checkmark__check" fill="none" d="M14 27l7 7 16-16" />
+        </svg>
+      </div>
+      <h1 id="statusTitle">Payment Successful!</h1>
+      <p id="statusMessage">Your payment has been processed successfully.
+        You can now track your order status.</p>
+      <button id="trackOrderBtn">Track Order</button>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>© 2025 <span>CaseCraft</span>. All rights reserved.</p>
+  </footer>
+
+  <!-- ✅ External JavaScript File -->
+  <script src="../../js/payment-confirmation.js"></script>
+</body>
+
+</html>

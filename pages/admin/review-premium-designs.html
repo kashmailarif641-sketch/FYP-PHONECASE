@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaseCraft | Review Premium Designs</title>
+  <link rel="stylesheet" href="../../css/admin-layout.css">
+  <link rel="stylesheet" href="../../css/admin-dashboard.css">
+  <link rel="stylesheet" href="../../css/review-premium-designs.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+  <!-- ===== Sidebar ===== -->
+  <aside class="admin-sidebar">
+    <div class="logo">
+      <h2>CaseCraft Admin</h2>
+    </div>
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
+        <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
+        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Orders</a></li>
+        <li>
+          <a href="manage-vendors.html">
+            <i class="fi fi-rr-shop"></i> Manage Vendors
+            <span id="vendorBadge" class="badge">0</span>
+          </a>
+        </li>
+        <li><a href="payments.html"><i class="fi fi-rr-dollar"></i> Payments & Transactions</a></li>
+        <li><a href="review-premium-designs.html" class="active"><i class="fi fi-rr-palette"></i> Review Premium
+            Designs</a></li>
+        <li><a href="manage-gallery.html"><i class="fi fi-rr-picture"></i> Manage Gallery</a></li>
+        <li><a href="reports-analytics.html"><i class="fi fi-rr-chart-histogram"></i> Reports & Analytics</a></li>
+        <li><a href="content-management.html"><i class="fi fi-rr-folder"></i> Content Management</a></li>
+        <li>
+          <a href="#" id="adminLogout">
+            <i class="fi fi-rr-sign-out-alt"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Container -->
+  <main class="admin-main review-container">
+    <button class="menu-toggle">☰</button>
+    <header class="review-header">
+      <h1 class="page-title">Review Premium Designs</h1>
+      <p class="page-subtitle">Pending premium submissions awaiting admin approval and purchase</p>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <button id="refreshStateBtn" class="approve-btn" style="padding:6px 10px;font-size:13px;">Refresh State</button>
+        <button id="clearStateBtn" class="reject-btn" style="padding:6px 10px;font-size:13px;">Clear State</button>
+      </div>
+    </header>
+    <!-- Design Card 1 -->
+    <div class="design-card">
+      <div class="design-preview">
+        <img src="../../images/floral%20asthetic.jpg" alt="Floral Aesthetic Case">
+      </div>
+      <div class="design-info">
+        <h3>Floral Aesthetic Case</h3>
+        <p>By: User123 | Uploaded: Oct 20, 2025</p>
+      </div>
+      <div class="actions">
+        <button class="approve-btn">Approve & Buy</button>
+        <button class="reject-btn">Reject</button>
+      </div>
+    </div>
+    <!-- Set Price Modal (hidden) -->
+    <div id="setPriceModal" class="modal" aria-hidden="true">
+      <div class="modal-overlay" data-close></div>
+      <div class="modal-content">
+        <button class="modal-close" data-close aria-label="Close">×</button>
+        <h3>Set price & approve</h3>
+        <p id="modalDesignTitle" style="margin-bottom:8px;font-weight:600;"></p>
+        <label for="inputPrice">Price (USD)</label>
+        <input id="inputPrice" type="number" min="0" step="0.01"
+          style="padding:8px;margin:8px 0 12px;width:100%;box-sizing:border-box;" />
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+          <button id="confirmSetPrice" class="approve-btn">Approve & Charge</button>
+          <button class="reject-btn" data-close>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mock Payment Modal -->
+    <div id="paymentModal" class="modal" aria-hidden="true">
+      <div class="modal-overlay" data-close></div>
+      <div class="modal-content">
+        <button class="modal-close" data-close aria-label="Close">×</button>
+        <h3>Mock Payment</h3>
+        <p id="paymentSummary" style="margin:8px 0 12px;"></p>
+        <p style="font-size:13px;color:#666;margin-bottom:12px;">This is a front-end mock: clicking <strong>Pay</strong>
+          simulates a successful payment and marks the design as purchased.</p>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+          <button id="payNowBtn" class="approve-btn">Pay</button>
+          <button class="reject-btn" data-close>Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Design Card 2 -->
+    <div class="design-card">
+      <div class="design-preview">
+        <img src="../../images/minimilist line art.jpg" alt="Minimalist Line Art">
+      </div>
+      <div class="design-info">
+        <h3>Minimalist Line Art</h3>
+        <p>By: User987 | Uploaded: Oct 21, 2025</p>
+      </div>
+      <div class="actions">
+        <button class="approve-btn">Approve & Buy</button>
+        <button class="reject-btn">Reject</button>
+      </div>
+    </div>
+
+    <!-- Design Card 3 -->
+    <div class="design-card">
+      <div class="design-preview">
+        <img src="../../images/retro neon.jpg" alt="Retro Neon Case">
+      </div>
+      <div class="design-info">
+        <h3>Retro Neon Case</h3>
+        <p>By: User555 | Uploaded: Oct 22, 2025</p>
+      </div>
+      <div class="actions">
+        <button class="approve-btn">Approve & Buy</button>
+        <button class="reject-btn">Reject</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="sidebar-overlay"></div>
+  <script src="../../js/admin-common.js"></script>
+  <script src="../../js/review-premium-designs.js"></script>
+</body>
+
+</html>

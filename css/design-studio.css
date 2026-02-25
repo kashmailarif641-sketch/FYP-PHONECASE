@@ -1,0 +1,984 @@
+/* ===== Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: #111111;
+  overflow-x: hidden;
+}
+
+/* ===== Header ===== */
+.site-header {
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-mid), var(--brand-dark));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+  padding-left: 140px;
+  /* Offset for 80px sidebar */
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.site-header .logo {
+  font-size: 1.7rem;
+}
+
+.site-header nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 35px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.site-header nav a:hover {
+  opacity: 0.85;
+}
+
+.site-header nav a.active {
+  color: var(--btn-right);
+}
+
+/* ===== Layout (Flush Sidebar) ===== */
+.studio-container {
+  display: grid;
+  grid-template-columns: 80px 270px 1fr 340px;
+  gap: 0;
+  padding: 0;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+.icon-sidebar {
+  background: #1e293b;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 0;
+  padding-bottom: 12px;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1px solid #334155;
+}
+
+.sub-panel {
+  background: #fff;
+  padding: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid #e5e7eb;
+  height: 100%;
+}
+
+.sub-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sub-panel::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.sub-panel::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.sub-panel::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Wrappers for spacing */
+.editor-wrapper {
+  flex: 1;
+  padding: 6px 16px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-wrapper {
+  width: 320px;
+  padding: 6px 16px 6px 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Distinct White Cards */
+.design-editor-card,
+.live-preview-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.design-editor-card .canvas-area,
+.live-preview-card>div {
+  overflow: hidden !important;
+}
+
+/* Canvas Area Centering */
+.canvas-area {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 8px !important;
+}
+
+/* ===== Panel Cards (Compact) ===== */
+.tool-panel,
+.design-editor,
+.preview-panel {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+h2 {
+  color: var(--brand-mid);
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+/* ===== Inputs ===== */
+label {
+  font-weight: 500;
+  margin-top: 15px;
+  display: block;
+}
+
+input[type="file"],
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: var(--brand-mid);
+}
+
+/* ===== Buttons ===== */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-generate {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  margin-top: 12px;
+}
+
+.btn-save {
+  background-color: var(--brand-mid);
+}
+
+.btn-next {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  margin-top: 10px;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* ===== Editor and Preview (Same Background Size) ===== */
+.canvas-area {
+  background: #f8fafc;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.preview-box {
+  background: #f8fafc;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+/* Design Sheet - Plain canvas (Narrower) */
+.design-sheet {
+  width: 180px;
+  height: 400px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+/* Phone Case Mockup - VERY SMALL (for 100% zoom) */
+.phone-case-mockup {
+  width: 45px;
+  height: 100px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid #1a1a1a;
+}
+
+.phone-case-mockup::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  width: 12px;
+  height: 12px;
+  background: #1a1a1a;
+  border-radius: 3px;
+  z-index: 10;
+}
+
+/* Ensure both panels have same height */
+.design-editor,
+.preview-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-area,
+.preview-box {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Action buttons styling */
+.action-buttons {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* toolbar above canvas */
+.canvas-toolbar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  max-width: 960px;
+}
+
+.canvas-toolbar .tool-btn {
+  background: #ffffff;
+  border: none;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(2, 6, 23, 0.06);
+  cursor: pointer;
+  color: #0b63d6;
+  font-weight: 600;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 6px;
+}
+
+.canvas-toolbar .tool-btn.danger {
+  background: #ef4444;
+  color: #fff;
+}
+
+.canvas-toolbar .tool-btn i {
+  font-size: 14px;
+}
+
+/* mirror sizing: ensure preview mirror uses same size and maintains styling */
+#mirror {
+  width: 380px;
+  height: 760px;
+  background: transparent;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  overflow: visible;
+}
+
+#mirror .design-sheet-clone {
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Case mockup wrapper that sits inside the preview - dark outer frame with inner white case */
+.case-frame {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
+  border-radius: 14px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.case-inner {
+  /* fixed mockup inner box so we can scale the canvas to fit */
+  width: 360px;
+  height: 720px;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.case-inner .design-sheet {
+  box-shadow: none;
+  border-radius: 8px;
+}
+
+.preview-panel .action-buttons {
+  margin-top: 20px;
+}
+
+/* ===== Checkbox ===== */
+.premium-section {
+  margin-top: 20px;
+  text-align: left;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px) {
+  .studio-container {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .tool-panel,
+  .design-editor,
+  .preview-panel {
+    height: auto;
+  }
+}
+
+/* ===== CSS Variables for Theme ===== */
+:root {
+  --brand-light: #0d2261;
+  --brand-mid: #1d5474;
+  --brand-dark: #076e9b;
+  --btn-left: #03095a;
+  --btn-right: #06aecc;
+  --bg: #f3f7fcfb;
+}
+
+/* ===== New layout for editor (4-column) ===== */
+.main-body {
+  display: grid;
+  grid-template-columns: 260px 280px 1fr 360px;
+  /* left sidebar 260, drawer 280, canvas flexible, preview 360 */
+  gap: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  height: calc(100vh - 64px);
+}
+
+/* ===== Left Sidebar (icons) ===== */
+.left-sidebar {
+  background: linear-gradient(180deg, var(--brand-light), var(--brand-mid));
+  color: #ffffff;
+  width: 260px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* icon sidebar used by the page (keeps compatibility) */
+.icon-sidebar {
+  background: linear-gradient(180deg, var(--brand-light), var(--brand-mid));
+  color: #ffffff;
+  padding: 20px 8px;
+  /* panel internal padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  /* item gap */
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.left-sidebar .sidebar-logo {
+  display: none;
+}
+
+/* tool item with hover label */
+.sidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 6px 0;
+}
+
+.sidebar-group.small {
+  margin-top: 8px
+}
+
+.tool-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-direction: column;
+}
+
+.tool-item.bottom {
+  margin-top: 8px;
+}
+
+.tool-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
+  background: transparent;
+}
+
+.tool-icon i {
+  font-size: 18px
+}
+
+.tool-item .tool-label {
+  position: static;
+  margin-top: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.90);
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: 600;
+  display: block;
+  white-space: normal;
+  font-size: 12px;
+}
+
+.tool-item:hover .tool-label {
+  color: rgba(255, 255, 255, 1);
+}
+
+.left-sidebar .tool-icon:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.left-sidebar .tool-icon.active {
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 6px 18px rgba(3, 9, 90, 0.06);
+  color: #FFD27A;
+}
+
+/* selected element highlight */
+.design-sheet {
+  position: relative;
+}
+
+.design-element {
+  user-select: none;
+}
+
+.selected-element {
+  outline: 2px dashed #2563eb;
+  box-shadow: 0 6px 18px rgba(3, 9, 90, 0.08);
+}
+
+.left-sidebar .tool-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+
+.left-sidebar .tool-icon:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.left-sidebar .tool-icon.active {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 18px rgba(3, 9, 90, 0.2);
+  color: #FFD27A;
+}
+
+.sidebar-sep {
+  height: 1px;
+  width: 50%;
+  margin: 8px 0;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ===== Asset drawer (slides out) ===== */
+.asset-panel {
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(8, 30, 64, 0.06);
+  padding: 20px;
+  /* panel internal padding */
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform .22s ease, opacity .18s ease;
+  width: 280px;
+}
+
+.asset-panel.closed {
+  transform: translateX(-12px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.panel-content.hidden {
+  display: none;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.panel-header h3 {
+  margin: 0;
+  color: #15324b;
+  font-size: 1.05rem;
+}
+
+/* small controls inside drawer */
+.panel-content input[type="range"] {
+  width: 100%;
+}
+
+.panel-content select,
+.panel-content input[type="color"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #eef2ff;
+}
+
+.panel-content .chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #1d4ed8;
+  cursor: pointer;
+}
+
+.panel-content .chip.active {
+  background: #1d4ed8;
+  color: #fff;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #1d4ed8;
+  cursor: pointer;
+}
+
+.chip.active {
+  background: #1d4ed8;
+  color: #fff;
+}
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.asset-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.card-title {
+  font-size: 0.9rem;
+  color: #103145;
+}
+
+/* smaller shapes grid variant used in Shapes panel */
+.shapes-grid-small {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* slightly larger thumb for shape previews */
+.shapes-grid-small .card-thumb {
+  height: 58px;
+  width: 58px;
+  font-size: 20px;
+  border-radius: 10px;
+}
+
+/* ===== GRID CONTAINER ===== */
+.shape-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  gap: 15px;
+}
+
+/* ===== BASE ===== */
+.shape {
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  background: #eee;
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+/* ==================== RECTANGLES ==================== */
+.rectangle-solid {
+  background: #222;
+}
+
+.rectangle-outline {
+  background: transparent;
+  border: 3px solid #222;
+}
+
+.rectangle-dashed {
+  background: transparent;
+  border: 3px dashed #222;
+}
+
+.rectangle-dotted {
+  background: transparent;
+  border: 3px dotted #222;
+}
+
+.rectangle-gradient {
+  background: linear-gradient(45deg, #444, #999);
+}
+
+.rectangle-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .4);
+}
+
+/* ==================== TRIANGLES ==================== */
+.triangle-solid {
+  width: 0;
+  height: 0;
+  border-left: 35px solid transparent;
+  border-right: 35px solid transparent;
+  border-bottom: 70px solid #222;
+}
+
+.triangle-outline {
+  width: 0;
+  height: 0;
+  border-left: 35px solid transparent;
+  border-right: 35px solid transparent;
+  border-bottom: 70px solid transparent;
+  border-bottom: 4px solid #222;
+}
+
+.triangle-dashed {
+  border-bottom: 6px dashed #222;
+}
+
+.triangle-dotted {
+  border-bottom: 6px dotted #222;
+}
+
+.triangle-gradient {
+  border-bottom: 70px solid;
+  border-image: linear-gradient(45deg, #444, #999) 20;
+}
+
+.triangle-shadow {
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, .5));
+}
+
+/* ==================== CIRCLES ==================== */
+.circle-solid {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #222;
+}
+
+/* ==================== STARS (SVG — ALWAYS CLEAN) */
+.star-solid {
+  background: #222;
+}
+
+.star-outline {
+  background: #222;
+}
+
+.star-dashed {
+  border: 3px dashed #222;
+}
+
+.star-dotted {
+  border: 3px dotted #222;
+}
+
+.star-gradient {
+  background: linear-gradient(45deg, #444, #999);
+}
+
+.star-shadow {
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, .5));
+}
+
+/* ==================== HEARTS (SVG — PERFECT SHAPE) */
+.heart-solid {
+  background: #222;
+}
+
+.heart-outline {
+  background: #222;
+}
+
+.heart-dashed {
+  border: 3px dashed #222;
+}
+
+.heart-dotted {
+  border: 3px dotted #222;
+}
+
+.heart-gradient {
+  background: linear-gradient(45deg, #444, #999);
+}
+
+.heart-shadow {
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, .5));
+}
+
+
+.prod-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prod-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.prod-card.selected {
+  background: #f8fafc;
+  box-shadow: inset 0 0 0 1px rgba(3, 9, 90, 0.03);
+}
+
+.prod-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: #e6f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0b63d6;
+  font-weight: 700;
+}
+
+.prod-info .prod-title {
+  font-weight: 600;
+}
+
+.prod-sub {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.checkout-btn-lg {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.upload-zone {
+  border: 1px dashed #e6eefc;
+  border-radius: 8px;
+  background: #fbfdff;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #eef2ff;
+  border-radius: 8px;
+}
+
+/* small responsive for narrower windows */
+@media (max-width: 1200px) {
+  .main-body {
+    grid-template-columns: 64px 220px 1fr;
+  }
+
+  .asset-panel {
+    display: none;
+  }
+}
+
+/* ===== NEW CANVA-LIKE ASSETS ===== */
+.shape.blob {
+  width: 100%;
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.shape.badge {
+  width: 100%;
+  height: 100%;
+  background: #f59e0b;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.shape.wavy {
+  width: 100%;
+  height: 100%;
+  background: #ef4444;
+  clip-path: polygon(0% 15%, 15% 10%, 30% 15%, 45% 10%, 60% 15%, 75% 10%, 90% 15%, 100% 10%, 100% 85%, 90% 90%, 75% 85%, 60% 90%, 45% 85%, 30% 90%, 15% 85%, 0% 90%);
+}
+
+.shape.line {
+  width: 100%;
+  height: 4px;
+  background: #000;
+  border-radius: 2px;
+}
+
+.shape.triangle {
+  width: 0;
+  height: 0;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+  border-bottom: 80px solid #10b981;
+  background: transparent;
+}
+
+/* Material Simulations */
+.canvas-area[data-material*="Glitter"] .design-sheet,
+.design-sheet-clone[data-material*="Glitter"] {
+  background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.4)"/><circle cx="30" cy="40" r="1.5" fill="rgba(255,255,255,0.3)"/><circle cx="70" cy="80" r="1" fill="rgba(255,255,255,0.4)"/></svg>'), linear-gradient(135deg, #fce7f3, #e0f2fe);
+  position: relative;
+}
+
+.canvas-area[data-material*="Metalli"] .design-sheet {
+  background: linear-gradient(135deg, #94a3b8 0%, #cbd5e1 50%, #94a3b8 100%);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.canvas-area[data-material*="Holographic"] .design-sheet {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(0, 255, 0, 0.2), rgba(0, 0, 255, 0.2));
+  backdrop-filter: hue-rotate(90deg);
+}
+
+/* Override Mirror Size to match Split View */
+#mirror {
+  width: 320px !important;
+  height: 640px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}

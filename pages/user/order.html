@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaseCraft | Order</title>
+  <link rel="stylesheet" href="../../css/order.css">
+  <style>
+    /* Inline styles for quick layout fix, ideally move to css/order.css */
+    .form-group.row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .col-half {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .col-half select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="logo">CaseCraft</div>
+
+  </header>
+
+  <!-- Main Content -->
+  <main class="order-container">
+    <!-- Design Preview -->
+    <section class="design-preview">
+      <h2>Your Selected Case Design</h2>
+      <div class="preview-box">
+        <img src="../../images/placeholder-case.png" alt="Selected Case Design">
+      </div>
+    </section>
+
+    <!-- Order Details -->
+    <section class="order-details">
+      <h2>Enter Delivery & Payment Details</h2>
+      <form>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label>Delivery Address</label>
+          <textarea rows="3" placeholder="Enter complete address"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="03XX-XXXXXXX">
+        </div>
+
+        <div class="form-group row">
+          <div class="col-half">
+            <label>Brand</label>
+            <select id="brandSelect">
+              <option disabled selected>Select Brand</option>
+            </select>
+          </div>
+          <div class="col-half">
+            <label>Model</label>
+            <select id="modelSelect">
+              <option disabled selected>Select Brand First</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method</label>
+          <select id="paymentMethodSelect">
+            <option disabled selected>Select payment method</option>
+            <option value="cod">Cash on Delivery</option>
+            <option value="jazzcash">Easypaisa / JazzCash</option>
+          </select>
+        </div>
+
+        <!-- Digital Payment Details (Hidden by default) -->
+        <div id="digitalPaymentDetails"
+          style="display: none; background: #e0f2fe; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #bae6fd;">
+          <p style="margin-bottom: 10px; color: #0369a1; font-size: 0.9rem;">
+            <strong>Instructions:</strong> Please send <span id="paymentAmount" style="font-weight:bold;">Total
+              Amount</span> to:
+            <br>Account: <strong>0300-1234567</strong> (CaseCraft Admin)
+            <br>Type: JazzCash / Easypaisa
+          </p>
+          <div class="form-group">
+            <label>Transaction ID (Trx ID)</label>
+            <input type="text" id="trxId" placeholder="Enter Transaction ID from SMS">
+          </div>
+        </div>
+
+        <button type="button" id="confirmOrderBtn" class="confirm-btn">Confirm Order</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="../../js/order.js"></script>
+
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>© 2025 CaseCraft. All rights reserved.</p>
+  </footer>
+</body>
+
+</html>

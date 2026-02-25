@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Assigned Orders | CaseCraft</title>
+  <link rel="stylesheet" href="../../css/assigned-orders.css">
+  <!-- Flaticon Uicons -->
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="vendor-sidebar">
+    <h2 class="logo">Vendor Panel</h2>
+    <nav class="vendor-nav">
+      <ul>
+        <li><a href="vendor-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard</a></li>
+        <li><a href="assigned-orders.html" class="active"><i class="fi fi-rr-clipboard-list"></i> Assigned Orders</a>
+        </li>
+        <li><a href="vendor-payment.html"><i class="fi fi-rr-dollar"></i> Payments</a></li>
+        <li><a href="vendor-profile.html"><i class="fi fi-rr-user"></i> Profile</a></li>
+        <li><a href="../../login.html"><i class="fi fi-rr-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="vendor-main">
+
+    <!-- Page Header -->
+    <header class="dashboard-header">
+      <h1 id="welcomeText">Assigned Orders</h1>
+      <p>View and manage all your assigned orders.</p>
+    </header>
+
+    <!-- Filters -->
+    <div class="orders-filters">
+      <div class="filter-group">
+        <label for="status-filter">Filter by Status:</label>
+        <select id="status-filter">
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="search-orders">Search Orders:</label>
+        <input type="text" id="search-orders" placeholder="Order ID or User Name">
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <section class="overview-cards">
+      <div class="orders-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User Name</th>
+              <th>Product</th>
+              <th>Design</th>
+              <th>Quantity</th>
+              <th>Order Date</th>
+              <th>Payment Status</th>
+              <th>Order Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Example Row -->
+            <tr>
+              <td>#101</td>
+              <td>John Doe</td>
+              <td>iPhone 11 Case</td>
+              <td>
+                <span class="view-link" onclick="openModal('../../assets/images/design-placeholder.jpg')">View
+                  Design</span>
+              </td>
+              <td>2</td>
+              <td>01 Feb, 2026</td>
+              <td><span class="status success">Paid</span></td>
+              <td>
+                <select>
+                  <option value="pending">Pending</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </td>
+              <td>
+                <button class="update-btn">Update</button>
+              </td>
+            </tr>
+            <!-- Add more rows dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+      <span class="close-modal">&times;</span>
+      <img class="modal-content" id="modalImage">
+      <div id="caption"></div>
+    </div>
+
+  </main>
+
+  <script src="../../js/assigned-order.js"></script>
+</body>
+
+</html>

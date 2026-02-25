@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Vendor Registration | CaseCraft</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../css/login.css">
+  <link rel="stylesheet" href="../../css/vendor-registration.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="container vendor-container">
+    <div class="login-card">
+
+      <img src="../../images/signup logo.jpg" class="logo">
+
+      <h2>Vendor Registration</h2>
+      <p class="subtitle">Submit your business details to request access</p>
+
+      <form id="vendorForm">
+
+        <div class="input-group">
+          <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
+        </div>
+        <span class="error-msg" id="fullNameError"></span>
+
+        <div class="input-group">
+          <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+        <span class="error-msg" id="emailError"></span>
+
+        <div class="input-group">
+          <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+        </div>
+        <span class="error-msg" id="phoneError"></span>
+
+        <div class="input-group">
+          <input type="text" id="shopName" name="shopName" placeholder="Shop Name" required>
+        </div>
+        <span class="error-msg" id="shopNameError"></span>
+
+        <div class="input-group">
+          <input type="text" id="city" name="city" placeholder="City" required>
+        </div>
+        <span class="error-msg" id="cityError"></span>
+
+        <div class="input-group">
+          <textarea id="businessAddress" name="businessAddress" rows="2" placeholder="Business Address"
+            required></textarea>
+        </div>
+        <span class="error-msg" id="businessAddressError"></span>
+
+        <div class="password-container">
+          <input type="password" id="password" name="password" placeholder="Password" required>
+          <i class="fas fa-eye-slash toggle-password" onclick="togglePassword('password', this)"></i>
+        </div>
+        <span class="error-msg" id="passwordError"></span>
+
+        <div class="password-container">
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+          <i class="fas fa-eye-slash toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+        </div>
+        <span class="error-msg" id="confirmPasswordError"></span>
+
+        <p class="note">
+          Note: Registration pending admin approval.
+        </p>
+
+        <button type="submit" class="login-btn">Submit Registration</button>
+
+        <p class="signup">Already have an account? <a href="../../login.html">Login</a></p>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../js/vendor-registration.js"></script>
+  <script>
+    function togglePassword(id, icon) {
+      const input = document.getElementById(id);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      }
+    }
+  </script>
+</body>
+
+</html>

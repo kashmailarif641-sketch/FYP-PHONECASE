@@ -1,0 +1,242 @@
+/* ===== General Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: #374151;
+}
+
+/* ===== THEME COLORS from your main CSS ===== */
+:root {
+  --brand-light: #0d2261;
+  --brand-mid: #1d5474;
+  --brand-dark: #076e9b;
+  --btn-left: #03095a;
+  --btn-right: #06aecc;
+  --bg: #f3f7fcfb;
+}
+
+/* ===== Header ===== */
+.site-header {
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-mid), var(--brand-dark));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 25px;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--btn-right);
+  transform: translateY(-2px);
+}
+
+/* ===== Order Container ===== */
+.order-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 60px 100px;
+  gap: 50px;
+}
+
+/* ===== Design Preview ===== */
+.design-preview {
+  flex: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  animation: fadeInLeft 0.8s ease;
+}
+
+.design-preview h2 {
+  color: var(--brand-light);
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.preview-box {
+  background: #F3F4F6;
+  border: 2px dashed var(--brand-mid);
+  border-radius: 15px;
+  padding: 25px;
+  transition: 0.3s;
+}
+
+.preview-box:hover {
+  background: #E0F2FE;
+  border-color: var(--brand-dark);
+}
+
+.preview-box img {
+  width: 220px;
+  border-radius: 10px;
+}
+
+/* ===== Order Form ===== */
+.order-details {
+  flex: 1;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  animation: fadeInRight 0.8s ease;
+}
+
+.order-details h2 {
+  color: var(--brand-light);
+  font-size: 22px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+label {
+  font-weight: 600;
+  color: var(--brand-mid);
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 10px;
+  background-color: #F9FAFB;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--btn-right);
+  box-shadow: 0 0 5px rgba(6, 182, 212, 0.4);
+  outline: none;
+}
+
+/* ===== Button ===== */
+.confirm-btn {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-align: center;
+  display: block;
+  margin-top: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(90deg, var(--btn-right), var(--btn-left));
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(30, 64, 175, 0.3);
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  background: var(--brand-light);
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  border-top: 3px solid var(--btn-right);
+  margin-top: 60px;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== RESPONSIVENESS ===== */
+
+@media (max-width: 992px) {
+  .order-container {
+    flex-direction: column;
+    padding: 40px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    padding: 15px 20px;
+  }
+
+  nav a {
+    margin-left: 15px;
+  }
+
+  .design-preview,
+  .order-details {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 576px) {
+  .order-container {
+    padding: 20px 15px;
+  }
+
+  .design-preview img {
+    width: 180px;
+  }
+
+  .confirm-btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .site-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
