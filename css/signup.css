@@ -131,19 +131,83 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 400px) {
+@media (max-width: 1024px) {
   .login-card {
-    padding: 30px 20px;
+    width: 380px;
+    padding: 35px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-body {
+    padding: 16px;
+  }
+  .login-card {
     width: 90%;
+    max-width: 450px;
+    padding: 25px 20px;
+    border-radius: 14px;
+  }
+  .logo {
+    width: 60px;
+    margin-bottom: 12px;
   }
   .login-card h2 {
-    font-size: 22px;
+    font-size: 20px;
   }
   .login-card p {
     font-size: 13px;
   }
+  input {
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
   .btn {
-    font-size: 15px;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-body {
     padding: 12px;
+    height: auto;
+    min-height: 100vh;
+  }
+  .login-card {
+    width: 95%;
+    max-width: 100%;
+    padding: 18px 16px;
+    border-radius: 12px;
+  }
+  .logo {
+    width: 55px;
+    margin-bottom: 10px;
+  }
+  .login-card h2 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .login-card p {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  input {
+    width: 100%;
+    font-size: 12px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+  }
+  .btn {
+    width: 100%;
+    font-size: 12px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+  }
+  a {
+    font-size: 11px;
   }
 }

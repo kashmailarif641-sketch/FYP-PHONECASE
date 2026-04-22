@@ -1,4 +1,4 @@
-document.getElementById("resetForm").addEventListener("submit", function (e) {
+document.getElementById("resetForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const newPass = document.getElementById("newPassword").value;
@@ -9,13 +9,45 @@ document.getElementById("resetForm").addEventListener("submit", function (e) {
     return;
   }
 
-  // Show success popup
-  const popup = document.getElementById("successPopup");
-  popup.style.display = "flex";
+  // 🔹 Get token from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get("token");
 
-  // Hide popup and redirect after 2.5 seconds
-  setTimeout(() => {
-    popup.style.display = "none";
-    window.location.href = "login.html";
-  }, 2500);
+  if (!token) {
+    alert("Invalid or missing token!");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/reset-password", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        token: token,
+        newPassword: newPass
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Show success popup
+      const popup = document.getElementById("successPopup");
+      popup.style.display = "flex";
+
+      setTimeout(() => {
+        popup.style.display = "none";
+        window.location.href = "login.html";
+      }, 2500);
+
+    } else {
+      alert(data.message);
+    }
+
+  } catch (error) {
+    console.log(error);
+    alert("Server error");
+  }
 });

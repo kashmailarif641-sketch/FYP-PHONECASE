@@ -7,24 +7,6 @@
   <title>CaseCraft | Order</title>
   <link rel="stylesheet" href="../../css/order.css">
   <style>
-    /* Inline styles for quick layout fix, ideally move to css/order.css */
-    .form-group.row {
-      display: flex;
-      gap: 15px;
-    }
-
-    .col-half {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .col-half select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
   </style>
 </head>
 
@@ -66,17 +48,42 @@
 
         <div class="form-group row">
           <div class="col-half">
-            <label>Brand</label>
-            <select id="brandSelect">
-              <option disabled selected>Select Brand</option>
-            </select>
+            <label>Selected Brand</label>
+            <div class="display-box" id="displayBrand">Loading...</div>
           </div>
           <div class="col-half">
-            <label>Model</label>
-            <select id="modelSelect">
-              <option disabled selected>Select Brand First</option>
-            </select>
+            <label>Selected Model</label>
+            <div class="display-box" id="displayModel">Loading...</div>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="">Select Material</option>
+            <option value="Standard">Standard</option>
+            <option value="Premium">Premium (+300)</option>
+            <option value="Transparent">Transparent (+200)</option>
+            <option value="Matte">Matte (+150)</option>
+            <option value="Glossy">Glossy (+150)</option>
+          </select>
+        </div>
+
+        <div class="premium-option">
+          <label>
+            <input type="checkbox" id="premiumDesign">
+            Submit this design for Premium Gallery
+          </label>
+        </div>
+
+        <div id="premiumPriceBox" style="display: none; margin-top: 10px;">
+          <label for="premiumPrice">Set Your Selling Price (Rs.)</label>
+          <input type="number" id="premiumPrice" placeholder="Enter amount e.g. 3000" min="1">
+        </div>
+
+        <div class="form-group">
+          <label>Total Price</label>
+          <div class="display-box price-highlight" id="totalPriceDisplay">Rs. 0</div>
         </div>
 
         <div class="form-group">

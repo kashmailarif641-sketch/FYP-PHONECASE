@@ -81,8 +81,69 @@ textarea:focus {
 }
 
 /* Ensure centering on small screens */
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .vendor-container {
-    padding: 15px;
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+  .vendor-container {
+    max-width: 100%;
+    padding: 20px;
+  }
+  textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+  }
+  .checkbox-section label {
+    font-size: 13px;
+  }
+  .checkbox-group label {
+    font-size: 12px;
+    gap: 6px;
+  }
+  .note {
+    font-size: 11px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+    min-height: auto;
+  }
+  .vendor-container {
+    padding: 14px;
+    max-width: 100%;
+  }
+  textarea {
+    padding: 8px 10px;
+    font-size: 12px;
+    margin: 6px 0;
+  }
+  .checkbox-section {
+    margin: 8px 0 14px 0;
+  }
+  .checkbox-section label {
+    font-size: 12px;
+  }
+  .checkbox-group label {
+    font-size: 11px;
+    gap: 6px;
+  }
+  .checkbox-group input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+  }
+  .note {
+    font-size: 10px;
+    padding: 7px;
+    margin-bottom: 12px;
   }
 }

@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('loginForm');
     const emailEl = document.getElementById('email');
     const passwordEl = document.getElementById('password');
-    const roleEl = document.getElementById('role');
     const rememberEl = document.getElementById('rememberMe');
 
     if (form) {
@@ -26,11 +25,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const email = emailEl.value.trim();
             const password = passwordEl.value.trim();
-            const role = roleEl.value;
             const remember = rememberEl.checked;
 
             // Basic validation
-            if (!email || !password || !role) {
+            if (!email || !password) {
                 alert("Please fill all fields");
                 return;
             }
@@ -45,49 +43,46 @@ document.addEventListener('DOMContentLoaded', function () {
                     password: password
                 })
             })
-            .then(res => res.json())
-            .then(data => {
+                .then(res => res.json())
+                .then(data => {
 
-                // ❌ If login failed
-                if (data.message !== "Login successful") {
-                    alert(data.message);
-                    return;
-                }
+                    // ❌ If login failed
+                    if (data.message !== "Login successful") {
+                        alert(data.message);
+                        return;
+                    }
 
-                // ✅ Role match check
-                if (data.user.role.toLowerCase() !== role.toLowerCase()) {
-                    alert("Selected role does not match your account.");
-                    return;
-                }
+                    // ✅ Save session
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    localStorage.setItem("userId", data.user.id);
 
-                // ✅ Save session
-                localStorage.setItem("user", JSON.stringify(data.user));
+                    // Remember email
+                    if (remember) {
+                        localStorage.setItem("rememberedEmail", email);
+                    } else {
+                        localStorage.removeItem("rememberedEmail");
+                    }
 
-                // Remember email
-                if (remember) {
-                    localStorage.setItem("rememberedEmail", email);
-                } else {
-                    localStorage.removeItem("rememberedEmail");
-                }
+                    alert("Login Successful!");
 
-                alert("Login Successful!");
+                    // Redirect based on role from database
+                    const role = data.user.role.toLowerCase();
+                    if (role === "admin") {
+                        window.location.href = "pages/admin/admin-dashboard.html";
+                    }
+                    else if (role === "vendor") {
+                        window.location.href = "pages/vendor/vendor-dashboard.html";
+                    }
+                    else {
+                        window.location.href = "pages/user/user-dashboard.html";
+                    }
 
-                // Redirect
-                if (role.toLowerCase() === "admin") {
-                    window.location.href = "pages/admin/admin-dashboard.html";
-                } 
-                else if (role.toLowerCase() === "vendor") {
-                    window.location.href = "pages/vendor/vendor-dashboard.html";
-                } 
-                else {
-                    window.location.href = "pages/user/user-dashboard.html";
-                }
-
-            })
-            .catch(err => {
-                console.log(err);
-                alert("Server error");
-            });
+                })
+                .catch(err => {
+                    console.log(err);
+                    alert("Server error");
+                });
 
         });
     }

@@ -21,7 +21,7 @@
       <ul>
         <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
         <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
-        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Orders</a></li>
+        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Order</a></li>
         <li>
           <a href="manage-vendors.html">
             <i class="fi fi-rr-shop"></i> Manage Vendors
@@ -54,82 +54,10 @@
         <button id="clearStateBtn" class="reject-btn" style="padding:6px 10px;font-size:13px;">Clear State</button>
       </div>
     </header>
-    <!-- Design Card 1 -->
-    <div class="design-card">
-      <div class="design-preview">
-        <img src="../../images/floral%20asthetic.jpg" alt="Floral Aesthetic Case">
-      </div>
-      <div class="design-info">
-        <h3>Floral Aesthetic Case</h3>
-        <p>By: User123 | Uploaded: Oct 20, 2025</p>
-      </div>
-      <div class="actions">
-        <button class="approve-btn">Approve & Buy</button>
-        <button class="reject-btn">Reject</button>
-      </div>
-    </div>
-    <!-- Set Price Modal (hidden) -->
-    <div id="setPriceModal" class="modal" aria-hidden="true">
-      <div class="modal-overlay" data-close></div>
-      <div class="modal-content">
-        <button class="modal-close" data-close aria-label="Close">×</button>
-        <h3>Set price & approve</h3>
-        <p id="modalDesignTitle" style="margin-bottom:8px;font-weight:600;"></p>
-        <label for="inputPrice">Price (USD)</label>
-        <input id="inputPrice" type="number" min="0" step="0.01"
-          style="padding:8px;margin:8px 0 12px;width:100%;box-sizing:border-box;" />
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
-          <button id="confirmSetPrice" class="approve-btn">Approve & Charge</button>
-          <button class="reject-btn" data-close>Cancel</button>
-        </div>
-      </div>
-    </div>
 
-    <!-- Mock Payment Modal -->
-    <div id="paymentModal" class="modal" aria-hidden="true">
-      <div class="modal-overlay" data-close></div>
-      <div class="modal-content">
-        <button class="modal-close" data-close aria-label="Close">×</button>
-        <h3>Mock Payment</h3>
-        <p id="paymentSummary" style="margin:8px 0 12px;"></p>
-        <p style="font-size:13px;color:#666;margin-bottom:12px;">This is a front-end mock: clicking <strong>Pay</strong>
-          simulates a successful payment and marks the design as purchased.</p>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
-          <button id="payNowBtn" class="approve-btn">Pay</button>
-          <button class="reject-btn" data-close>Cancel</button>
-        </div>
-      </div>
-    </div>
+    <!-- Dynamic Designs Container -->
+    <div id="premiumContainer"></div>
 
-    <!-- Design Card 2 -->
-    <div class="design-card">
-      <div class="design-preview">
-        <img src="../../images/minimilist line art.jpg" alt="Minimalist Line Art">
-      </div>
-      <div class="design-info">
-        <h3>Minimalist Line Art</h3>
-        <p>By: User987 | Uploaded: Oct 21, 2025</p>
-      </div>
-      <div class="actions">
-        <button class="approve-btn">Approve & Buy</button>
-        <button class="reject-btn">Reject</button>
-      </div>
-    </div>
-
-    <!-- Design Card 3 -->
-    <div class="design-card">
-      <div class="design-preview">
-        <img src="../../images/retro neon.jpg" alt="Retro Neon Case">
-      </div>
-      <div class="design-info">
-        <h3>Retro Neon Case</h3>
-        <p>By: User555 | Uploaded: Oct 22, 2025</p>
-      </div>
-      <div class="actions">
-        <button class="approve-btn">Approve & Buy</button>
-        <button class="reject-btn">Reject</button>
-      </div>
-    </div>
   </main>
 
   <div class="sidebar-overlay"></div>

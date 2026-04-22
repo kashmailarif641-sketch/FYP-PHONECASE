@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manage Orders | CaseCraft Admin</title>
+  <title>Manage Order | CaseCraft Admin</title>
   <link rel="stylesheet" href="../../css/admin-layout.css">
   <link rel="stylesheet" href="../../css/admin-dashboard.css" />
   <link rel="stylesheet" href="../../css/manage-orders.css" />
@@ -22,7 +22,7 @@
       <ul>
         <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
         <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
-        <li><a href="manage-orders.html" class="active"><i class="fi fi-rr-shopping-bag"></i> Manage Orders</a></li>
+        <li><a href="manage-orders.html" class="active"><i class="fi fi-rr-shopping-bag"></i> Manage Order</a></li>
         <li>
           <a href="manage-vendors.html">
             <i class="fi fi-rr-shop"></i> Manage Vendors
@@ -48,70 +48,17 @@
     <button class="menu-toggle">☰</button>
     <!-- ====== Header ====== -->
     <header class="site-header">
-      <h1>📦 Manage Orders</h1>
+      <h1>📦 Manage Order</h1>
     </header>
 
     <!-- ====== Main Content ====== -->
 
-    <h2>All Orders</h2>
+    <h2>All Order</h2>
 
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>User</th>
-            <th>Design</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Assigned Vendor</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="orderTableBody">
-          <!-- Example Order Row -->
-          <tr>
-            <td>#1001</td>
-            <td>Ali Raza</td>
-            <td><img src="../../images/persian%20rug.jpg" alt="design" /></td>
-            <td>$25.00</td>
-            <td>2025-10-21</td>
-            <td><span class="status pending">Pending</span></td>
-            <td><button class="update-btn">Next Status</button></td>
-          </tr>
-          <tr>
-            <td>#1002</td>
-            <td>Sara Khan</td>
-            <td><img src="../../images/sample-design2.jpg" alt="design" /></td>
-            <td>$32.50</td>
-            <td>2025-10-20</td>
-            <td><span class="status processing">Processing</span></td>
-            <td><button class="update-btn">Next Status</button></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div id="ordersContainer" class="orders-container"></div>
     <footer>
       <p>© 2025 CaseCraft Admin Panel</p>
     </footer>
-    <!-- ===== Assign Vendor Modal ===== -->
-    <div id="vendorModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2>Assign Order to Vendor</h2>
-        <p>Select a vendor to handle this order:</p>
-
-        <select id="vendorSelect">
-          <option value="">-- Select Vendor --</option>
-          <!-- Vendor options will be populated by JS -->
-        </select>
-
-        <div class="modal-actions">
-          <button id="confirmAssignBtn" class="update-btn">Assign</button>
-        </div>
-      </div>
-    </div>
 
   </main>
   <div class="sidebar-overlay"></div>

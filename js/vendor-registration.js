@@ -16,6 +16,7 @@ document.getElementById("vendorForm").addEventListener("submit", function (e) {
   const nameRegex = /^[A-Za-z\s]+$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^[0-9]{11}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   // Clear previous errors
   document.querySelectorAll(".error-msg").forEach(el => el.textContent = "");
@@ -67,8 +68,8 @@ document.getElementById("vendorForm").addEventListener("submit", function (e) {
   if (!password) {
     document.getElementById("passwordError").textContent = "Password is required";
     isValid = false;
-  } else if (password.length < 8) {
-    document.getElementById("passwordError").textContent = "Password must be at least 8 characters long";
+  } else if (!passwordRegex.test(password)) {
+    document.getElementById("passwordError").textContent = "Password must be at least 8 characters long and include 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
     isValid = false;
   }
 

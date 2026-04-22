@@ -54,5 +54,23 @@ router.post("/signup", async (req, res) => {
         "info"
     );
 });
+router.get("/vendors", async (req, res) => {
+    try {
+        const allVendors = await User.find({ role: "vendor" });
+        console.log("All Vendors:", allVendors);
+
+        const approvedVendors = await User.find({
+            role: "vendor",
+            status: "Approved"
+        });
+
+        console.log("Approved Vendors:", approvedVendors);
+
+        res.json(approvedVendors);
+
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch vendors" });
+    }
+});
 
 module.exports = router;

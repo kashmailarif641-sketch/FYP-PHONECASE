@@ -2,28 +2,42 @@
 
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("forgotForm");
-  if (!form) return; // nothing to do if form is missing
+  if (!form) return;
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault(); // Prevent default submit behavior
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-    const emailInput = (form.email && form.email.value) ? form.email.value.trim() : "";
+    const emailInput = form.email.value.trim();
 
-    // Simple email validation
     if (emailInput === "" || !emailInput.includes("@")) {
       alert("Please enter a valid email address.");
       return;
     }
 
-    // Simulate backend process
-    alert("✅ Password reset link has been sent to your email!");
+    try {
+      const response = await fetch("http://localhost:5000/api/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: emailInput })
+      });
 
-    // Optional: clear the form after success
-    form.reset();
+      const data = await response.json();
 
-    // Optionally redirect to login after delay
-    setTimeout(() => {
-      window.location.href = "login.html";
-    }, 2000);
+      if (response.ok) {
+        alert("Reset link generated! Check console for link.");
+
+        console.log("RESET LINK:", data.resetLink); // 👈 VERY IMPORTANT
+
+        form.reset();
+      } else {
+        alert(data.message);
+      }
+
+    } catch (error) {
+      console.log(error);
+      alert("Server error. Make sure backend is running.");
+    }
   });
 });

@@ -55,13 +55,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (paymentMode === "cod") {
       statusTitle.textContent = "Order Placed Successfully!";
-      statusMessage.innerHTML = `Thank you, <strong>${confirmedOrder.userDetails.name}</strong>. Your order has been placed.<br>
-      Please pay <strong>Rs. ${confirmedOrder.design.price}</strong> to the rider upon delivery.`;
+      statusMessage.innerHTML = `Thank you, <strong id="confirmName"></strong>. Your order has been placed.<br>
+      Please pay Rs. <strong id="confirmPrice"></strong> to the rider upon delivery.`;
     } else if (paymentMode === "jazzcash") {
       statusTitle.textContent = "Payment Submitted!";
-      statusMessage.innerHTML = `Thank you! We have received your payment details.<br>
-      We will verify Transaction ID: <strong>${confirmedOrder.payment.trxId}</strong> and ship your order shortly.`;
+      statusMessage.innerHTML = `Thank you, <strong id="confirmName"></strong>! We have received your payment details.<br>
+      We will verify Transaction ID: <strong>${confirmedOrder.payment.trxId}</strong> for Rs. <strong id="confirmPrice"></strong> and ship your order shortly.`;
     }
+
+    const price = confirmedOrder.price;
+    const name = confirmedOrder.name;
+
+    if (document.getElementById("confirmPrice")) document.getElementById("confirmPrice").textContent = price;
+    if (document.getElementById("confirmName")) document.getElementById("confirmName").textContent = name;
   }
 
   // Optional: auto-scroll to top when page loads

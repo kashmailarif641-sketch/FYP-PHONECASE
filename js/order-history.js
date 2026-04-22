@@ -1,73 +1,104 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const currentUser = localStorage.getItem("loggedInUser") || "demoUser"; // fallback
-  const ordersList = document.getElementById("orders-list");
+document.addEventListener("DOMContentLoaded", async () => {
 
-  // ===== Dummy Orders =====
-  // ===== Dummy Orders =====
-  const dummyOrders = [
-    {
-      id: 101,
-      user: "demoUser",
-      designName: "Galaxy Blue Case",
-      image: "../../images/Ocean Blue.jpg",
-      date: "2025-11-28",
-      status: "Pending"
-    },
-    {
-      id: 102,
-      user: "demoUser",
-      designName: "Floral Art Case",
-      image: "../../images/floral asthetic.jpg",
-      date: "2025-11-25",
-      status: "Completed"
-    },
-    {
-      id: 103,
-      user: "demoUser",
-      designName: "Abstract Splash",
-      image: "../../images/Abstract Geometric.jpg",
-      date: "2025-11-20",
-      status: "Shipped"
-    },
-    {
-      id: 104,
-      user: "demoUser",
-      designName: "Minimal Black",
-      image: "../../images/Minimal Black.jpg",
-      date: "2025-11-22",
-      status: "Pending"
-    }
-  ];
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = localStorage.getItem("userId") || (user && user._id);
 
-  // ===== Load orders from localStorage or fallback to dummy =====
-  let allOrders = JSON.parse(localStorage.getItem("orders_v4"));
-  if (!allOrders || allOrders.length === 0) {
-    allOrders = dummyOrders;
-    localStorage.setItem("orders_v4", JSON.stringify(dummyOrders));
-  }
-
-  // Filter current user's orders
-  const userOrders = allOrders.filter(order => order.user === currentUser);
-
-  if (userOrders.length === 0) {
-    ordersList.innerHTML = `<p style="text-align:center; font-size:1.1rem; color:#555;">
-      You haven’t placed any orders yet.
-    </p>`;
+  if (!userId) {
+    alert("User session not found. Please log in again.");
     return;
   }
 
-  // Display orders
-  ordersList.innerHTML = userOrders.map(order => `
-    <div class="order-card">
-      <div class="order-details">
-        <img src="${order.image}" alt="${order.designName}">
-        <div class="order-info">
-          <h3>${order.designName}</h3>
-          <p>Order ID: #${order.id}</p>
-          <p>Date: ${order.date}</p>
+  const response = await fetch(
+    `http://localhost:5000/api/orders/user/${userId}`
+  );
+
+  const orders = await response.json();
+  console.log("User Orders:", orders);
+
+  const container = document.getElementById("orders-list");
+  container.innerHTML = "";
+
+  if (orders.length === 0) {
+    container.innerHTML = "<p>No orders found</p>";
+    return;
+  }
+
+  orders.forEach(order => {
+    const status = order.payment?.status || "pending";
+    const paymentMode = order.payment?.mode || "N/A";
+    const shortId = order._id.slice(-6).toUpperCase();
+
+    container.innerHTML += `
+      <div class="order-card" id="order-${order._id}">
+        
+        <div class="order-content">
+          <div class="order-left">
+            <img src="${order.designImage || '../../images/default-case.png'}" class="order-image"/>
+          </div>
+
+          <div class="order-middle">
+            <h3>${order.model} Case</h3>
+            <p><strong>Order ID:</strong> ${shortId}</p>
+            <p><strong>Date:</strong> ${new Date(order.createdAt).toLocaleString()}</p>
+            <p><strong>Total:</strong> Rs. ${order.totalPrice || 1500}</p>
+            <p><strong>Payment:</strong> <span style="text-transform: uppercase;">${paymentMode}</span></p>
+            <p><strong>Payment Status:</strong> 
+              <span class="payment-status ${status.toLowerCase()}">
+                ${status.charAt(0).toUpperCase() + status.slice(1)}
+              </span>
+            </p>
+          </div>
         </div>
+
+        <div class="order-actions">
+          <span class="status-badge ${order.status?.toLowerCase() || 'pending'}">
+            ${order.status || 'Pending'}
+          </span>
+
+          <div class="action-buttons">
+            <button class="delete-order-btn" onclick="deleteOrder('${order._id}')" title="Delete Order">
+              <i class="fi fi-rr-trash"></i>
+            </button>
+            <button onclick="window.location.href='track-order.html?orderId=${order._id}'" class="track-btn">
+              Track Order
+            </button>
+          </div>
+        </div>
+
       </div>
-      <span class="status ${order.status.toLowerCase()}">${order.status}</span>
-    </div>
-  `).join("");
+    `;
+  });
+
 });
+
+// Make it globally available for the inline onclick handler
+window.deleteOrder = async function (orderId) {
+  if (!confirm("Are you sure you want to delete this order?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      // Remove the element from DOM
+      const card = document.getElementById(`order-${orderId}`);
+      if (card) {
+        card.remove();
+      }
+
+      // Check if no orders left
+      const container = document.getElementById("orders-list");
+      if (container && container.children.length === 0) {
+        container.innerHTML = "<p>No orders found</p>";
+      }
+    } else {
+      alert("Failed to delete the order");
+    }
+  } catch (error) {
+    console.error("Error deleting order:", error);
+    alert("An error occurred while deleting the order.");
+  }
+};

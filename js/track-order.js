@@ -1,67 +1,81 @@
-// ===============================
-// CaseCraft | Track Order Page
-// ===============================
-
 document.addEventListener("DOMContentLoaded", () => {
-  const steps = document.querySelectorAll(".step");
-  const progressBar = document.getElementById("progressBar");
-  const backHomeBtn = document.getElementById("backHomeBtn");
+  // Get orderId from URL
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get("orderId");
 
-  // 1. Get Order Data from LocalStorage
-  const confirmedOrder = JSON.parse(localStorage.getItem("confirmedOrder"));
-  let orderStatus = "Pending"; // Default
-
-  if (confirmedOrder) {
-    // Populate Order Details
-    document.getElementById("orderDetails").style.display = "block";
-    document.getElementById("orderDesignName").textContent = confirmedOrder.design.name;
-    document.getElementById("orderPrice").textContent = "Rs. " + confirmedOrder.design.price;
-    document.getElementById("orderDate").textContent = new Date(confirmedOrder.date).toLocaleDateString();
-
-    // Payment Status Logic
-    const pStatus = confirmedOrder.payment.status;
-    const pMode = confirmedOrder.payment.mode;
-
-    let displayStatus = pStatus;
-    if (pMode === "cod") {
-      displayStatus = "Pending"; // User requested simple "Pending" for COD
-    } else if (pMode === "jazzcash") {
-      displayStatus = "Payment Verification Pending";
-    }
-
-    document.getElementById("paymentStatus").textContent = displayStatus;
-
-    // Determine Status for Progress Bar
-    // Logic: If payment is pending/verification, it's 'Pending'
-    // This can be expanded later if we have a real backend updating status
-    if (pStatus === "Pending COD" || pStatus === "Pending Verification") {
-      orderStatus = "Pending";
-    }
-  } else {
-    // No order found case
-    document.querySelector(".sub-text").textContent = "No active order found.";
+  if (!orderId) {
+    alert("No order ID found");
+    return;
   }
 
-  // Set active steps based on order status
-  let activeIndex = 0;
-  if (orderStatus === "Pending") activeIndex = 0;
-  else if (orderStatus === "Processing") activeIndex = 1;
-  else if (orderStatus === "Shipped") activeIndex = 2;
-  else if (orderStatus === "Delivered") activeIndex = 3;
+  // Fetch order from backend
+  fetch(`http://localhost:5000/api/orders/${orderId}`)
+    .then(res => {
+      if (!res.ok) throw new Error("Order not found");
+      return res.json();
+    })
+    .then(data => {
+      // Show order details block
+      document.getElementById("orderDetails").style.display = "block";
 
-  steps.forEach((step, index) => {
-    if (index <= activeIndex) {
-      step.classList.add("active");
-    }
-  });
+      // Fill order details
+      document.getElementById("design").innerText = data.model + " Case" || "Custom Design";
+      document.getElementById("amount").innerText = "Rs " + (data.totalPrice || 1500);
+      document.getElementById("date").innerText = new Date(data.createdAt).toLocaleDateString();
+      document.getElementById("status").innerText = data.status || "Pending";
 
-  // Animate progress bar width
-  const progressWidth = (activeIndex / (steps.length - 1)) * 100;
-  progressBar.style.background = "linear-gradient(90deg, #1E40AF, #06B6D4)";
-  progressBar.style.width = `${progressWidth}%`;
+      updateProgress(data.status || "Pending");
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Error loading order. Please check the Order ID.");
+    });
 
-  // Button action: back to dashboard
-  backHomeBtn.addEventListener("click", () => {
-    window.location.href = "user-dashboard.html";
-  });
+  // Back button functionality
+  const backBtn = document.getElementById("backHomeBtn");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      window.location.href = "order-history.html";
+    });
+  }
 });
+
+// Progress Bar Logic
+function updateProgress(status) {
+  const steps = document.querySelectorAll(".step");
+  const progressBar = document.querySelector(".progress-bar");
+
+  let percentage = 0;
+
+  // Make sure status is capitalized correctly for string matching
+  const currentStatus = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+
+  // Reset all steps first
+  steps.forEach(step => step.classList.remove("active"));
+
+  if (currentStatus === "Pending") {
+    steps[0].classList.add("active");
+    percentage = 12; // Adjusted to point at the first step center
+  }
+
+  if (currentStatus === "Processing") {
+    steps[0].classList.add("active");
+    steps[1].classList.add("active");
+    percentage = 37;
+  }
+
+  if (currentStatus === "Shipped") {
+    steps[0].classList.add("active");
+    steps[1].classList.add("active");
+    steps[2].classList.add("active");
+    percentage = 62;
+  }
+
+  if (currentStatus === "Delivered") {
+    steps.forEach(step => step.classList.add("active"));
+    percentage = 100;
+  }
+
+  // Use inline style to control width directly as defined in CSS
+  progressBar.innerHTML = `<div style="height: 100%; border-radius: 3px; width: ${percentage}%; background: linear-gradient(90deg, var(--btn-left), var(--btn-right)); transition: width 0.4s ease;"></div>`;
+}

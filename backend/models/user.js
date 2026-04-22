@@ -32,6 +32,9 @@ const userSchema = new mongoose.Schema({
   address: {
     type: String
   },
+  jazzcashNumber: {
+    type: String
+  },
   businessAddress: {
     type: String
   },
@@ -46,6 +49,12 @@ const userSchema = new mongoose.Schema({
   },
   services: {
     type: [String]
+  },
+  resetToken: {
+    type: String
+  },
+  resetTokenExpiry: {
+    type: Date
   }
 }, { timestamps: true });
 

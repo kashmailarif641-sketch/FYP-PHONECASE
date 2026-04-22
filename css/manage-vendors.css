@@ -343,9 +343,122 @@
     font-size: 14px;
 }
 
+/* ===== COMPREHENSIVE RESPONSIVE DESIGN ===== */
+/* Tablet: 769px - 1024px */
+@media (max-width: 1024px) {
+    .admin-header {
+        padding: 18px 30px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    #searchVendor {
+        width: 100%;
+    }
+}
+
+/* Mobile Tablet: 481px - 768px */
 @media (max-width: 768px) {
+    .admin-header {
+        padding: 16px 20px;
+        margin-top: 60px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    #searchVendor {
+        width: 100%;
+        font-size: 14px;
+    }
+    .btn-add-vendor {
+        width: 100%;
+    }
+    .vendor-table-container {
+        padding: 16px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .vendor-table {
+        min-width: 600px;
+        font-size: 13px;
+    }
+    .modal-content {
+        width: 95%;
+        max-width: 500px;
+        padding: 18px;
+    }
     .admin-footer {
         margin-top: 20px;
-        border-radius: 8px;
+        font-size: 12px;
+    }
+}
+
+/* Mobile: 320px - 480px */
+@media (max-width: 480px) {
+    .admin-header {
+        padding: 14px 16px;
+        margin-top: 65px;
+    }
+    .admin-header .page-title {
+        font-size: 18px;
+        width: 100%;
+    }
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+    #searchVendor {
+        width: 100%;
+        padding: 9px 11px;
+        font-size: 13px;
+    }
+    .btn-add-vendor {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    .vendor-table-container {
+        padding: 12px;
+    }
+    .vendor-table {
+        min-width: 550px;
+        font-size: 12px;
+    }
+    .vendor-table th {
+        padding: 10px;
+        font-size: 11px;
+    }
+    .vendor-table td {
+        padding: 10px;
+        font-size: 12px;
+    }
+    .action-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+    .modal-content {
+        width: 90%;
+        padding: 16px;
+    }
+    .modal-content h2 {
+        font-size: 16px;
+    }
+    .form-group input,
+    .form-group select {
+        font-size: 13px;
+        padding: 9px 10px;
+    }
+    .modal-actions button {
+        padding: 10px;
+        font-size: 13px;
+    }
+    .admin-footer {
+        padding: 12px 14px;
+        font-size: 11px;
     }
 }

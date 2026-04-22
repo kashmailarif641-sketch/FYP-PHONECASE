@@ -1,169 +1,150 @@
-// File: vendor-dashboard.js
-
-// File: assigned-order.js
-
 document.addEventListener("DOMContentLoaded", () => {
-  const tableBody = document.querySelector(".orders-table tbody");
-  const statusFilter = document.getElementById("status-filter");
-  const searchInput = document.getElementById("search-orders");
 
-  // 1. Load Orders from LocalStorage
-  function loadOrders() {
-    let orderData = null;
-    const storedOrder = localStorage.getItem("confirmedOrder");
+  const userData = JSON.parse(localStorage.getItem("user"));
 
-    if (storedOrder) {
-      orderData = JSON.parse(storedOrder);
-    } else {
-      // ===== Fallback Sample Order (For Demo/Testing) =====
-      orderData = {
-        design: {
-          model: "iPhone 13 Pro Max",
-          image: "../../assets/images/design-placeholder.jpg" // Ensure this path exists or use a web placeholder
-        },
-        userDetails: {
-          name: "Ali Khan"
-        },
-        date: new Date().toISOString(),
-        payment: {
-          status: "Paid"
-        }
-      };
-    }
-
-    tableBody.innerHTML = ""; // Clear existing static rows
-
-    if (orderData) {
-      // Create Row
-      const row = document.createElement("tr");
-
-      // Format Date
-      const dateObj = new Date(orderData.date);
-      const dateStr = dateObj.toLocaleDateString('en-GB', {
-        day: '2-digit', month: 'short', year: 'numeric'
-      });
-
-      // Image Path (Handle relative paths if needed)
-      let imgPath = orderData.design.image || 'https://via.placeholder.com/400?text=No+Design';
-      // If path starts with images/, prepend ../../ for vendor pages
-      if (imgPath.startsWith("images/")) {
-        imgPath = "../../" + imgPath;
-      }
-
-      row.innerHTML = `
-          <td>#${Math.floor(Math.random() * 1000) + 100}</td> <!-- Random ID for demo -->
-          <td>${orderData.userDetails.name || 'Guest User'}</td>
-          <td>${orderData.design.model || 'Custom Model'}</td>
-          <td>
-            <span class="view-link" data-image="${imgPath}">View Design</span>
-          </td>
-          <td>1</td>
-          <td>${dateStr}</td>
-          <td><span class="status success">${orderData.payment.status === 'Pending COD' ? 'Unpaid' : 'Paid'}</span></td>
-          <td>
-            <select>
-              <option value="pending" selected>Pending</option>
-              <option value="in-progress">In Progress</option>
-              <option value="completed">Completed</option>
-            </select>
-          </td>
-          <td>
-            <button class="update-btn">Update</button>
-          </td>
-        `;
-
-      tableBody.appendChild(row);
-    }
-    // attachEventListeners(); // Re-attach listeners after DOM update
+  if (!userData || userData.role !== "vendor") {
+    window.location.href = "../../login.html";
+    return;
   }
 
   loadOrders();
 
-  // 2. Event Delegation for Dynamic Elements
+  // 🔥 Filter change
+  document.getElementById("statusFilter")
+    .addEventListener("change", loadOrders);
 
-  // Handle "View Design" Click
-  tableBody.addEventListener("click", (e) => {
-    if (e.target.classList.contains("view-link")) {
-      const imgSrc = e.target.getAttribute("data-image");
-      window.openModal(imgSrc);
+  // 🔥 Search input
+  document.getElementById("searchInput")
+    .addEventListener("input", loadOrders);
+
+});
+
+async function loadOrders() {
+
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const vendorId = userData.id || userData._id; // Supporting both for safety
+
+  const status = document.getElementById("statusFilter").value;
+  const search = document.getElementById("searchInput").value;
+
+  try {
+
+    const response = await fetch(
+      `http://localhost:5000/api/orders/vendor/assigned/${vendorId}?status=${status}&search=${search}`
+    );
+
+    const orders = await response.json();
+
+    const container = document.getElementById("orders-container");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (!Array.isArray(orders) || orders.length === 0) {
+      container.innerHTML = "<div class='no-orders'><p>No assigned orders found.</p></div>";
+      return;
     }
-  });
 
-  // Handle "Update" Button Click
-  tableBody.addEventListener("click", (e) => {
-    if (e.target.classList.contains("update-btn")) {
-      const row = e.target.closest("tr");
-      const orderID = row.cells[0].textContent;
-      const newStatus = row.querySelector("select").value;
-      alert(`Order ${orderID} status updated to "${newStatus}"`);
+    orders.forEach(order => {
+      const card = document.createElement("div");
+      card.className = "order-card";
+
+      // Determine Payment Badge Class
+      let payBadgeClass = "pending";
+      if (order.payment?.status === "paid" || order.paymentStatus === "Verified") payBadgeClass = "success";
+      if (order.payment?.mode === "COD") payBadgeClass = "cod";
+
+      card.innerHTML = `
+        <div class="card-header">
+          <h3>#${order.orderId || order._id.slice(-6)}</h3>
+          <span class="status-badge ${order.orderStatus.toLowerCase()}">${order.orderStatus}</span>
+        </div>
+
+        <div class="card-body">
+          <div class="info-row">
+            <span><strong>Customer:</strong> ${order.fullName}</span>
+            <span><strong>Phone:</strong> ${order.phone}</span>
+          </div>
+          <div class="info-row">
+            <span><strong>Address:</strong> ${order.address}</span>
+          </div>
+          <hr>
+          <div class="info-row">
+            <span><strong>Model:</strong> ${order.brand} ${order.model}</span>
+            <span><strong>Material:</strong> ${order.material}</span>
+          </div>
+          <div class="info-row">
+            <span><strong>Amount:</strong> Rs ${order.totalPrice}</span>
+            <span><strong>Payment:</strong> <span class="pay-badge ${payBadgeClass}">${order.payment?.mode || "N/A"} (${order.payment?.status || order.paymentStatus})</span></span>
+          </div>
+          
+          ${order.designImage ? `
+            <div class="design-preview">
+               <img src="${order.designImage}" alt="Design Image" onclick="openModal('${order.designImage}')">
+            </div>
+          ` : ""}
+        </div>
+
+        <div class="card-footer">
+          <div class="status-update">
+            <label>Update Status:</label>
+            <select class="status-select" onchange="updateStatus('${order._id}', this.value)">
+              <option value="Pending" ${order.orderStatus === "Pending" ? "selected" : ""}>Pending</option>
+              <option value="Processing" ${order.orderStatus === "Processing" ? "selected" : ""}>Processing</option>
+              <option value="Completed" ${order.orderStatus === "Completed" ? "selected" : ""}>Completed</option>
+              <option value="Shipped" ${order.orderStatus === "Shipped" ? "selected" : ""}>Shipped</option>
+              <option value="Delivered" ${order.orderStatus === "Delivered" ? "selected" : ""}>Delivered</option>
+            </select>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Error loading assigned orders:", error);
+    const container = document.getElementById("orders-container");
+    if (container) container.innerHTML = "<p>Error loading orders.</p>";
+  }
+}
+
+async function updateStatus(orderId, newStatus) {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/orders/vendor/update-status/${orderId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderStatus: newStatus })
+      }
+    );
+
+    if (response.ok) {
+      alert("Order status updated to " + newStatus);
+      loadOrders(); // Refresh without full reload for better UX
+    } else {
+      alert("Failed to update status");
     }
-  });
+  } catch (error) {
+    console.error("Update Status Error:", error);
+    alert("Error updating status");
+  }
+}
 
-
-  // 3. Filter Logic
-  statusFilter.addEventListener("change", () => {
-    const selectedStatus = statusFilter.value;
-    const rows = tableBody.querySelectorAll("tr");
-
-    rows.forEach(row => {
-      // Skip if it's the "No orders" message
-      if (row.cells.length < 2) return;
-
-      const orderStatusSelect = row.querySelector("td select");
-      const statusValue = orderStatusSelect ? orderStatusSelect.value : '';
-
-      if (selectedStatus === "all" || statusValue === selectedStatus) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
-    });
-  });
-
-  // 4. Search Logic
-  searchInput.addEventListener("keyup", () => {
-    const query = searchInput.value.toLowerCase();
-    const rows = tableBody.querySelectorAll("tr");
-
-    rows.forEach(row => {
-      // Skip if it's the "No orders" message
-      if (row.cells.length < 2) return;
-
-      const orderID = row.cells[0].textContent.toLowerCase();
-      const userName = row.cells[1].textContent.toLowerCase();
-
-      if (orderID.includes(query) || userName.includes(query)) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
-    });
-  });
-
-  // ===== Image Modal Logic (Existing) =====
+// Modal Logic
+function openModal(imgSrc) {
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
-  const closeBtn = document.getElementsByClassName("close-modal")[0];
-
-  // Global function to open modal
-  window.openModal = function (imageSrc) {
+  if (modal && modalImg) {
     modal.style.display = "block";
-    modalImg.src = imageSrc;
-    modalImg.onerror = function () {
-      // Fallback if image fails load
-      this.src = 'https://via.placeholder.com/400?text=Design+Not+Found';
-    };
-  };
-
-  if (closeBtn) {
-    closeBtn.onclick = function () {
-      modal.style.display = "none";
-    };
+    modalImg.src = imgSrc;
   }
+}
 
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  };
-});
+const closeModal = document.querySelector(".close-modal");
+if (closeModal) {
+  closeModal.onclick = function () {
+    const modal = document.getElementById("imageModal");
+    if (modal) modal.style.display = "none";
+  }
+}

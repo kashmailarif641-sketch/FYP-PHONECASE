@@ -4,830 +4,1237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CaseCraft | Design Studio</title>
-  <link rel="stylesheet" href="../../css/design-studio.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    .studio-container {
-      display: grid;
-      /* Left flush 80px, Sub 270px, Editor 1fr, Preview 340px */
-      grid-template-columns: 80px 270px 1fr 340px;
-      gap: 0;
-      padding: 0;
-      height: calc(100vh - 70px);
-      overflow: hidden;
-      background: #f3f4f6;
-    }
-
-    .icon-sidebar {
-      background: #1e293b;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      padding-top: 0;
-      padding-bottom: 12px;
-      height: 100%;
-      box-sizing: border-box;
-      border-right: 1px solid #334155;
-    }
-
-    .icon-btn {
-      width: 56px;
-      height: 56px;
-      padding: 8px;
-      background: rgba(255, 255, 255, 0.06);
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      font-size: 11px;
-      transition: background 0.12s, transform 0.12s;
-    }
-
-    .icon-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .icon-btn.active {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    .sub-panel {
-      background: #fff;
-      padding: 16px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      border-right: 1px solid #e5e7eb;
-      height: 100%;
-    }
-
-    .sub-panel::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .sub-panel::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-
-    .sub-panel::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 3px;
-    }
-
-    .sub-panel::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-
-    .panel-content {
-      display: none;
-    }
-
-    .panel-content.active {
-      display: block;
-    }
-  </style>
+  <title>Design Studio | CaseCraft</title>
+  <link rel="stylesheet" href="/css/design-studio.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;800&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
+
   <header class="site-header">
-    <div class="logo">CaseCraft</div>
-    <nav>
-      <a href="user-dashboard.html">Dashboard</a>
-      <a href="design-studio.html" class="active">Design Studio</a>
-    </nav>
+    <div class="header-left">
+      <div class="logo">CaseCraft</div>
+    </div>
+
+    <div class="header-center">
+      <div class="project-title-container">
+        <div class="title-wrapper">
+          <span class="project-title" contenteditable="true" title="Click to edit title">Untitled
+            Design</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button class="header-btn" onclick="saveDesign()"><i class="fas fa-save"></i> Save</button>
+      <button class="header-btn" id="exportBtn" onclick="exportDesign()"><i class="fas fa-download"></i> Export</button>
+      <button class="header-btn highlight" id="orderCaseBtn" onclick="placeOrder()">Order Case</button>
+      <div class="profile-icon" title="Profile">
+        <a href="user-profile.html" style="color: inherit; text-decoration: none;">
+          <i class="fas fa-user-circle"></i>
+        </a>
+      </div>
+    </div>
   </header>
 
   <main class="studio-container">
-    <!-- Icon Sidebar -->
-    <aside class="icon-sidebar">
-      <!-- Final sidebar order: Templates, Backgrounds, Elements, Text, Uploads, Tools, AI, Materials -->
-      <button class="icon-btn" onclick="showPanel('templates')" title="Templates">
-        <i class="fas fa-th-large" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('background')" title="Backgrounds">
-        <i class="fas fa-image" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('elements')" title="Elements">
-        <i class="fas fa-shapes" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('stickers')" title="Stickers">
-        <i class="fas fa-sticky-note" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('text')" title="Text">
-        <i class="fas fa-font" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('upload')" title="Uploads">
-        <i class="fas fa-cloud-upload-alt" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('tools')" title="Tools">
-        <i class="fas fa-tools" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('ai')" title="AI Designer">
-        <i class="fas fa-magic" style="font-size:18px;"></i>
-      </button>
-      <button class="icon-btn" onclick="showPanel('material')" title="Materials" style="margin-top:auto;">
-        <i class="fas fa-mobile-alt" style="font-size:18px;"></i>
-      </button>
+
+    <aside class="sidebar-container">
+
+      <div class="sidebar-menu">
+        <div class="menu-btn model-selector" onclick="openBrandModal()">
+          <i class="fas fa-mobile-alt"></i>
+          <span id="sidebarSelectedModel">Select Model</span>
+        </div>
+
+        <button class="menu-btn" onclick="showPanel('upload')" title="Upload">
+          <i class="fas fa-cloud-upload-alt"></i> <span>Upload</span>
+        </button>
+        <button class="menu-btn" onclick="showPanel('text')" title="Text">
+          <i class="fas fa-font"></i> <span>Text</span>
+        </button>
+        <button class="menu-btn" onclick="showPanel('elements')" title="Elements">
+          <i class="fas fa-shapes"></i> <span>Elements</span>
+        </button>
+        <button class="menu-btn" onclick="showPanel('background')" title="Background">
+          <i class="fas fa-image"></i> <span>Background</span>
+        </button>
+        <button class="menu-btn" onclick="showPanel('material')" title="Material">
+          <i class="fas fa-layer-group"></i> <span>Material</span>
+        </button>
+        <button class="menu-btn" onclick="showPanel('ai')" title="AI Assist">
+          <i class="fas fa-magic"></i> <span>AI Assist</span>
+        </button>
+      </div>
+
     </aside>
 
-    <!-- Sub Options Panel -->
-    <aside class="sub-panel">
-      <div class="sub-panel-inner">
+    <aside class="sub-panel" id="sub-panel">
 
-        <!-- 1. DESIGN PANEL -->
-        <div id="panel-templates" class="panel-content active">
-          <h3 style="margin-bottom:10px; color:#1e3a8a;">🎨 Design</h3>
+      <div id="panel-templates" class="panel-content active">
+        <h3>Templates</h3>
 
-          <!-- Templates -->
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Templates</p>
-          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:20px;">
-            <!-- Using placeholder divs for template thumbnails -->
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Minimal</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Aesthetic</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Floral</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Gradient</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Anime</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Neon</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Abstract</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Geometric</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Typo</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">3D
-              Effects</button>
-            <button class="template-btn"
-              style="height:60px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; font-size:10px;">Pattern</button>
+
+        <div class="search-box">
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <input type="text" placeholder="Search templates..." oninput="filterTemplates(this.value)">
+        </div>
+        <div class="template-section-title">Recently Used</div>
+        <div class="recently-used-grid" id="recently-used-grid">
+          <div class="recent-template-item" data-id="tmpl-floral-1">
+            <div class="mini-preview" style="background:linear-gradient(180deg,#fff1f2,#fce7f3);"></div>
           </div>
-
-          <!-- Styling -->
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Styling (Themes)</p>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <button
-              style="padding:12px; text-align:left; border:1px solid #e2e8f0; border-radius:8px; background:#fff; cursor:pointer;">🍭
-              Soft Pastels</button>
-            <button
-              style="padding:12px; text-align:left; border:1px solid #e2e8f0; border-radius:8px; background:#fff; cursor:pointer;">💼
-              Professional</button>
-            <button
-              style="padding:12px; text-align:left; border:1px solid #e2e8f0; border-radius:8px; background:#222; color:#fff; cursor:pointer;">🌑
-              Dark Mode</button>
-            <button
-              style="padding:12px; text-align:left; border:1px solid #e2e8f0; border-radius:8px; background:#fff; cursor:pointer;">🎨
-              Artistic Brush</button>
-            <button
-              style="padding:12px; text-align:left; border:1px solid #e2e8f0; border-radius:8px; background:#fff; cursor:pointer;">📼
-              Vintage Retro</button>
+          <div class="recent-template-item" data-id="tmpl-minimal-1">
+            <div class="mini-preview" style="background:linear-gradient(180deg,#ffffff,#f8fafc);"></div>
+          </div>
+          <div class="recent-template-item" data-id="tmpl-quotes-1">
+            <div class="mini-preview" style="background:#1e293b;"></div>
+          </div>
+          <div class="recent-template-item" data-id="tmpl-gaming-1">
+            <div class="mini-preview" style="background:linear-gradient(135deg,#0f0c29,#302b63);"></div>
           </div>
         </div>
 
-        <!-- 2. BACKGROUNDS PANEL -->
-        <div id="panel-background" class="panel-content">
-          <h3 style="margin-bottom:18px; color:#1e3a8a;">🖼️ Backgrounds</h3>
+        <div class="template-section-title">All Results</div>
 
-          <!-- Solid Colors -->
-          <p style="font-weight:600; margin:0 0 12px 0; font-size:13px;">Solid Colors</p>
-          <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px; margin-bottom:18px;">
-            <!-- Generating a grid of swatches -->
-            <div class="swatch" onclick="applyBackgroundColor('#ffffff')"
-              style="height:35px; background:#ffffff; border:1px solid #ddd; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#000000')"
-              style="height:35px; background:#000000; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#ef4444')"
-              style="height:35px; background:#ef4444; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#3b82f6')"
-              style="height:35px; background:#3b82f6; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#10b981')"
-              style="height:35px; background:#10b981; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#f59e0b')"
-              style="height:35px; background:#f59e0b; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#8b5cf6')"
-              style="height:35px; background:#8b5cf6; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#ec4899')"
-              style="height:35px; background:#ec4899; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#6366f1')"
-              style="height:35px; background:#6366f1; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#14b8a6')"
-              style="height:35px; background:#14b8a6; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#f472b6')"
-              style="height:35px; background:#f472b6; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#fbbf24')"
-              style="height:35px; background:#fbbf24; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#a8a29e')"
-              style="height:35px; background:#a8a29e; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#78716c')"
-              style="height:35px; background:#78716c; border-radius:4px; cursor:pointer;"></div>
-            <div class="swatch" onclick="applyBackgroundColor('#fca5a5')"
-              style="height:35px; background:#fca5a5; border-radius:4px; cursor:pointer;"></div>
+        <div class="template-categories" id="template-categories">
+
+          <div class="template-category">
+            <h4 class="category-heading">Floral</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-floral-1" data-category="floral" data-title="Soft Rose Bloom">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fff1f2 0%, #fce7f3 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Soft Rose Bloom</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-floral-2" data-category="floral"
+                data-title="Pastel Daisy Garden">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #fef9c3 0%, #d9f99d 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Pastel Daisy Garden</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-floral-3" data-category="floral"
+                data-title="Vintage Floral Frame">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fdf2f8 0%, #fce7f3 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Vintage Floral Frame</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-floral-4" data-category="floral" data-title="Blush Petal Flow">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fce7f3 0%, #f9a8d4 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Blush Petal Flow</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-floral-5" data-category="floral" data-title="Spring Garden">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #ecfeff 0%, #cffafe 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Spring Garden</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-floral-6" data-category="floral" data-title="Rose Gold Luxe">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Rose Gold Luxe</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Combo Colors -->
-          <p style="font-weight:600; margin:0 0 12px 0; font-size:13px;">Gradient Combos</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:18px;">
-            <button onclick="applyCombo('sunset')"
-              style="padding:10px; background:linear-gradient(to right, #ff7e5f, #feb47b); border:none; border-radius:6px; color:#fff; font-size:11px; cursor:pointer; text-shadow:0 1px 2px rgba(0,0,0,0.2);">Sunset</button>
-            <button onclick="applyCombo('ocean')"
-              style="padding:10px; background:linear-gradient(to right, #6ee7b7, #3b82f6); border:none; border-radius:6px; color:#fff; font-size:11px; cursor:pointer; text-shadow:0 1px 2px rgba(0,0,0,0.2);">Ocean</button>
-            <button onclick="applyCombo('pastel')"
-              style="padding:10px; background:linear-gradient(to right, #ffd6e0, #e0f2fe); border:none; border-radius:6px; color:#555; font-size:11px; cursor:pointer;">Pastel</button>
-            <button onclick="applyCombo('neon')"
-              style="padding:10px; background:linear-gradient(to right, #ff00cc, #3333ff); border:none; border-radius:6px; color:#fff; font-size:11px; cursor:pointer;">Neon</button>
+          <div class="template-category">
+            <h4 class="category-heading">Quotes</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-quote-1" data-category="quotes" data-title="Stay Wild">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Stay Wild</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-quote-2" data-category="quotes" data-title="Dream Big">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Dream Big</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-quote-3" data-category="quotes" data-title="Believe In Yourself">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #e0e7ff 0%, #c7d2fe 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Believe In Yourself</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-quote-4" data-category="quotes" data-title="Make It Happen">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Make It Happen</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-quote-5" data-category="quotes" data-title="Create Daily">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fefce8 0%, #fef9c3 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Create Daily</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-quote-6" data-category="quotes" data-title="Stay Positive">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Stay Positive</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <p style="font-weight:600; margin:0 0 12px 0; font-size:13px;">Textures & Patterns</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:18px;">
-            <button
-              style="padding:16px; background:#e5e7eb; border:1px solid #d1d5db; border-radius:6px; font-size:11px; cursor:pointer;">Marble</button>
-            <button
-              style="padding:16px; background:#e5e7eb; border:1px solid #d1d5db; border-radius:6px; font-size:11px; cursor:pointer;">Glitter</button>
-            <button
-              style="padding:16px; background:#e5e7eb; border:1px solid #d1d5db; border-radius:6px; font-size:11px; cursor:pointer;">Texture</button>
-            <button
-              style="padding:16px; background:#e5e7eb; border:1px solid #d1d5db; border-radius:6px; font-size:11px; cursor:pointer;">Blur</button>
+          <div class="template-category">
+            <h4 class="category-heading">Aesthetic</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-aesthetic-1" data-category="aesthetic"
+                data-title="Soft Beige Mood">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #f5f5f4 0%, #e7e5e4 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Soft Beige Mood</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-aesthetic-2" data-category="aesthetic"
+                data-title="Cloudy Sky Calm">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Cloudy Sky Calm</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-aesthetic-3" data-category="aesthetic"
+                data-title="Sunset Minimal">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fed7aa 0%, #fdba74 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Sunset Minimal</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-aesthetic-4" data-category="aesthetic"
+                data-title="Neutral Tone Art">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Neutral Tone Art</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-aesthetic-5" data-category="aesthetic"
+                data-title="Sage Green Calm">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Sage Green Calm</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-aesthetic-6" data-category="aesthetic"
+                data-title="Lavender Dream">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #f5f3ff 0%, #ede9fe 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Lavender Dream</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Color Picker -->
-          <p style="font-weight:600; margin:0 0 12px 0; font-size:13px;">Custom Color</p>
-          <div style="display:flex; gap:10px;">
-            <input type="color" id="bg-color-picker"
-              style="width:50px; height:40px; border:none; padding:0; background:none; cursor:pointer;">
-            <input type="text" placeholder="#HEX"
-              style="flex:1; padding:8px; border:1px solid #e5e7eb; border-radius:6px;">
+          <div class="template-category">
+            <h4 class="category-heading">Cute Stickers</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-cute-1" data-category="cute" data-title="Sweet Bear Pop">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Sweet Bear Pop</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cute-2" data-category="cute" data-title="Cherry Teddy Vibes">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fce7f3 0%, #fbcfe8 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Cherry Teddy Vibes</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cute-3" data-category="cute" data-title="Candy Heart Pack">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fecdd3 0%, #fda4af 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Candy Heart Pack</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cute-4" data-category="cute" data-title="Kawaii Mood">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #e0f2fe 0%, #7dd3fc 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Kawaii Mood</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cute-5" data-category="cute" data-title="Sticker Pack Mix">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #fef3c7 0%, #fecdd3 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Sticker Pack Mix</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cute-6" data-category="cute" data-title="Pastel Candy">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #e0f2fe 0%, #fce7f3 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Pastel Candy</span>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <div class="template-category">
+            <h4 class="category-heading">Minimal</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-minimal-1" data-category="minimal"
+                data-title="Matte Black Clean">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #18181b 0%, #27272a 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Matte Black Clean</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-minimal-2" data-category="minimal"
+                data-title="White Space Line Art">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">White Space Line Art</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-minimal-3" data-category="minimal"
+                data-title="Initial Letter Bold">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fafafa 0%, #e4e4e7 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Initial Letter Bold</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-minimal-4" data-category="minimal" data-title="Simple Signature">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Simple Signature</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-minimal-5" data-category="minimal" data-title="Pure White Mono">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fafafa 0%, #f4f4f5 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Pure White Mono</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-minimal-6" data-category="minimal" data-title="Charcoal Line">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #27272a 0%, #3f3f46 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Charcoal Line</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="template-category">
+            <h4 class="category-heading">Marble</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-marble-1" data-category="marble" data-title="White Gold Marble">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #f5f5f4 0%, #d6d3d1 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">White Gold Marble</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-marble-2" data-category="marble" data-title="Red Gold Marble">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Red Gold Marble</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-marble-3" data-category="marble" data-title="Dark Stone Texture">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #18181b 0%, #3f3f46 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Dark Stone Texture</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-marble-4" data-category="marble" data-title="Rose Marble Luxe">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Rose Marble Luxe</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-marble-5" data-category="marble" data-title="Green Onyx Luxe">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Green Onyx Luxe</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-marble-6" data-category="marble" data-title="Blue Pearl Marble">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Blue Pearl Marble</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="template-category">
+            <h4 class="category-heading">Dark</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-dark-1" data-category="dark" data-title="Midnight Gloss">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #0c0a1d 0%, #1a1635 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Midnight Gloss</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-dark-2" data-category="dark" data-title="Black Flame Edge">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #0f0f0f 0%, #1c1917 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Black Flame Edge</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-dark-3" data-category="dark" data-title="Gold Accent Dark">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #1c1917 0%, #292524 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Gold Accent Dark</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-dark-4" data-category="dark" data-title="Neon Outline Night">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #000000 0%, #1e1b4b 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Neon Outline Night</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-dark-5" data-category="dark" data-title="Purple Haze Dark">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Purple Haze Dark</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-dark-6" data-category="dark" data-title="Stealth Black">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #09090b 0%, #18181b 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Stealth Black</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="template-category">
+            <h4 class="category-heading">Abstract</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-abstract-1" data-category="abstract"
+                data-title="Liquid Paint Flow">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(45deg, #667eea 0%, #764ba2 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Liquid Paint Flow</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-abstract-2" data-category="abstract"
+                data-title="Color Splash Mix">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fbc2eb 0%, #a6c1ee 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Color Splash Mix</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-abstract-3" data-category="abstract"
+                data-title="Soft Blob Layers">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Soft Blob Layers</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-abstract-4" data-category="abstract"
+                data-title="Modern Gradient Art">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #ff9a9e 0%, #fecfef 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Modern Gradient Art</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-abstract-5" data-category="abstract"
+                data-title="Aurora Borealis">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Aurora Borealis</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-abstract-6" data-category="abstract"
+                data-title="Sunset Gradient">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fa709a 0%, #fee140 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Sunset Gradient</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="template-category">
+            <h4 class="category-heading">Cultural</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-cultural-1" data-category="cultural" data-title="Ajrak Inspired">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #7c3aed 0%, #c084fc 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Ajrak Inspired</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cultural-2" data-category="cultural"
+                data-title="Mandala Art Print">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #fef3c7 0%, #fcd34d 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Mandala Art Print</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cultural-3" data-category="cultural"
+                data-title="Persian Pattern">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Persian Pattern</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cultural-4" data-category="cultural"
+                data-title="Traditional Textile Look">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #b45309 0%, #d97706 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Traditional Textile Look</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cultural-5" data-category="cultural" data-title="Ikat Pattern">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Ikat Pattern</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-cultural-6" data-category="cultural" data-title="Zigzag Tribal">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(180deg, #78350f 0%, #92400e 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Zigzag Tribal</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="template-category">
+            <h4 class="category-heading">Patterns</h4>
+            <div class="category-grid">
+              <div class="template-card" data-id="tmpl-pattern-1" data-category="pattern" data-title="Checker Retro">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: repeating-linear-gradient(45deg, #1e293b 0px, #1e293b 10px, #475569 10px, #475569 20px); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Checker Retro</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-pattern-2" data-category="pattern" data-title="Geometric Grid">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: linear-gradient(90deg, #e2e8f0 1px, transparent 1px), linear-gradient(180deg, #e2e8f0 1px, transparent 1px); background-size: 20px 20px; background-color: #f8fafc; border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Geometric Grid</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-pattern-3" data-category="pattern" data-title="Tile Pattern Pop">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: radial-gradient(circle at 50% 50%, #06b6d4 0%, #0891b2 100%); border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Tile Pattern Pop</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-pattern-4" data-category="pattern"
+                data-title="Minimal Lines Pattern">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: repeating-linear-gradient(0deg, #cbd5e1 0px, #cbd5e1 1px, transparent 1px, transparent 30px); background-color: #f1f5f9; border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Minimal Lines Pattern</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-pattern-5" data-category="pattern" data-title="Dots Wave">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: radial-gradient(#64748b 1px, transparent 1px); background-size: 16px 16px; background-color: #f1f5f9; border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Dots Wave</span>
+                </div>
+              </div>
+              <div class="template-card" data-id="tmpl-pattern-6" data-category="pattern" data-title="Stripes Classic">
+                <div class="card-mockup" aria-hidden="true">
+                  <div class="template-thumb"
+                    style="background: repeating-linear-gradient(90deg, #e2e8f0 0px, #e2e8f0 4px, transparent 4px, transparent 12px); background-color: #f8fafc; border-radius: 12px;">
+                  </div>
+                </div>
+                <div class="card-meta">
+                  <span class="card-title">Stripes Classic</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="panel-text" class="panel-content">
+        <h3>Text</h3>
+        <div class="search-box">
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <input type="text" placeholder="Search fonts or styles..." oninput="filterTextTools(this.value)"
+            title="Search fonts or styles" aria-label="Search fonts or styles">
+        </div>
+        <div class="text-action-row">
+          <button class="add-text-btn" onclick="addText('Your Text', '32px')">
+            <i class="fas fa-plus"></i> Add Text
+          </button>
+          <button class="add-text-btn clear-btn" onclick="clearAllText()" title="Clear All Text">
+            <i class="fas fa-ban"></i>
+          </button>
         </div>
 
-        <!-- 3. ELEMENTS PANEL -->
-        <div id="panel-elements" class="panel-content">
-          <h3 style="margin-bottom:10px; color:#1e3a8a;">⭐ Elements</h3>
-
-          <!-- Shapes -->
-          <p style="font-weight:600; margin:10px 0 10px 0; font-size:13px;">Shapes</p>
-          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:18px;">
-            <button onclick="addShape('circle')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">⚪</button>
-            <button onclick="addShape('square')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">⬜</button>
-            <button onclick="addShape('triangle')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">🔺</button>
-            <button onclick="addShape('star')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">⭐</button>
-            <button onclick="addShape('heart')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">❤️</button>
-            <button onclick="addShape('star')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">⭐</button>
-            <button onclick="addShape('arrow')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">⬆️</button>
-            <button onclick="addShape('blob')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">💧</button>
-            <button onclick="addShape('badge')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">🛡️</button>
-            <button onclick="addShape('wavy')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">〰️</button>
-            <button onclick="addShape('line')"
-              style="padding:10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:18px; cursor:pointer;">➖</button>
-          </div>
-
-          <!-- Stickers -->
-          <p style="font-weight:600; margin:10px 0 10px 0; font-size:13px;">Premium Stickers</p>
-          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
-            <button onclick="addSticker('😊')"
-              style="padding:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:20px; cursor:pointer;">😊</button>
-            <button onclick="addSticker('🔥')"
-              style="padding:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:20px; cursor:pointer;">🔥</button>
-            <button onclick="addSticker('🚀')"
-              style="padding:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:20px; cursor:pointer;">🚀</button>
-            <button onclick="addSticker('💎')"
-              style="padding:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:20px; cursor:pointer;">💎</button>
-            <button onclick="addSticker('🎉')"
-              style="padding:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:20px; cursor:pointer;">🎉</button>
-            <button onclick="addSticker('🌸')"
-              style="padding:8px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:20px; cursor:pointer;">🌸</button>
-          </div>
-        </div>
-
-        <!-- NEW: STICKERS PANEL -->
-        <div id="panel-stickers" class="panel-content">
-          <h3 style="margin-bottom:12px; color:#1e3a8a;">Stickers</h3>
-          <div class="sticker-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
-            <button onclick="addSticker('😎')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">😎</button>
-            <button onclick="addSticker('😍')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">😍</button>
-            <button onclick="addSticker('🥳')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">🥳</button>
-            <button onclick="addSticker('😡')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">😡</button>
-            <button onclick="addSticker('😱')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">😱</button>
-            <button onclick="addSticker('😂')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">😂</button>
-            <button onclick="addSticker('🔥')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">🔥</button>
-            <button onclick="addSticker('🚀')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">🚀</button>
-            <button onclick="addSticker('💎')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">💎</button>
-            <button onclick="addSticker('🎉')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">🎉</button>
-            <button onclick="addSticker('🌸')"
-              style="font-size:24px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">🌸</button>
-          </div>
-        </div>
-
-        <!-- 4. TEXT PANEL -->
-        <div id="panel-text" class="panel-content">
-          <h3 style="margin-bottom:14px; color:#1e3a8a;">📝 Text</h3>
-
-          <button onclick="addText()"
-            style="width:100%; padding:12px; background:#2D7FF9; color:#fff; border:none; border-radius:8px; cursor:pointer; margin-bottom:18px; font-weight:600; font-size:14px;">+
-            Add Text</button>
-
-          <p style="font-weight:600; margin:0 0 8px 0; font-size:13px;">Font Family</p>
-          <select onchange="setFont(this.value)"
-            style="width:100%; padding:10px; border:1px solid #e5e7eb; border-radius:8px; margin-bottom:18px; background:#f9fafb;">
-            <option value="Poppins">Poppins (Sans-Serif)</option>
-            <option value="Inter">Inter (Sans-Serif)</option>
-            <option value="Roboto">Roboto (Sans-Serif)</option>
-            <option value="Georgia">Georgia (Serif)</option>
-            <option value="Courier New">Courier (Monospace)</option>
-            <option value="Impact">Impact (Display)</option>
-            <option value="Comic Sans MS">Handwriting</option>
+        <div class="text-controls-compact spacing-top-md">
+          <label class="control-label" for="fontFamilySelect">Font Family</label>
+          <select id="fontFamilySelect" class="lang-selector" onchange="updateSelectedFont(this.value)"
+            title="Font family" aria-label="Font family">
+            <option value="Inter">Clean (Inter)</option>
+            <option value="Poppins">Stylish (Poppins)</option>
+            <option value="Cursive">Handwritten</option>
+            <option value="Serif">Classic</option>
+            <option value="Georgia">Elegant (Georgia)</option>
+            <option value="Courier New">Monospace</option>
           </select>
 
-          <p style="font-weight:600; margin:0 0 8px 0; font-size:13px;">Size & Color</p>
-          <div style="display:flex; gap:10px; margin-bottom:18px; align-items:center;">
-            <input type="range" min="12" max="100" value="24" oninput="setFontSize(this.value)" style="flex:1;">
-            <input type="color" onchange="setTextColor(this.value)"
-              style="width:40px; height:35px; border:none; background:transparent; cursor:pointer;">
+          <div class="flex-split">
+            <div class="flex-1">
+              <label class="control-label" for="textSizeInput">Size</label>
+              <input id="textSizeInput" type="number" class="lang-selector" value="32"
+                onchange="updateSelectedSize(this.value)" title="Font size in pixels" placeholder="32"
+                aria-label="Font size">
+            </div>
+            <div class="flex-1">
+              <label class="control-label">Color</label>
+              <div class="studio-palette-btn" onclick="toggleColorPalette(this, 'text')" title="Open Palette">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9s1.5.67 1.5 1.5S7.33 12 6.5 12zm3-4c-.83 0-1.5-.67-1.5-1.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm4.5 4c-.83 0-1.5-.67-1.5-1.5S18.17 9 19 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <p style="font-weight:600; margin:0 0 8px 0; font-size:13px;">Styling</p>
-          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:18px;">
-            <button onclick="toggleTextStyle('bold')"
-              style="padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-weight:bold;">Bold</button>
-            <button onclick="toggleTextStyle('italic')"
-              style="padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-style:italic;">Italic</button>
-            <button onclick="toggleTextStyle('underline')"
-              style="padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; text-decoration:underline;">U-line</button>
+          <label class="control-label spacing-top-sm">Alignment</label>
+          <div class="btn-row">
+            <button onclick="setTextAlign('left')" class="style-btn" aria-label="Align left" title="Align left">
+              <i class="fas fa-align-left"></i>
+            </button>
+            <button onclick="setTextAlign('center')" class="style-btn" aria-label="Align center" title="Align center">
+              <i class="fas fa-align-center"></i>
+            </button>
+            <button onclick="setTextAlign('right')" class="style-btn" aria-label="Align right" title="Align right">
+              <i class="fas fa-align-right"></i>
+            </button>
           </div>
 
-          <p style="font-weight:600; margin:0 0 8px 0; font-size:13px;">Effects</p>
-          <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            <button
-              style="padding:6px 10px; border-radius:20px; border:1px solid #e2e8f0; font-size:12px; background:#fff;">Shadow</button>
-            <button
-              style="padding:6px 10px; border-radius:20px; border:1px solid #e2e8f0; font-size:12px; background:#fff;">Glow</button>
-            <button
-              style="padding:6px 10px; border-radius:20px; border:1px solid #e2e8f0; font-size:12px; background:#fff;">Outline</button>
+          <label class="control-label spacing-top-sm">Text Styles</label>
+          <div class="btn-row">
+            <button onclick="toggleTextBold()" id="text-bold-btn" class="style-btn" title="Toggle bold"
+              aria-pressed="false"> <i class="fas fa-bold"></i> Bold</button>
+            <button onclick="toggleTextItalic()" id="text-italic-btn" class="style-btn" title="Toggle italic"
+              aria-pressed="false"> <i class="fas fa-italic"></i> Italic</button>
+          </div>
+          <div class="btn-row">
+            <button onclick="toggleTextShadow()" id="text-shadow-btn" class="style-btn" title="Toggle shadow"
+              aria-pressed="false"><i class="fas fa-cloud"></i> Shadow</button>
+            <button onclick="toggleTextStroke()" id="text-stroke-btn" class="style-btn" title="Toggle stroke"
+              aria-pressed="false"><i class="fas fa-pen"></i> Stroke</button>
           </div>
 
-          <p style="font-weight:600; margin:10px 0 8px 0; font-size:13px;">Advanced</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-            <button
-              style="padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:11px;">Align</button>
-            <button
-              style="padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:11px;">Spacing</button>
-            <button
-              style="padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:11px;">Curve</button>
-            <button
-              style="padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:11px;">Gradient</button>
-          </div>
+          <label class="control-label spacing-top-sm">Letter Spacing</label>
+          <input class="full-range" type="range" min="0" max="20" value="0" onchange="updateLetterSpacing(this.value)"
+            title="Letter spacing" aria-label="Letter spacing">
+
+          <label class="control-label spacing-top-sm">Line Height</label>
+          <input class="full-range" type="range" min="80" max="250" value="120" onchange="updateLineHeight(this.value)"
+            title="Line height" aria-label="Line height">
         </div>
 
-        <!-- 5. UPLOADS PANEL -->
-        <div id="panel-upload" class="panel-content">
-          <h3 style="margin-bottom:14px; color:#1e3a8a;">📤 Uploads</h3>
-          <div
-            style="padding:20px; border:2px dashed #e2e8f0; border-radius:12px; text-align:center; background:#f8fafc; margin-bottom:20px; cursor:pointer;">
-            <i class="fas fa-cloud-upload-alt" style="font-size:24px; color:#cbd5e1; margin-bottom:8px;"></i>
-            <p style="font-size:12px; color:#64748b;">Click to upload image</p>
-            <input type="file" id="design-upload" accept="image/*" style="display:none;"
-              onchange="document.getElementById('design-upload').click()">
-            <!-- Triggered by js logic usually, simplified here -->
-          </div>
-
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Recent Uploads</p>
-          <div id="upload-list" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-            <!-- JS will populate -->
+        <div class="stylish-text-section">
+          <h4>Style Presets</h4>
+          <div class="stylish-grid">
+            <div class="stylish-item clear-tool-item" onclick="clearAllText()" title="Clear All Text">
+              <i class="fas fa-ban"></i>
+            </div>
+            <button class="stylish-item modern" onclick="addStylishText('modern')">Minimal</button>
+            <button class="stylish-item script" onclick="addStylishText('script')">Stylish</button>
+            <button class="stylish-item bold-outline" onclick="addStylishText('outline')">Bold</button>
           </div>
         </div>
+      </div>
 
-        <!-- 6. TOOLS PANEL -->
-        <div id="panel-tools" class="panel-content">
-          <h3 style="margin-bottom:14px; color:#1e3a8a;">🛠️ Tools</h3>
-
-          <!-- Object Tools -->
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Object Operations</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px;">
-            <button onclick="setTool('move')"
-              style="padding:10px; display:flex; align-items:center; gap:8px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;"><i
-                class="fas fa-arrows-alt"></i> Move</button>
-            <button onclick="setTool('rotate')"
-              style="padding:10px; display:flex; align-items:center; gap:8px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;"><i
-                class="fas fa-sync"></i> Rotate</button>
-            <button onclick="setTool('duplicate')"
-              style="padding:10px; display:flex; align-items:center; gap:8px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;"><i
-                class="fas fa-clone"></i> Clone</button>
-            <button onclick="deleteSelected()"
-              style="padding:10px; display:flex; align-items:center; gap:8px; border:1px solid #fee2e2; border-radius:8px; background:#fff; font-size:12px; color:#ef4444;"><i
-                class="fas fa-trash"></i> Delete</button>
-          </div>
-
-          <!-- Editing Tools -->
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Editing Tools</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px;">
-            <button onclick="setTool('crop')"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Crop</button>
-            <button onclick="setTool('pen')"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Pen</button>
-            <button onclick="setTool('brush')"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Brush</button>
-            <button onclick="setTool('eraser')"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Eraser</button>
-          </div>
-
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Position & Visibility</p>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px;">
-            <button onclick="flipHorizontal()"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Flip
-              Horiz</button>
-            <button onclick="flipVertical()"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Flip
-              Vert</button>
-            <button onclick="bringForward()"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Forward</button>
-            <button onclick="sendBackward()"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Backward</button>
-            <button onclick="toggleLock()"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Lock</button>
-            <button onclick="alert('Grouping not available in this demo')"
-              style="padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:12px;">Group</button>
-          </div>
-
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Transparency</p>
-          <input type="range" min="0" max="100" value="100" oninput="setOpacity(this.value)"
-            style="width:100%; margin-bottom:22px;">
-
-          <!-- Adjustments -->
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Adjustments</p>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <label style="font-size:11px; font-weight:500;">Brightness</label>
-            <input type="range" style="width:100%;">
-            <label style="font-size:11px; font-weight:500;">Contrast</label>
-            <input type="range" style="width:100%;">
-          </div>
+      <div id="panel-upload" class="panel-content">
+        <h3>Uploads</h3>
+        <div class="search-box">
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <input type="text" placeholder="Search your uploads..." oninput="filterUploads(this.value)"
+            title="Search your uploads" aria-label="Search your uploads">
         </div>
 
-        <!-- 7. AI DESIGNER -->
-        <div id="panel-ai" class="panel-content">
-          <h3 style="margin-bottom:16px; color:#1e3a8a;">✨ AI Designer</h3>
-          <textarea placeholder="Describe your design (e.g. 'Cyberpunk city with neon lights')..."
-            style="width:100%; height:100px; padding:12px; border:1px solid #e5e7eb; border-radius:8px; resize:none; margin-bottom:12px; font-size:13px;"></textarea>
-          <button
-            style="width:100%; padding:12px; background:linear-gradient(90deg,#667eea,#764ba2); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:600;">✨
-            Generate Design</button>
+        <input type="file" id="uploadImage" accept="image/*" hidden title="Select an image to upload"
+          aria-label="Upload image input">
+        <button onclick="document.getElementById('uploadImage').click()" class="add-text-btn">
+          <i class="fas fa-cloud-upload-alt"></i> Upload Image
+        </button>
 
-          <div style="margin-top:20px;">
-            <p style="font-weight:600; margin-bottom:10px; font-size:13px;">AI Tools</p>
-            <div style="display:flex; flex-wrap:wrap; gap:8px;">
-              <button
-                style="padding:8px 12px; background:#f0fdf4; border:1px solid #dcfce7; color:#166534; border-radius:20px; font-size:11px; cursor:pointer;">Remove
-                BG</button>
-              <button
-                style="padding:8px 12px; background:#eff6ff; border:1px solid #dbeafe; color:#1e40af; border-radius:20px; font-size:11px; cursor:pointer;">Auto
-                Layout</button>
-              <button
-                style="padding:8px 12px; background:#fdf4ff; border:1px solid #f0abfc; color:#86198f; border-radius:20px; font-size:11px; cursor:pointer;">Patterns</button>
-              <button
-                style="padding:8px 12px; background:#fff7ed; border:1px solid #fdba74; color:#9a3412; border-radius:20px; font-size:11px; cursor:pointer;">Palette</button>
+        <div class="recent-uploads-header">
+          <div class="recent-uploads-label">
+            <span>RECENT</span>
+            <div class="clear-tool-item" onclick="clearRecentUploads()" title="Clear Recent Uploads"
+              style="width: 24px; height: 24px;">
+              <i class="fas fa-ban" style="font-size: 0.8rem;"></i>
             </div>
           </div>
         </div>
 
-        <!-- 8. MATERIAL PANEL -->
-        <div id="panel-material" class="panel-content">
-          <h3 style="margin-bottom:16px; color:#1e3a8a;">📱 Materials</h3>
+        <div id="upload-preview-grid" class="grid-2">
+        </div>
+      </div>
 
-          <!-- Case Materials -->
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Case Type</p>
-          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px;">
-            <label class="material-option"
-              style="display:flex; justify-content:space-between; padding:10px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-              <span style="font-size:13px;">Hard Case (PC)</span>
-              <input type="radio" name="case-type" checked>
-            </label>
-            <label class="material-option"
-              style="display:flex; justify-content:space-between; padding:10px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-              <span style="font-size:13px;">Soft TPU</span>
-              <input type="radio" name="case-type">
-            </label>
-            <label class="material-option"
-              style="display:flex; justify-content:space-between; padding:10px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-              <span style="font-size:13px;">Hybrid (TPU+PC)</span>
-              <input type="radio" name="case-type">
-            </label>
-            <label class="material-option"
-              style="display:flex; justify-content:space-between; padding:10px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-              <span style="font-size:13px;">Glass Back</span>
-              <input type="radio" name="case-type">
-            </label>
-            <label class="material-option"
-              style="display:flex; justify-content:space-between; padding:10px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-              <span style="font-size:13px;">Leather Case</span>
-              <input type="radio" name="case-type">
-            </label>
-            <label class="material-option"
-              style="display:flex; justify-content:space-between; padding:10px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
-              <span style="font-size:13px;">Silicon Case</span>
-              <input type="radio" name="case-type">
-            </label>
+      <div id="panel-background" class="panel-content">
+        <h3>Background</h3>
+        <div class="search-box">
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <input type="text" placeholder="Search backgrounds..." oninput="filterBackgrounds(this.value)"
+            title="Search backgrounds" aria-label="Search backgrounds">
+        </div>
+        <div class="bg-section">
+          <h4>Solid Colors</h4>
+          <div class="color-grid" id="colorGrid">
+            <div class="color clear-tool-item" onclick="clearBackground()" title="Remove Background">
+              <i class="fas fa-ban"></i>
+            </div>
+            <div class="color" data-color="#FFFFFF"></div>
+            <div class="color" data-color="#000000"></div>
+            <div class="color" data-color="#FF6B6B"></div>
+            <div class="color" data-color="#4ECDC4"></div>
+            <div class="color" data-color="#FFD93D"></div>
+            <div class="color" data-color="#6C5CE7"></div>
+            <div class="color" data-color="#FF8C42"></div>
+            <div class="color" data-color="#2D3436"></div>
           </div>
 
-          <!-- Finishes -->
-          <p style="font-weight:600; margin:0 0 10px 0; font-size:13px;">Finish</p>
-          <select id="finishSelect" style="width:100%; padding:10px; border:1px solid #e5e7eb; border-radius:8px;">
-            <option>Matte</option>
-            <option>Glossy</option>
-            <option>Frosted Matte</option>
-            <option>Sparkle / Glitter</option>
-            <option>Metallic Shine</option>
-            <option>Transparent Clear</option>
-            <option>Full Print</option>
-            <option>UV Print</option>
-            <option>Soft-Touch Rubbery</option>
-            <option>Textured Grip</option>
-            <option>Holographic Shine</option>
-            <option>Neon Edge</option>
+          <h4>Gradients</h4>
+          <div class="gradient-grid">
+            <div class="gradient clear-tool-item" onclick="clearBackground()" title="Remove Gradient">
+              <i class="fas fa-ban"></i>
+            </div>
+            <div class="gradient" data-gradient="linear-gradient(45deg,#ff9a9e,#fad0c4)"></div>
+            <div class="gradient" data-gradient="linear-gradient(45deg,#a18cd1,#fbc2eb)"></div>
+            <div class="gradient" data-gradient="linear-gradient(45deg,#fbc2eb,#a6c1ee)"></div>
+            <div class="gradient" data-gradient="linear-gradient(45deg,#84fab0,#8fd3f4)"></div>
+            <div class="gradient" data-gradient="linear-gradient(135deg,#667eea,#764ba2)"></div>
+            <div class="gradient" data-gradient="linear-gradient(180deg,#f093fb,#f5576c)"></div>
+            <div class="gradient" data-gradient="linear-gradient(120deg,#84fab0,#8fd3f4)"></div>
+            <div class="gradient" data-gradient="linear-gradient(45deg,#fa709a,#fee140)"></div>
+          </div>
+
+          <h4 style="margin-top: 15px;">Soft Pastel Gradients</h4>
+          <div class="gradient-grid">
+            <div class="gradient" data-gradient="linear-gradient(180deg,#fff1f2,#fce7f3)"></div>
+            <div class="gradient" data-gradient="linear-gradient(180deg,#e0c3fc,#8ec5fc)"></div>
+            <div class="gradient" data-gradient="linear-gradient(180deg,#f5f7fa,#c3cfe2)"></div>
+            <div class="gradient" data-gradient="linear-gradient(180deg,#fef3c7,#fde68a)"></div>
+          </div>
+
+          <h4 style="margin-top: 15px;">Mesh Style Gradients</h4>
+          <div class="gradient-grid">
+            <div class="gradient" data-gradient="linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96e6a1)">
+            </div>
+            <div class="gradient" data-gradient="linear-gradient(to right,#434343,#000000)"></div>
+            <div class="gradient" data-gradient="linear-gradient(to right,#fc4a1a,#f7b733)"></div>
+            <div class="gradient" data-gradient="linear-gradient(135deg,#667eea,#764ba2)"></div>
+          </div>
+
+          <h4 style="margin-top: 15px;">Custom Color</h4>
+          <div class="studio-palette-btn" onclick="toggleColorPalette(this, 'background')" title="Open Palette">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9s1.5.67 1.5 1.5S7.33 12 6.5 12zm3-4c-.83 0-1.5-.67-1.5-1.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm4.5 4c-.83 0-1.5-.67-1.5-1.5S18.17 9 19 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+            </svg>
+          </div>
+
+          <h4 class="spacing-top-md">Background Image</h4>
+          <label for="bgUpload" class="sr-only">Upload background image</label>
+          <input type="file" id="bgUpload" accept="image/*" class="lang-selector file-input"
+            title="Upload background image" aria-label="Upload background image">
+        </div>
+      </div>
+
+      <div id="panel-elements" class="panel-content">
+        <h3>Elements</h3>
+        <div class="search-box">
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <input type="text" placeholder="Search elements..." oninput="filterElements(this.value)">
+        </div>
+        <h4 style="font-size:0.9rem; margin-bottom:10px;">Shapes</h4>
+        <div class="shape-grid">
+          <div class="shape-icon clear-tool-item" onclick="clearElements()" title="Remove Elements">
+            <i class="fas fa-ban"></i>
+          </div>
+          <div class="shape-icon" onclick="addShape('square')"><i class="far fa-square"></i></div>
+          <div class="shape-icon" onclick="addShape('circle')"><i class="far fa-circle"></i></div>
+          <div class="shape-icon" onclick="addShape('triangle')"><i class="fas fa-play"
+              style="transform: rotate(-90deg);"></i></div>
+          <div class="shape-icon" onclick="addShape('star')"><i class="far fa-star"></i></div>
+          <div class="shape-icon" onclick="addShape('rounded-rect')"><i class="fas fa-square"
+              style="border-radius: 8px;"></i></div>
+          <div class="shape-icon" onclick="addShape('heart')"><i class="fas fa-heart"></i></div>
+          <div class="shape-icon" onclick="addShape('sparkle')"><svg width="20" height="20" viewBox="0 0 24 24"
+              fill="#475569">
+              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+            </svg></div>
+          <div class="shape-icon" onclick="addShape('blob')"><i class="fas fa-cloud"
+              style="border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;"></i></div>
+        </div>
+
+        <div style="height: 1px; background: #e2e8f0; margin: 20px 0;"></div>
+
+        <h4 style="font-size:0.9rem; margin-bottom:10px;">Stickers</h4>
+        <div class="sticker-grid"
+          style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px;">
+          <div class="sticker-item clear-tool-item" onclick="clearElements()" title="Remove Stickers"
+            style="aspect-ratio: 1/1; border-radius: 8px; font-size: 1.2rem;">
+            <i class="fas fa-ban"></i>
+          </div>
+          <span onclick="addSticker('🎉')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🎉</span>
+          <span onclick="addSticker('⭐')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">⭐</span>
+          <span onclick="addSticker('❤️')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">❤️</span>
+          <span onclick="addSticker('🔥')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🔥</span>
+          <span onclick="addSticker('🌈')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🌈</span>
+          <span onclick="addSticker('✨')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">✨</span>
+          <span onclick="addSticker('💫')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💫</span>
+          <span onclick="addSticker('⚡')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">⚡</span>
+          <span onclick="addSticker('💪')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💪</span>
+          <span onclick="addSticker('💖')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💖</span>
+          <span onclick="addSticker('😎')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">😎</span>
+          <span onclick="addSticker('😊')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">😊</span>
+          <span onclick="addSticker('😍')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">😍</span>
+          <span onclick="addSticker('🥳')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🥳</span>
+          <span onclick="addSticker('💯')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💯</span>
+          <span onclick="addSticker('🚀')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🚀</span>
+          <span onclick="addSticker('🎵')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🎵</span>
+          <span onclick="addSticker('🎮')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🎮</span>
+          <span onclick="addSticker('👑')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">👑</span>
+          <span onclick="addSticker('🦋')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🦋</span>
+        </div>
+      </div>
+
+      <div id="panel-ai" class="panel-content">
+        <h3>AI Assist</h3>
+        <div class="search-box">
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <input type="text" placeholder="Search AI tools..." oninput="filterAITools(this.value)">
+        </div>
+        <div class="ai-prompt-container">
+          <label class="control-label">Describe your vision</label>
+          <textarea id="ai-prompt" placeholder="e.g. 'Cyberpunk aesthetic with neon birds'"></textarea>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="add-text-btn" style="flex: 1; background: #000;">Generate</button>
+            <button class="add-text-btn" onclick="clearAI()" style="width: 50px; background: #ef4444;">
+              <i class="fas fa-ban"></i>
+            </button>
+          </div>
+        </div>
+
+        <div style="height: 1px; background: #e2e8f0; margin: 20px 0;"></div>
+
+        <button class="add-text-btn" style="background: linear-gradient(45deg, #6366f1, #8b5cf6); margin-bottom: 10px;">
+          <i class="fas fa-magic"></i> Optimize Layout
+        </button>
+        <button class="add-text-btn" style="background: linear-gradient(45deg, #ec4899, #d946ef);">
+          <i class="fas fa-palette"></i> Suggest Colors
+        </button>
+      </div>
+
+      <div id="panel-material" class="panel-content">
+        <h3>Case Material</h3>
+        <div class="search-box">
+          <span class="icon"><i class="fas fa-search"></i></span>
+          <input type="text" placeholder="Search materials..." oninput="filterMaterials(this.value)">
+        </div>
+        <h4 style="font-size:0.9rem; margin-bottom:12px;">Base Material</h4>
+        <div class="material-selection-grid">
+          <div class="material-card" onclick="resetMaterial()" style="border-color: #fecaca; background: #fff1f2;">
+            <i class="fas fa-ban" style="color: #ef4444;"></i>
+            <span style="font-weight: 600; color: #ef4444;">Reset All</span>
+          </div>
+          <div class="material-card" onclick="setMaterial('silicone')">
+            <i class="fas fa-mobile-alt"></i>
+            <span style="font-weight: 500;">Silicone (Soft)</span>
+          </div>
+          <div class="material-card" onclick="setMaterial('plastic')">
+            <i class="fas fa-square"></i>
+            <span style="font-weight: 500;">Hard Plastic</span>
+          </div>
+          <div class="material-card" onclick="setMaterial('leather')">
+            <i class="fas fa-wallet"></i>
+            <span style="font-weight: 500;">Faux Leather</span>
+          </div>
+        </div>
+
+        <h4 style="font-size:0.9rem; margin: 24px 0 12px;">Finish</h4>
+        <div class="style-btns">
+          <button class="active" onclick="setFinish('matte')">Matte</button>
+          <button onclick="setFinish('glossy')">Glossy</button>
+        </div>
+      </div>
+
+      <div id="panel-properties" class="panel-content">
+        <h3>Edit Properties</h3>
+
+        <div class="no-selection" id="prop-empty">
+          <i class="fas fa-mouse-pointer" style="font-size:3rem; color:#e2e8f0; margin-bottom:10px;"></i>
+          <p style="color:#94a3b8;">Select an element from the canvas to edit properties.</p>
+        </div>
+
+        <div id="prop-text" class="prop-group hidden">
+          <h4 style="margin-top:0;">Text Settings</h4>
+          <input type="text" id="prop-text-input" class="input-text" placeholder="Enter text content"
+            oninput="updateSelectedText(this.value)" title="Edit text content" aria-label="Edit text content">
+
+          <label class="control-label">Style</label>
+          <div class="prop-row">
+            <div class="prop-col size-col">
+              <label class="sub-label">Size</label>
+              <input type="number" id="prop-size" value="16" oninput="updateSelectedSize(this.value)"
+                onchange="updateSelectedSize(this.value)">
+            </div>
+            <div class="prop-col color-col">
+              <label class="sub-label">Color</label>
+              <div class="color-picker-wrapper">
+                <div class="quick-colors" id="prop-quick-colors">
+                  <div class="color-swatch" style="background:#000000;" onclick="updateSelectedColor('#000000')"></div>
+                  <div class="color-swatch" style="background:#ffffff; border:1px solid #e2e8f0;"
+                    onclick="updateSelectedColor('#ffffff')"></div>
+                  <button class="studio-palette-btn palette-small" onclick="toggleColorPalette(this, 'text')"
+                    title="Open Palette">
+                    <i class="fas fa-plus" style="font-size: 12px;"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <label class="control-label" for="prop-font">Font Family</label>
+          <select id="prop-font" onchange="updateSelectedFont(this.value)" class="select-spacing">
+            <option value="Inter">Clean / Simple (Default)</option>
+            <option value="Poppins">Stylish</option>
+            <option value="Cursive">Handwritten</option>
+            <option value="Decorative">Decorative</option>
+            <option value="Serif">Classic</option>
+            <option value="system-ui">System</option>
           </select>
         </div>
 
+        <div id="prop-image" class="prop-group hidden">
+          <h3>Image Settings</h3>
+          <label class="control-label">Opacity</label>
+          <input class="full-range" type="range" min="0" max="100" value="100" onchange="updateOpacity(this.value)"
+            title="Opacity" aria-label="Opacity">
+        </div>
+
+        <div id="prop-actions" class="hidden">
+          <div style="height:1px; background:#e2e8f0; margin:20px 0;"></div>
+          <button onclick="deleteSelected()" class="delete-btn">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+
     </aside>
 
-    <!-- Canvas Editor (Box 1) -->
     <div class="editor-wrapper">
-      <section class="design-editor-card">
-        <div
-          style="width:100%; padding:16px; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center;">
-          <h2 style="margin:0; font-size:16px; color:#1e293b; font-weight:600;">Design Editor</h2>
-          <div class="editor-actions" style="display:flex; gap:10px;">
-            <button onclick="undo()" title="Undo"
-              style="padding:8px; border:1px solid #e2e8f0; border-radius:6px; background:#fff;"><i
-                class="fas fa-undo"></i></button>
-            <button onclick="redo()" title="Redo"
-              style="padding:8px; border:1px solid #e2e8f0; border-radius:6px; background:#fff;"><i
-                class="fas fa-redo"></i></button>
-          </div>
-        </div>
 
-        <div class="canvas-area"
-          style="flex:1; width:100%; display:flex; justify-content:center; align-items:center; background:#f8fafc; overflow:auto;">
-          <!-- Phone Case Container -->
-          <div class="design-sheet" style="
-                width: 260px;
-                height: 520px;
-                background: #ffffff;
-                border-radius: 36px;
-                position: relative;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                border: 5px solid #fff;
-                outline: 1px solid #cbd5e1;
-                overflow: hidden;
-              ">
-            <!-- Camera -->
-            <div
-              style="position:absolute; top:16px; left:16px; width:60px; height:60px; background:#f1f5f9; border-radius:20px; z-index:10; pointer-events:none; border:1px solid #e2e8f0;">
+      <div class="floating-toolbar">
+        <button onclick="undo()" title="Undo"><i class="fas fa-undo"></i></button>
+        <button onclick="redo()" title="Redo"><i class="fas fa-redo"></i></button>
+        <div class="divider"></div>
+        <button onclick="centerSelected()" title="Center Element"><i class="fas fa-align-center"></i></button>
+        <div class="divider"></div>
+        <button onclick="zoomOut()" title="Zoom Out"><i class="fas fa-minus"></i></button>
+        <span id="zoom-level">50%</span>
+        <button onclick="zoomIn()" title="Zoom In"><i class="fas fa-plus"></i></button>
+        <button onclick="autoFit()" title="Auto Fit (50%)"><i class="fas fa-expand"></i></button>
+        <button onclick="fitToScreen()" title="Fit to Screen"><i class="fas fa-compress-arrows-alt"></i></button>
+      </div>
+
+      <div class="canvas-area">
+        <div class="scroll-container">
+          <div id="canvasPlaceholder" class="canvas-placeholder">
+            <h3>Select a Phone Model</h3>
+            <p>Please choose a model from the left sidebar to start designing.</p>
+          </div>
+          <div class="zoom-wrapper">
+            <div class="design-sheet" id="design-sheet">
+              <div class="background-layer"></div>
+              <canvas id="fabric-canvas"></canvas>
+              <div class="camera-cutout"></div>
             </div>
-            <div
-              style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#cbd5e1; pointer-events:none; font-size:13px; font-weight:500;">
-              Design Here</div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
 
-    <!-- LIVE PREVIEW (Box 2) -->
-    <div class="preview-wrapper">
-      <aside class="live-preview-card">
-        <div style="width:100%; padding:16px; border-bottom:1px solid #f1f5f9; text-align:center;">
-          <h2 style="margin:0; font-size:16px; color:#1e293b; font-weight:600;">Live Preview</h2>
+    <aside class="right-panel">
+      <div class="panel-header-small">Live Preview</div>
+      <div class="preview-stage-real">
+        <div id="mirror-container">
         </div>
-
-        <div
-          style="flex:1; width:100%; display:flex; justify-content:center; align-items:center; background:#fff; padding:12px;">
-          <div id="mirror" style="
-                  width: 260px;
-                  height: 520px;
-                  transform: scale(0.92);
-                  transform-origin: center;
-                  pointer-events: none;
-                  background: #ffffff;
-                  border-radius: 36px;
-                  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-                  border: 4px solid #f8fafc;
-                  outline: 1px solid #cbd5e1;
-             ">
-            <!-- content mirrored here -->
-          </div>
-        </div>
-
-        <div class="action-buttons"
-          style="width:100%; padding:16px; border-top:1px solid #f1f5f9; display:flex; gap:8px; justify-content:center;">
-          <button id="save-design"
-            style="padding:10px 18px; background:#fff; border:1px solid #cbd5e1; border-radius:8px; font-weight:600; font-size:13px;">Save</button>
-          <button id="place-order"
-            style="padding:10px 18px; background:#1e293b; color:#fff; border:none; border-radius:8px; font-weight:600; font-size:13px;">Order</button>
-        </div>
-      </aside>
-    </div>
-
+      </div>
+    </aside>
 
   </main>
 
-  <script>
-    function showPanel(panelName) {
-      // mapping to button titles (keeps robust when `event` is not available)
-      const titleMap = {
-        templates: 'Templates',
-        background: 'Backgrounds',
-        elements: 'Elements',
-        stickers: 'Stickers',
-        text: 'Text',
-        upload: 'Uploads',
-        tools: 'Tools',
-        ai: 'AI Designer',
-        material: 'Materials'
-      };
-      // Hide all panels
-      document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
-      // Remove active from all buttons
-      document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('active'));
-      // Show selected panel
-      const panel = document.getElementById('panel-' + panelName);
-      if (panel) panel.classList.add('active');
-      // Highlight matching button by title
-      try {
-        const desiredTitle = titleMap[panelName] || (panelName.charAt(0).toUpperCase() + panelName.slice(1));
-        const btn = document.querySelector('.icon-btn[title="' + desiredTitle + '"]');
-        if (btn) btn.classList.add('active');
-      } catch (e) { }
-    }
-  </script>
 
-  <!-- Core editor script (must be loaded before wiring) -->
-  <script src="../../js/design-studio.js"></script>
-  <!-- Wiring: connect left-panel controls to existing editor JS functions -->
-  <script>
-    // Templates: apply simple combos/backgrounds when clicked
-    document.querySelectorAll('#panel-templates button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const t = (btn.textContent || '').toLowerCase();
-        if (t.includes('minimal')) applyBackground('solid');
-        else if (t.includes('aesthetic')) applyCombo('pastel');
-        else if (t.includes('gradient')) applyCombo('sunset');
-        else if (t.includes('floral')) applyBackground('marble');
-        else if (t.includes('geometric')) applyCombo('ocean');
-        else if (t.includes('anime')) applyCombo('pastel');
-        else applyCombo('pastel');
-        saveState && saveState();
-      });
-    });
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="/js/design-studio.js"></script>
 
-    // Background swatches
-    document.querySelectorAll('#panel-background .swatch').forEach(s => {
-      s.addEventListener('click', () => {
-        const bg = getComputedStyle(s).backgroundColor;
-        applyBackgroundColor && applyBackgroundColor(bg);
-        saveState && saveState();
-      });
-    });
-    const picker = document.getElementById('bgColorPicker');
-    if (picker) picker.addEventListener('input', () => applyBackgroundFromPicker && applyBackgroundFromPicker());
-
-    // Elements shapes
-    document.querySelectorAll('#panel-elements .elem-btn').forEach(b => {
-      b.addEventListener('click', () => {
-        const type = b.dataset.shape || 'circle';
-        // map to known shape classes used by addShape
-        if (type === 'circle') addShape('circle-solid');
-        else if (type === 'square') addShape('rectangle-solid');
-        else if (type === 'star') addShape('star-solid');
-        else if (type === 'heart') addShape('heart-solid');
-        saveState && saveState();
-      });
-    });
-
-    // Stickers
-    document.querySelectorAll('#panel-elements .sticker-btn').forEach(b => {
-      b.addEventListener('click', () => {
-        const emoji = b.dataset.sticker || b.textContent.trim();
-        addSticker && addSticker(emoji);
-        saveState && saveState();
-      });
-    });
-
-    // Text
-    const addTextBtn = document.getElementById('addTextBtn');
-    if (addTextBtn) addTextBtn.addEventListener('click', () => { addText && addText(); saveState && saveState(); });
-    const fontSelect = document.getElementById('fontFamilySelect');
-    if (fontSelect) fontSelect.addEventListener('change', () => setFont && setFont(fontSelect.value));
-    const fontRange = document.getElementById('fontSizeRange');
-    if (fontRange) fontRange.addEventListener('input', () => setFontSize && setFontSize(fontRange.value));
-
-    // Uploads: existing JS listens to `design-upload` id
-    const uploadInput = document.getElementById('design-upload');
-    if (uploadInput) {
-      uploadInput.addEventListener('change', (ev) => {
-        const f = ev.target.files && ev.target.files[0];
-        if (!f) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.style.width = '100%';
-          img.style.borderRadius = '8px';
-          const list = document.getElementById('upload-list');
-          if (list) list.appendChild(img);
-          // also add to canvas as an element
-          const sheet = document.querySelector('.design-sheet');
-          if (sheet) {
-            const node = document.createElement('img');
-            node.src = e.target.result;
-            node.style.width = '120px';
-            node.style.position = 'absolute';
-            node.style.left = '50%'; node.style.top = '50%'; node.style.transform = 'translate(-50%,-50%)';
-            node.className = 'design-element';
-            sheet.appendChild(node);
-            saveState && saveState(); attachElementSelection && attachElementSelection(); updatePreview && updatePreview();
-          }
-        };
-        reader.readAsDataURL(f);
-      });
-    }
-
-    // Tools quick actions
-    const undoBtn = document.getElementById('undoBtn'); if (undoBtn) undoBtn.addEventListener('click', () => undo && undo());
-    const redoBtn = document.getElementById('redoBtn'); if (redoBtn) redoBtn.addEventListener('click', () => redo && redo());
-    const deleteBtn = document.getElementById('deleteBtn'); if (deleteBtn) deleteBtn.addEventListener('click', () => deleteSelected && deleteSelected());
-    const lockBtn = document.getElementById('lockBtn'); if (lockBtn) lockBtn.addEventListener('click', () => toggleLock && toggleLock());
-
-    // Materials: update canvas dataset and preview
-    const caseRadios = document.querySelectorAll('input[name="case-type"]');
-    const finishSel = document.getElementById('finishSelect');
-    function updateMaterialPreview() {
-      const area = document.querySelector('.canvas-area');
-      if (!area) return;
-      let cType = 'Hard Case';
-      caseRadios.forEach(r => { if (r.checked) cType = r.dataset.val || r.parentElement.innerText.trim(); });
-      // safer extraction: the HTML has value="Hard Case" on inputs ideally, checking Step 214
-      // Step 214 view lines 416+: <input type="radio" name="case-type" checked> (No value attribute visible in view!)
-      // Wait, if no value attribute, r.value might be "on".
-      // I should update the HTML to include value attributes, or extract text from sibling span.
-
-      // Let's look at HTML in Step 214 Lines 413-417:
-      // <label class="material-option"...> <span...>Hard Case (PC)</span> <input...>
-      // The span is the previous sibling of input?
-      // Structure: label > [span, input]
-      // safely: r.closest('label').querySelector('span').textContent
-
-      const label = r.closest('label');
-      if (label) cType = label.querySelector('span').textContent.trim();
-
-      const fType = finishSel ? finishSel.value : '';
-      area.dataset.material = cType + '|' + fType;
-      // small visual: update sheet border-color based on finish
-      const sheet = document.querySelector('.design-sheet');
-      if (sheet && finishSel) {
-        if (finishSel.value.toLowerCase().includes('gloss')) sheet.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)';
-        else sheet.style.boxShadow = '';
-      }
-      updatePreview && updatePreview();
-      saveState && saveState();
-    }
-    caseRadios.forEach(r => r.addEventListener('change', updateMaterialPreview));
-    if (finishSel) finishSel.addEventListener('change', updateMaterialPreview);
-
-    // compact header/sidebar spacing fix: remove extra top gap if present
-    (function compactSpacing() {
-      const main = document.querySelector('.studio-container');
-      if (main) main.style.paddingTop = '12px';
-      const iconSidebar = document.querySelector('.icon-sidebar');
-      if (iconSidebar) iconSidebar.style.paddingTop = '12px';
-    })();
-  </script>
+  <!-- Brand Selection Modal -->
+  <div id="brandModal" class="model-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Select Brand</h3>
+        <button class="close-modal" aria-label="Close" onclick="closeBrandModal()">&times;</button>
+      </div>
+      <div class="brand-grid">
+        <div class="brand-card" onclick="selectBrand('iphone')">iPhone</div>
+        <div class="brand-card" onclick="selectBrand('samsung')">Samsung</div>
+        <div class="brand-card" onclick="selectBrand('oneplus')">OnePlus</div>
+        <div class="brand-card" onclick="selectBrand('xiaomi')">Xiaomi</div>
+        <div class="brand-card" onclick="selectBrand('oppo')">Oppo</div>
+        <div class="brand-card" onclick="selectBrand('vivo')">Vivo</div>
+        <div class="brand-card" onclick="selectBrand('huawei')">Huawei</div>
+        <div class="brand-card" onclick="selectBrand('realme')">Realme</div>
+        <div class="brand-card" onclick="selectBrand('tecno')">Tecno</div>
+        <div class="brand-card" onclick="selectBrand('infinix')">Infinix</div>
+        <div class="brand-card" onclick="selectBrand('googlepixel')">Pixel</div>
+        <div class="brand-card" onclick="selectBrand('motorola')">Motorola</div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" onclick="closeBrandModal()">Close</button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

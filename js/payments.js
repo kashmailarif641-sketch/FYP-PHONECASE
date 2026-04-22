@@ -1,203 +1,184 @@
-// =====================================================
-// FRONT-END ONLY PAYMENT & TRANSACTION MONITORING
-// Dummy data + live status update
-// =====================================================
-
-// Dummy Transactions (just for front end display)
-const transactions = [
-    { id: "TXN1001", user: "John Doe", order: "ORD5001", amount: "Rs 2,500", status: "Pending" },
-    { id: "TXN1002", user: "Sara Khan", order: "ORD5002", amount: "Rs 3,000", status: "Success" },
-    { id: "TXN1003", user: "Ali Raza", order: "ORD5003", amount: "Rs 1,500", status: "Failed" },
-];
-
-// ===============================
-// RENDER TABLE WITH DUMMY DATA
-// ===============================
-function loadTransactions() {
-    const tbody = document.getElementById("transaction-body");
-    tbody.innerHTML = "";
-
-    transactions.forEach((t) => {
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-            <td data-label="Transaction ID">${t.id}</td>
-            <td data-label="User">${t.user}</td>
-            <td data-label="Order ID">${t.order}</td>
-            <td data-label="Amount">${t.amount}</td>
-            
-            <td data-label="Status" id="status-${t.id}" class="status ${t.status.toLowerCase()}">
-                ${t.status}
-            </td>
-
-            <td data-label="Actions">
-                <button class="confirm" onclick="confirmPayment('${t.id}')">Confirm</button>
-                <button class="reject" onclick="failPayment('${t.id}')">Fail</button>
-            </td>
-        `;
-
-        tbody.appendChild(row);
-    });
-}
-
-// ====================================
-// UPDATE STATUS (FRONT-END ONLY)
-// ====================================
-function confirmPayment(transactionId) {
-    const statusCell = document.getElementById(`status-${transactionId}`);
-    statusCell.textContent = "Success";
-    statusCell.className = "status success";
-}
-
-function failPayment(transactionId) {
-    const statusCell = document.getElementById(`status-${transactionId}`);
-    statusCell.textContent = "Failed";
-    statusCell.className = "status failed";
-}
-
-// ====================================
-// OPTIONAL SEARCH FILTER (Front-end)
-// ====================================
-function filterTransactions() {
-    let filter = document.getElementById("search-input").value.toUpperCase();
-    let rows = document.querySelectorAll("#payment-table tbody tr");
-
-    rows.forEach((row) => {
-        row.style.display = row.textContent.toUpperCase().includes(filter) ? "" : "none";
-    });
-}
-
-// Run on page load
-// Run on page load
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", () => {
     loadTransactions();
-    renderPayouts();
-};
+    loadPayouts();
+});
 
-// ====================================
-// PAYOUT MODAL LOGIC
-// ====================================
+// ================================
+// LOAD CUSTOMER TRANSACTIONS
+// ================================
+async function loadTransactions() {
+    try {
+        const response = await fetch("http://localhost:5000/api/admin/transactions");
+        const transactions = await response.json();
+
+        const tableBody = document.getElementById("transactionTable");
+        if (!tableBody) return;
+        tableBody.innerHTML = "";
+
+        transactions.forEach(txn => {
+            const row = `
+                <tr>
+                    <td>${txn.transactionId}</td>
+                    <td>${txn.user?.name || "N/A"}</td>
+                    <td>${txn.order?._id || "N/A"}</td>
+                    <td>Rs ${txn.amount}</td>
+                    <td>${txn.paymentMethod}</td>
+                    <td>${txn.paymentReference || "N/A"}</td>
+                    <td>
+                        <span class="status-badge ${txn.status}">
+                            ${txn.status}
+                        </span>
+                    </td>
+                    <td>
+                        ${txn.status === "pending" ? `
+                            <button onclick="confirmPayment('${txn._id}')" class="confirm-btn">
+                                Confirm
+                            </button>
+                            <button onclick="failPayment('${txn._id}')" class="fail-btn">
+                                Fail
+                            </button>
+                        ` : txn.status === "success"
+                    ? "Verified ✓"
+                    : "Failed ❌"}
+                    </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+
+    } catch (error) {
+        console.error("Error loading transactions:", error);
+    }
+}
+
+// ================================
+// LOAD VENDOR PAYOUTS (Admin Side)
+// ================================
+async function loadPayouts() {
+    try {
+        const response = await fetch("http://localhost:5000/api/payouts");
+        const payouts = await response.json();
+
+        const tableBody = document.querySelector(".vendor-payout-section tbody");
+        if (!tableBody) return;
+
+        tableBody.innerHTML = "";
+
+        payouts.forEach(payout => {
+            const row = `
+                <tr>
+                    <td>${payout.payoutId}</td>
+                    <td>${payout.vendor?.name || "N/A"}</td>
+                    <td>${payout.order?.orderId || "N/A"}</td>
+                    <td>Rs ${payout.totalAmount}</td>
+                    <td>${payout.commissionPercent}% (Rs ${payout.commissionAmount})</td>
+                    <td><strong>Rs ${payout.vendorPayable}</strong></td>
+                    <td>${payout.paymentMethod || "N/A"}</td>
+                    <td>${payout.reference || "N/A"}</td>
+                    <td>
+                        <span class="status-badge ${payout.status.toLowerCase()}">
+                            ${payout.status}
+                        </span>
+                    </td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+
+    } catch (error) {
+        console.error("Error loading payouts:", error);
+    }
+}
+
+// ================================
+// ACTIONS
+// ================================
+async function confirmPayment(id) {
+    try {
+        const res = await fetch(`http://localhost:5000/api/admin/transactions/${id}/confirm`, {
+            method: "PUT"
+        });
+        if (res.ok) {
+            alert("Payment Confirmed ✅");
+            loadTransactions();
+        } else {
+            alert("Failed to confirm payment");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function failPayment(id) {
+    try {
+        const res = await fetch(`http://localhost:5000/api/admin/transactions/${id}/fail`, {
+            method: "PUT"
+        });
+        if (res.ok) {
+            alert("Payment Marked Failed ❌");
+            loadTransactions();
+        } else {
+            alert("Failed to update payment");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// Modal handling
 function openPayoutModal() {
-    document.getElementById("payout-modal").style.display = "flex";
+    document.getElementById("payout-modal").style.display = "block";
 }
 
 function closePayoutModal() {
     document.getElementById("payout-modal").style.display = "none";
 }
 
-// Close modal if clicked outside
 window.onclick = function (event) {
     const modal = document.getElementById("payout-modal");
-    if (event.target === modal) {
+    if (event.target == modal) {
         closePayoutModal();
     }
 }
 
-// ====================================
-// PAYOUT MANAGEMENT (Admin Side)
-// ====================================
-function savePayout() {
-    const vendor = document.getElementById("payout-vendor").value;
-    const order = document.getElementById("payout-order").value;
-    const amount = document.getElementById("payout-amount").value;
-    const notes = document.getElementById("payout-notes").value;
+async function savePayout() {
 
-    if (!vendor || !amount) {
-        alert("Please enter Vendor Name and Amount.");
+    const vendorId = document.getElementById("payout-vendor").value;
+    const orderId = document.getElementById("payout-order").value;
+    const totalAmount = document.getElementById("payout-amount").value;
+    const paymentMethod = document.getElementById("payout-method").value;
+    const reference = document.getElementById("payout-reference").value;
+
+    if (!vendorId || !orderId || !totalAmount) {
+        alert("Please fill all required fields");
         return;
     }
 
-    const newPayout = {
-        id: "PAY" + Math.floor(1000 + Math.random() * 9000),
-        vendor: vendor,
-        order: order || "N/A",
-        amount: "Rs " + parseFloat(amount).toLocaleString(),
-        commission: "30%", // dynamic? for now static
-        payable: "Rs " + (parseFloat(amount) * 0.7).toLocaleString(), // 70% to vendor
-        status: "Pending Vendor", // Step 1 status
-        notes: notes
-    };
+    try {
 
-    // Save to LocalStorage
-    let payouts = JSON.parse(localStorage.getItem("adminPayouts")) || [];
-    payouts.push(newPayout);
-    localStorage.setItem("adminPayouts", JSON.stringify(payouts));
+        const response = await fetch("http://localhost:5000/api/payouts/initiate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                vendorId,
+                orderId,
+                totalAmount: Number(totalAmount),
+                paymentMethod,
+                reference
+            })
+        });
 
-    // Refresh Table & Close Modal
-    renderPayouts();
-    closePayoutModal();
-
-    // Clear Form
-    document.getElementById("payout-vendor").value = "";
-    document.getElementById("payout-order").value = "";
-    document.getElementById("payout-amount").value = "";
-    document.getElementById("payout-notes").value = "";
-}
-
-function renderPayouts() {
-    const tbody = document.querySelector(".vendor-payout-section tbody");
-
-    // Get stored payouts
-    const payouts = JSON.parse(localStorage.getItem("adminPayouts")) || [];
-
-    // If no payouts, keep the static/demo rows or clear them?
-    // Let's Append to the static rows or replace. 
-    // For this prototype, I will Clear and Re-render MIXED with dummy data if needed.
-    // To keep it simple, let's just append or use only localStorage. 
-    // Let's use ONLY localStorage + 2 dummy defaults if empty.
-
-    if (payouts.length === 0) {
-        // Init with dummy if empty (optional)
-        // localStorage.setItem("adminPayouts", JSON.stringify([...dummy...]));
-    }
-
-    // Let's just clear and render what we have.
-    // NOTE: accessing the tbody might target the WRONG table if classes aren't unique.
-    // The previous tool verified the class .vendor-payout-section exists.
-
-    // Clear current rows
-    tbody.innerHTML = "";
-
-    // 1. Render Static Dummies (Preserved for demo) or just stored?
-    // Let's render stored ones. If none, show empty message or defaults.
-    // For the user request, let's keep the existing 2 dummies as "Pre-seeded" data if LS is empty?
-
-    // Let's just render from LS.
-    payouts.forEach(p => {
-        const row = document.createElement("tr");
-
-        // Determine Status Badge Color
-        let statusClass = "pending";
-        if (p.status === "Paid") statusClass = "success";
-        if (p.status === "Received") statusClass = "pending"; // Vendor confirmed, Admin needs to pay
-
-        // Button Logic
-        let actionBtn = `<button class="btn-paid" onclick="markAsPaid('${p.id}')">Mark as Paid</button>`;
-        if (p.status === "Paid") {
-            actionBtn = `<button class="btn-disabled" disabled>Completed</button>`;
+        if (response.ok) {
+            alert("Payout Added Successfully ✅");
+            closePayoutModal();
+            loadPayouts();   // refresh table
+        } else {
+            alert("Failed to add payout");
         }
 
-        row.innerHTML = `
-            <td data-label="Payout ID">${p.id}</td>
-            <td data-label="Vendor">${p.vendor}</td>
-            <td data-label="Order ID">${p.order}</td>
-            <td data-label="Total Amount">${p.amount}</td>
-            <td data-label="Commission">${p.commission}</td>
-            <td data-label="Vendor Payable">${p.payable}</td>
-            <td data-label="Status"><span class="status ${statusClass}">${p.status}</span></td>
-            <td data-label="Action">${actionBtn}</td>
-        `;
-        tbody.appendChild(row);
-    });
-}
-
-function markAsPaid(id) {
-    let payouts = JSON.parse(localStorage.getItem("adminPayouts")) || [];
-    const index = payouts.findIndex(p => p.id === id);
-
-    if (index !== -1) {
-        payouts[index].status = "Paid";
-        localStorage.setItem("adminPayouts", JSON.stringify(payouts));
-        renderPayouts();
+    } catch (error) {
+        console.error("Save Payout Error:", error);
     }
 }

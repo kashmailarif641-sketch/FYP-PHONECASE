@@ -151,18 +151,22 @@ select:focus {
 .google-btn {
   width: 100%;
   padding: 12px;
-  border: 1px solid #d0d4e0;
-  border-radius: 8px;
   background: linear-gradient(90deg, var(--brand-light) 0%, var(--brand-mid) 50%, var(--brand-dark) 100%);
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 15px;
-  margin-bottom: 10px;
-  transition: 0.3s;
+  font-size: 16px;
   color: white;
+  margin-top: 5px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .google-btn:hover {
-  background: linear-gradient(90deg, var(--brand-light) 0%, var(--brand-mid) 50%, var(--brand-dark) 100%);
+  background: #0d2261;
 }
 
 .signup {
@@ -341,4 +345,94 @@ select:focus {
 
 .toggle-password:hover {
   color: #06aecc;
+}
+
+/* ========== COMPREHENSIVE RESPONSIVE DESIGN ========== */
+
+@media (max-width: 1024px) {
+  .container {
+    max-width: 380px;
+  }
+  .login-card {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+  .container {
+    max-width: 100%;
+  }
+  .login-card {
+    padding: 24px;
+    border-radius: 16px;
+  }
+  h2 {
+    font-size: 22px;
+  }
+  .form-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .login-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+    min-height: auto;
+  }
+  .container {
+    max-width: 100%;
+  }
+  .login-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+  .logo {
+    width: 70px;
+  }
+  h2 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 12px;
+  }
+  .form-group {
+    margin-bottom: 12px;
+  }
+  .form-label {
+    font-size: 11px;
+  }
+  .form-input {
+    padding: 8px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  .error-msg {
+    font-size: 11px;
+  }
+  .login-btn {
+    padding: 9px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  .signup-link,
+  .forgot-link {
+    font-size: 11px;
+  }
+  .social-login {
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .social-btn {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
 }

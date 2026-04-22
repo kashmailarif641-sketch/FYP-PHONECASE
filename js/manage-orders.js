@@ -1,160 +1,206 @@
-// ====== manage-orders.js ======
 document.addEventListener("DOMContentLoaded", () => {
-  const ordersTable = document.getElementById("orderTableBody");
 
-  // Modal Elements
-  const vendorModal = document.getElementById("vendorModal");
-  const closeBtn = document.querySelector(".close-btn");
-  const vendorSelect = document.getElementById("vendorSelect");
-  const confirmAssignBtn = document.getElementById("confirmAssignBtn");
+  const ordersContainer = document.getElementById("ordersContainer");
 
-  // State for current order being assigned
-  let currentOrderId = null;
+  let vendorsList = []; // store vendors globally
 
-  // ===== Approved Vendors (Simulation) =====
-  const approvedVendors = [
-    { id: "v1", name: "TechPrint Solutions" },
-    { id: "v2", name: "Creative Cases Studio" },
-    { id: "v3", name: "FastTrack Prints" },
-    { id: "v4", name: "Premium Covers Ltd" }
-  ];
+  // ================================
+  // LOAD APPROVED VENDORS
+  // ================================
+  async function loadVendors() {
+    try {
+      const res = await fetch("http://localhost:5000/api/vendor/vendors");
+      vendorsList = await res.json();
+    } catch (error) {
+      console.error("Error loading vendors:", error);
+    }
+  }
 
-  // Populate Vendor Dropdown
-  approvedVendors.forEach(vendor => {
-    const option = document.createElement("option");
-    option.value = vendor.id;
-    option.textContent = vendor.name;
-    vendorSelect.appendChild(option);
-  });
+  // ================================
+  // LOAD ORDERS
+  // ================================
+  async function loadOrders() {
+    try {
+      const response = await fetch("http://localhost:5000/api/orders");
+      const orders = await response.json();
 
-  // ===== Dummy Order Data (frontend demo) =====
-  // Added 'vendor' field
-  let orders = [
-    { id: 1001, user: "Ali Khan", design: "Floral Case", amount: "Rs 1,500", date: "2025-10-21", status: "Pending", vendor: null },
-    { id: 1002, user: "Sara Ahmed", design: "Galaxy Art", amount: "Rs 2,200", date: "2025-10-20", status: "Processing", vendor: "TechPrint Solutions" }, // Already assigned
-    { id: 1003, user: "Hamza Tariq", design: "Abstract Lines", amount: "Rs 1,850", date: "2025-10-19", status: "Shipped", vendor: "Creative Cases Studio" },
-    { id: 1004, user: "Ayesha Noor", design: "Minimal Black", amount: "Rs 2,000", date: "2025-10-18", status: "Delivered", vendor: "FastTrack Prints" },
-  ];
+      ordersContainer.innerHTML = "";
 
-  // ===== Render Orders =====
-  function renderOrders() {
-    ordersTable.innerHTML = "";
-    orders.forEach((order, index) => {
-      const row = document.createElement("tr");
+      orders.forEach(order => {
 
-      // Determine what to show in Vendor column
-      const vendorDisplay = order.vendor
-        ? `<span class="vendor-badge">${order.vendor}</span>`
-        : `<span class="text-muted">Unassigned</span>`;
+        const card = document.createElement("div");
+        card.classList.add("order-card");
 
-      // Assign Button (Only if not delivered/shipped ideally, but showing always for demo flexibility)
-      const assignButton = `<button class="action-btn assign-btn" data-id="${order.id}">Assign</button>`;
+        // Vendor Dropdown Options
+        let vendorOptions = `<option value="">Unassigned</option>`;
 
-      row.innerHTML = `
-        <td>#${order.id}</td>
-        <td>${order.user}</td>
-        <td>${order.design}</td>
-        <td>${order.amount}</td>
-        <td>${order.date}</td>
-        <td>${vendorDisplay}</td>
-        <td><span class="status-badge ${order.status.toLowerCase()}">${order.status}</span></td>
-        <td>
-          <div class="action-buttons">
-            ${assignButton}
-            <button class="action-btn status-btn" data-index="${index}">Update Status</button>
+        vendorsList.forEach(vendor => {
+          vendorOptions += `
+            <option value="${vendor._id}"
+              ${order.assignedVendor && order.assignedVendor._id === vendor._id ? "selected" : ""}>
+              ${vendor.name}
+            </option>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="card-top">
+            <img src="${order.designImage}" class="order-img">
+            <div class="order-info">
+              <h4>${order.orderId}</h4>
+              <p><strong>User:</strong> ${order.userId ? order.userId.name : "N/A"}</p>
+              <p><strong>Phone:</strong> ${order.phone}</p>
+              <p><strong>Address:</strong> ${order.address}</p>
+              <p><strong>Model:</strong> ${order.brand} ${order.model}</p>
+              <p><strong>Material:</strong> ${order.material}</p>
+              <p><strong>Amount:</strong> Rs ${order.totalPrice}</p>
+            </div>
           </div>
-        </td>
-      `;
-      ordersTable.appendChild(row);
-    });
-    attachEvents();
-  }
 
-  // ===== Attach Events =====
-  function attachEvents() {
-    // Status Buttons
-    document.querySelectorAll(".status-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const i = e.target.dataset.index;
-        updateStatus(i);
+          <div class="card-footer">
+
+            <div class="status-group">
+              <label>Order Status</label>
+              <select class="status-select" data-id="${order._id}">
+                <option value="Pending" ${order.orderStatus === "Pending" ? "selected" : ""}>Pending</option>
+                <option value="Processing" ${order.orderStatus === "Processing" ? "selected" : ""}>Processing</option>
+                <option value="Shipped" ${order.orderStatus === "Shipped" ? "selected" : ""}>Shipped</option>
+                <option value="Delivered" ${order.orderStatus === "Delivered" ? "selected" : ""}>Delivered</option>
+                <option value="Cancelled" ${order.orderStatus === "Cancelled" ? "selected" : ""}>Cancelled</option>
+              </select>
+            </div>
+
+            <div class="vendor-group">
+              <label>Assign Vendor</label>
+              <select class="vendor-select" data-id="${order._id}">
+                ${vendorOptions}
+              </select>
+            </div>
+
+            ${order.orderStatus === "Completed" ? `
+              <div class="payout-group">
+                <button class="btn payout-btn" onclick="initiatePayout('${order._id}', '${order.assignedVendor?._id || ''}', ${order.totalPrice})">
+                   Initiate Payout
+                </button>
+              </div>
+            ` : ""}
+
+          </div>
+        `;
+
+        ordersContainer.appendChild(card);
       });
-    });
 
-    // Assign Vendor Buttons
-    document.querySelectorAll(".assign-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const orderId = e.target.dataset.id;
-        openVendorModal(orderId);
-      });
-    });
+    } catch (error) {
+      console.error("Error loading orders:", error);
+    }
   }
 
-  // ===== Vendor Modal Logic =====
-  function openVendorModal(orderId) {
-    currentOrderId = parseInt(orderId);
-    vendorModal.style.display = "block";
-    vendorSelect.value = ""; // Reset selection
-  }
+  // ================================
+  // STATUS UPDATE
+  // ================================
+  document.addEventListener("change", async (e) => {
 
-  closeBtn.addEventListener("click", () => {
-    vendorModal.style.display = "none";
+    // Status change
+    if (e.target.classList.contains("status-select")) {
+
+      const orderId = e.target.dataset.id;
+      const newStatus = e.target.value;
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus })
+        });
+
+        if (response.ok) {
+          alert("Status updated successfully!");
+          loadOrders();
+        } else {
+          alert("Failed to update status");
+        }
+
+      } catch (err) {
+        console.error("Error updating status:", err);
+      }
+    }
+
+    // Vendor assign change
+    if (e.target.classList.contains("vendor-select")) {
+
+      const orderId = e.target.dataset.id;
+      const vendorId = e.target.value;
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/orders/${orderId}/assign`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ vendorId })
+        });
+
+        if (response.ok) {
+          alert("Vendor assigned successfully!");
+          loadOrders();
+        } else {
+          alert("Vendor assignment failed");
+        }
+
+      } catch (err) {
+        console.error("Error assigning vendor:", err);
+      }
+    }
+
   });
 
-  window.addEventListener("click", (e) => {
-    if (e.target == vendorModal) {
-      vendorModal.style.display = "none";
-    }
-  });
-
-  confirmAssignBtn.addEventListener("click", () => {
-    const selectedVendorId = vendorSelect.value;
-    if (!selectedVendorId) {
-      alert("Please select a vendor.");
-      return;
-    }
-
-    const selectedVendorName = approvedVendors.find(v => v.id === selectedVendorId).name;
-
-    // Update Order Data
-    const orderIndex = orders.findIndex(o => o.id === currentOrderId);
-    if (orderIndex > -1) {
-      orders[orderIndex].vendor = selectedVendorName;
-      orders[orderIndex].status = "Processing"; // Auto-move to processing if assigned
-      renderOrders();
-      showToast(`Order #${currentOrderId} assigned to ${selectedVendorName}`);
-      vendorModal.style.display = "none";
-    }
-  });
-
-  // ===== Status Update Logic =====
-  function updateStatus(index) {
-    const order = orders[index];
-    const statuses = ["Pending", "Processing", "Shipped", "Delivered"];
-    const currentIndex = statuses.indexOf(order.status);
-
-    if (currentIndex < statuses.length - 1) {
-      order.status = statuses[currentIndex + 1];
-      showToast(`Order #${order.id} marked as "${order.status}"`);
-    } else {
-      showToast(`Order #${order.id} is already Delivered ✅`);
-    }
-
-    renderOrders();
+  // ================================
+  // INITIAL LOAD
+  // ================================
+  async function init() {
+    await loadVendors();
+    await loadOrders();
   }
 
-  // ===== Toast Notification =====
-  function showToast(message) {
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.classList.add("show"), 100);
-    setTimeout(() => {
-      toast.classList.remove("show");
-      setTimeout(() => toast.remove(), 500);
-    }, 3000);
-  }
+  init();
 
-  // ===== Initial Render =====
-  renderOrders();
 });
+
+// ================================
+// INITIATE PAYOUT
+// ================================
+async function initiatePayout(orderId, vendorId, totalAmount) {
+  if (!vendorId) {
+    alert("No vendor assigned to this order.");
+    return;
+  }
+
+  const method = prompt("Enter Payment Method (e.g. JazzCash, Bank Transfer):", "JazzCash");
+  if (!method) return;
+
+  const reference = prompt("Enter Transaction Reference / Internal Note:", "N/A");
+  if (reference === null) return;
+
+  try {
+    const response = await fetch("http://localhost:5000/api/payouts/initiate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        vendorId,
+        orderId,
+        totalAmount,
+        paymentMethod: method,
+        reference
+      })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert("Payout initiated successfully! Payout ID: " + data.payout.payoutId);
+    } else {
+      alert("Error: " + data.message);
+    }
+  } catch (error) {
+    console.error("Payout initiation error:", error);
+    alert("Server error occurred.");
+  }
+}

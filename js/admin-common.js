@@ -1,3 +1,8 @@
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "../login.html";
+}
 document.addEventListener("DOMContentLoaded", () => {
     // 🔐 Auth + Role Protection
     const user = JSON.parse(localStorage.getItem("user"));
@@ -81,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         logoutBtn.addEventListener("click", (e) => {
             e.preventDefault();
             if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("token");
                 localStorage.removeItem("user");
                 window.location.href = "../../login.html";
             }

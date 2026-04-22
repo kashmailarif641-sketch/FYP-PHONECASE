@@ -65,8 +65,11 @@ body {
 .design-card img {
   width: 100%;
   height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  background: #f8fafc;
+  padding: 10px;
   border-radius: 10px;
-  margin-bottom: 12px;
 }
 
 .design-card h3 {
@@ -92,6 +95,46 @@ body {
   background: #1d5474;
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Extra Design Info ===== */
+.design-model,
+.design-material,
+.design-date {
+  font-size: 13px;
+  color: #1d5474;
+  margin: 4px 0;
+  font-weight: 500;
+}
+
+/* Date slightly lighter */
+.design-date {
+  font-size: 12px;
+  color: #6c7a89;
+}
+
+/* ===== Buttons Wrapper (Edit + Delete alignment) ===== */
+.design-card button {
+  margin-top: 8px;
+}
+
+/* ===== Delete Button (Theme Matching) ===== */
+.design-card .delete-btn {
+  padding: 8px 16px;
+  margin-left: 6px;
+  background: linear-gradient(90deg, #c1121f, #ff4d6d);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.design-card .delete-btn:hover {
+  background: #a4161a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 /* ===== Footer ===== */

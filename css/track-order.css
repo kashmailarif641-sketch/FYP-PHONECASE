@@ -1,4 +1,20 @@
-/* ===== General Reset ===== */
+/* ===== Theme Variables (Same as Main Website) ===== */
+:root {
+  --brand-light: #0d2261;
+  --brand-mid: #1d5474;
+  --brand-dark: #076e9b;
+
+  --btn-left: #03095a;
+  --btn-right: #06aecc;
+
+  --bg: #f3f7fcfb;
+  --section-bg: #F7F7F7;
+  --card-highlight: #E7E7E7;
+  --light-grey: #D7D7D7;
+  --dark-grey: #C7C7C7;
+}
+
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
@@ -7,29 +23,32 @@
 }
 
 body {
-  background-color: #F9FAFB;
-  color: #374151;
+  background-color: var(--bg);
+  color: #111;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  line-height: 1.6;
 }
 
 /* ===== Header ===== */
 .site-header {
-  background: linear-gradient(90deg, #1E40AF, #06B6D4);
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-mid), var(--brand-dark));
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 15px 60px;
-  color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  padding: 18px;
+  color: #fff;
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .logo {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: 1px;
 }
@@ -40,34 +59,57 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 20px;
-  background-color: #fff;
+  padding: 70px 20px;
 }
 
 .tracking-card {
-  background: #fff;
-  border-radius: 25px;
-  box-shadow: 0 10px 25px rgba(30, 64, 175, 0.15);
-  padding: 50px 40px;
+  background: var(--section-bg);
+  border-radius: 20px;
+  border: 1px solid var(--card-highlight);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  padding: 45px;
   max-width: 650px;
   width: 100%;
   text-align: center;
-  animation: fadeInUp 1s ease;
+  animation: fadeInUp 0.6s ease;
 }
 
 .tracking-card h1 {
   font-size: 2rem;
-  color: #1E40AF;
-  margin-bottom: 10px;
+  color: #020842;
+  margin-bottom: 25px;
+  font-weight: 700;
 }
 
-.sub-text {
-  color: #6B7280;
-  font-size: 16px;
-  margin-bottom: 40px;
+/* ===== Order Summary ===== */
+.order-summary {
+  background: #fff;
+  padding: 22px;
+  border-radius: 15px;
+  border: 1px solid var(--card-highlight);
+  margin-bottom: 35px;
+  text-align: left;
 }
 
-/* ===== Progress Bar ===== */
+.order-summary h3 {
+  color: #020842;
+  margin-bottom: 15px;
+  font-size: 17px;
+  border-bottom: 1px solid var(--light-grey);
+  padding-bottom: 8px;
+}
+
+.order-summary p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.order-summary p strong {
+  color: var(--brand-dark);
+}
+
+/* ===== Progress Section ===== */
 .progress-container {
   position: relative;
   display: flex;
@@ -77,11 +119,21 @@ body {
 
 .progress-bar {
   position: absolute;
-  top: 25px;
+  top: 22px;
   left: 12%;
   width: 76%;
-  height: 6px;
-  background: #E5E7EB;
+  height: 5px;
+  background: var(--light-grey);
+  border-radius: 3px;
+}
+
+/* Progress Fill (Control width via JS if needed) */
+.progress-bar::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 25%;
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
   border-radius: 3px;
   transition: width 0.4s ease;
 }
@@ -90,91 +142,92 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 25%;
   z-index: 1;
-  transition: all 0.3s ease;
 }
 
 .step .icon {
-  background: #E0E7FF;
-  border: 3px solid #93C5FD;
-  color: #1E3A8A;
-  font-size: 1.4rem;
-  width: 50px;
-  height: 50px;
+  background: #fff;
+  border: 2px solid var(--light-grey);
+  color: var(--dark-grey);
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.4s ease;
-}
-
-.step.active .icon {
-  background: linear-gradient(135deg, #1E40AF, #06B6D4);
-  color: #fff;
-  border-color: #1E40AF;
-  box-shadow: 0 0 12px rgba(30, 64, 175, 0.4);
-  transform: scale(1.1);
+  font-size: 1.2rem;
+  transition: 0.3s ease;
 }
 
 .step p {
   margin-top: 10px;
-  color: #374151;
+  font-size: 13px;
+  color: #555;
   font-weight: 500;
-  font-size: 15px;
 }
 
-/* ===== Button ===== */
+/* Active Step */
+.step.active .icon {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(6, 174, 204, 0.3);
+}
+
+.step.active p {
+  color: #020842;
+  font-weight: 600;
+}
+
+/* ===== Back Button ===== */
 #backHomeBtn {
-  background: linear-gradient(90deg, #F59E0B, #F43F5E);
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
   color: #fff;
   border: none;
-  padding: 12px 35px;
+  padding: 12px 32px;
   border-radius: 30px;
-  cursor: pointer;
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 15px;
 }
 
 #backHomeBtn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(90deg, #F43F5E, #F59E0B);
-  box-shadow: 0 8px 25px rgba(244, 63, 94, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(6, 174, 204, 0.25);
 }
 
 /* ===== Footer ===== */
 .site-footer {
-  background: #1E40AF;
-  color: white;
+  background: linear-gradient(135deg, var(--brand-dark), var(--brand-light));
+  color: #fff;
   text-align: center;
   padding: 20px 0;
-  font-size: 0.9rem;
   margin-top: auto;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  font-size: 14px;
 }
 
-.site-footer span {
-  color: #F59E0B;
-  font-weight: 600;
-}
-
-/* ===== Animations ===== */
+/* ===== Animation ===== */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(25px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* ===== Responsive Design ===== */
+/* ===== Responsive ===== */
 @media (max-width: 600px) {
   .tracking-card {
-    padding: 35px 25px;
+    padding: 25px 20px;
   }
 
   .progress-bar {
@@ -183,16 +236,15 @@ body {
   }
 
   .step .icon {
-    width: 45px;
-    height: 45px;
-    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
   }
 
   .tracking-card h1 {
     font-size: 1.6rem;
   }
 
-  .sub-text {
-    font-size: 14px;
+  .step p {
+    font-size: 11px;
   }
 }
