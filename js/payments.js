@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     loadTransactions();
     loadPayouts();
+    loadPremiumPayments();
 });
 
 // ================================
@@ -180,5 +181,55 @@ async function savePayout() {
 
     } catch (error) {
         console.error("Save Payout Error:", error);
+    }
+}
+
+// ================================
+// LOAD PREMIUM DESIGN PAYMENTS
+// ================================
+async function loadPremiumPayments() {
+    const tableBody = document.getElementById("premiumPaymentsTable");
+    if (!tableBody) return;
+
+    try {
+        const response = await fetch("http://localhost:5000/api/orders/premium-payment/all");
+        const payments = await response.json();
+
+        tableBody.innerHTML = "";
+
+        payments.forEach(pay => {
+            const row = `
+                <tr>
+                    <td>${pay.orderId?.orderId || "N/A"}</td>
+                    <td>${pay.userId?.name || "N/A"}</td>
+                    <td>${pay.userId?.jazzcashNumber || "N/A"}</td>
+                    <td>Rs ${pay.amount}</td>
+                    <td>${pay.paymentMethod}</td>
+                    <td>${pay.transactionId}</td>
+                    <td>${new Date(pay.paymentDate).toLocaleDateString()}</td>
+                    <td><span class="status ${pay.status.toLowerCase()}">${pay.status}</span></td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    } catch (error) {
+        console.error("Load Payments Error:", error);
+    }
+}
+
+async function confirmPremiumPayment(id) {
+    try {
+        const response = await fetch(`http://localhost:5000/api/orders/premium-payment/${id}/confirm`, {
+            method: "PUT"
+        });
+
+        if (response.ok) {
+            alert("Payment Verified! ✅");
+            loadPremiumPayments();
+        } else {
+            alert("Failed to verify payment.");
+        }
+    } catch (error) {
+        console.error("Confirm Payment Error:", error);
     }
 }

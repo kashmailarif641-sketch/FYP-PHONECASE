@@ -57,7 +57,7 @@
     </header>
 
     <!-- Gallery Cards Container -->
-    <div class="gallery-cards" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:16px;">
+    <div class="gallery-container" style="margin-top:20px; display:flex; flex-wrap:wrap; gap:16px;">
       <!-- Cards will be rendered dynamically here -->
     </div>
 
@@ -69,13 +69,12 @@
         <h3 id="modalTitle">Add New Design</h3>
         <label for="designName">Design Name</label>
         <input type="text" id="designName" placeholder="Enter design name">
-        <label for="designPrice">Price (Rs)</label>
-        <input type="number" id="designPrice" min="0" step="0.01" placeholder="Enter price">
-        <label for="designFile">Upload Image (or paste URL)</label>
-        <input type="file" id="designFile" accept="image/*">
-        <input type="text" id="designImage" placeholder="Or paste image URL (optional)">
+        <label for="price">Price (Rs)</label>
+        <input type="number" id="price" min="0" step="0.01" placeholder="Enter price">
+        <label for="imageFile">Upload Image</label>
+        <input type="file" id="imageFile" accept="image/*">
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
-          <button id="saveDesignBtn" class="approve-btn">Save</button>
+          <button id="saveDesignBtn" class="save-btn approve-btn">Save</button>
           <button class="reject-btn" data-close>Cancel</button>
         </div>
       </div>

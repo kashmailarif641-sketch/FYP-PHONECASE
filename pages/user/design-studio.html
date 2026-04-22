@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Design Studio | CaseCraft</title>
-  <link rel="stylesheet" href="/css/design-studio.css">
+  <link rel="stylesheet" href="../../css/design-studio.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;800&display=swap"
@@ -29,9 +29,12 @@
     </div>
 
     <div class="header-right">
-      <button class="header-btn" onclick="saveDesign()"><i class="fas fa-save"></i> Save</button>
-      <button class="header-btn" id="exportBtn" onclick="exportDesign()"><i class="fas fa-download"></i> Export</button>
-      <button class="header-btn highlight" id="orderCaseBtn" onclick="placeOrder()">Order Case</button>
+      <button class="header-btn primary highlight order-btn" onclick="saveDesign()"><i class="fas fa-save"></i>
+        Save</button>
+      <button class="header-btn primary highlight order-btn" onclick="exportDesign()"><i class="fas fa-download"></i>
+        Export</button>
+      <button class="header-btn primary highlight order-btn" onclick="window.location.href='order.html'">Order
+        Case</button>
       <div class="profile-icon" title="Profile">
         <a href="user-profile.html" style="color: inherit; text-decoration: none;">
           <i class="fas fa-user-circle"></i>
@@ -65,8 +68,8 @@
         <button class="menu-btn" onclick="showPanel('material')" title="Material">
           <i class="fas fa-layer-group"></i> <span>Material</span>
         </button>
-        <button class="menu-btn" onclick="showPanel('ai')" title="AI Assist">
-          <i class="fas fa-magic"></i> <span>AI Assist</span>
+        <button class="menu-btn" onclick="showPanel('ai')" title="AI Style Generator">
+          <i class="fas fa-magic"></i> <span>AI Style Gen</span>
         </button>
       </div>
 
@@ -108,7 +111,8 @@
               <div class="template-card" data-id="tmpl-floral-1" data-category="floral" data-title="Soft Rose Bloom">
                 <div class="card-mockup" aria-hidden="true">
                   <div class="template-thumb"
-                    style="background: linear-gradient(180deg, #fff1f2 0%, #fce7f3 100%); border-radius: 12px;">
+                    style="background: linear-gradient(180deg, #fff1f2 0%, #fce7f3 100%); border-radius: 12px; display:flex; align-items:center; justify-content:center;">
+                    <span class="mock-title" style="color:#be123c; font-size:0.8rem;">FLORAL</span>
                   </div>
                 </div>
                 <div class="card-meta">
@@ -176,7 +180,8 @@
               <div class="template-card" data-id="tmpl-quote-1" data-category="quotes" data-title="Stay Wild">
                 <div class="card-mockup" aria-hidden="true">
                   <div class="template-thumb"
-                    style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 12px;">
+                    style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 12px; display:flex; align-items:center; justify-content:center;">
+                    <span class="mock-title" style="font-family:'Poppins';">STAY WILD</span>
                   </div>
                 </div>
                 <div class="card-meta">
@@ -243,7 +248,8 @@
                 data-title="Soft Beige Mood">
                 <div class="card-mockup" aria-hidden="true">
                   <div class="template-thumb"
-                    style="background: linear-gradient(180deg, #f5f5f4 0%, #e7e5e4 100%); border-radius: 12px;">
+                    style="background: linear-gradient(180deg, #f5f5f4 0%, #e7e5e4 100%); border-radius: 12px; display:flex; align-items:center; justify-content:center;">
+                    <span class="mock-title" style="color:#78716c; font-style:italic;">Aesthetic</span>
                   </div>
                 </div>
                 <div class="card-meta">
@@ -1015,54 +1021,151 @@
             style="aspect-ratio: 1/1; border-radius: 8px; font-size: 1.2rem;">
             <i class="fas fa-ban"></i>
           </div>
-          <span onclick="addSticker('🎉')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🎉</span>
-          <span onclick="addSticker('⭐')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">⭐</span>
-          <span onclick="addSticker('❤️')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">❤️</span>
-          <span onclick="addSticker('🔥')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🔥</span>
-          <span onclick="addSticker('🌈')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🌈</span>
-          <span onclick="addSticker('✨')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">✨</span>
-          <span onclick="addSticker('💫')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💫</span>
-          <span onclick="addSticker('⚡')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">⚡</span>
-          <span onclick="addSticker('💪')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💪</span>
-          <span onclick="addSticker('💖')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💖</span>
-          <span onclick="addSticker('😎')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">😎</span>
-          <span onclick="addSticker('😊')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">😊</span>
-          <span onclick="addSticker('😍')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">😍</span>
-          <span onclick="addSticker('🥳')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🥳</span>
-          <span onclick="addSticker('💯')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">💯</span>
-          <span onclick="addSticker('🚀')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🚀</span>
-          <span onclick="addSticker('🎵')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🎵</span>
-          <span onclick="addSticker('🎮')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🎮</span>
-          <span onclick="addSticker('👑')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">👑</span>
-          <span onclick="addSticker('🦋')" style="cursor: pointer; font-size: 1.5rem; text-align: center;">🦋</span>
+          <button onclick="addSticker('🎉')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🎉</button>
+          <button onclick="addSticker('⭐')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">⭐</button>
+          <button onclick="addSticker('❤️')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">❤️</button>
+          <button onclick="addSticker('🔥')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🔥</button>
+          <button onclick="addSticker('🌈')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🌈</button>
+          <button onclick="addSticker('✨')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">✨</button>
+          <button onclick="addSticker('💫')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">💫</button>
+          <button onclick="addSticker('⚡')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">⚡</button>
+          <button onclick="addSticker('💪')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">💪</button>
+          <button onclick="addSticker('💖')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">💖</button>
+          <button onclick="addSticker('😎')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">😎</button>
+          <button onclick="addSticker('😊')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">😊</button>
+          <button onclick="addSticker('😍')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">😍</button>
+          <button onclick="addSticker('🥳')" class="sticker-btn"
+            style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🥳</button>
+          <i class="fas fa-ban"></i>
         </div>
+        <button onclick="addSticker('🎉')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🎉</button>
+        <button onclick="addSticker('⭐')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">⭐</button>
+        <button onclick="addSticker('❤️')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">❤️</button>
+        <button onclick="addSticker('🔥')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🔥</button>
+        <button onclick="addSticker('🌈')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🌈</button>
+        <button onclick="addSticker('✨')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">✨</button>
+        <button onclick="addSticker('💫')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">💫</button>
+        <button onclick="addSticker('⚡')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">⚡</button>
+        <button onclick="addSticker('💪')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">💪</button>
+        <button onclick="addSticker('💖')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">💖</button>
+        <button onclick="addSticker('😎')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">😎</button>
+        <button onclick="addSticker('😊')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">😊</button>
+        <button onclick="addSticker('😍')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">😍</button>
+        <button onclick="addSticker('🥳')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🥳</button>
+        <button onclick="addSticker('💯')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">💯</button>
+        <button onclick="addSticker('🚀')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🚀</button>
+        <button onclick="addSticker('🎵')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🎵</button>
+        <button onclick="addSticker('🎮')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🎮</button>
+        <button onclick="addSticker('👑')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">👑</button>
+        <button onclick="addSticker('🦋')" class="sticker-btn"
+          style="cursor: pointer; font-size: 1.5rem; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; padding: 5px;">🦋</button>
+      </div>
       </div>
 
-      <div id="panel-ai" class="panel-content">
-        <h3>AI Assist</h3>
-        <div class="search-box">
-          <span class="icon"><i class="fas fa-search"></i></span>
-          <input type="text" placeholder="Search AI tools..." oninput="filterAITools(this.value)">
+      <div id="panel-ai" class="panel-content glass-panel-left">
+        <h3 style="margin-bottom: 24px; color: #1e293b; font-weight: 700;">AI Style Generator</h3>
+
+        <!-- Upload Image via Label -->
+        <div class="ai-box glass-box">
+          <input type="file" id="aiImageInput" accept="image/*" hidden />
+          <label for="aiImageInput" class="upload-label">
+            <i class="fas fa-cloud-upload-alt theme-icon"
+              style="font-size: 1.5rem; margin-bottom: 8px; color: #0ea5e9;"></i>
+            <span style="font-weight: 600;">Upload Image</span>
+            <span style="font-size: 0.75rem; color: #64748b; margin-top: 4px;"> Add your photo</span>
+          </label>
+          <div id="aiThumbnailContainer" style="display: none; margin-top: 12px; align-items: center; gap: 10px;">
+            <img id="aiThumbnailPreview" src=""
+              style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; box-shadow: var(--shadow-soft);" />
+            <span id="aiFileName"
+              style="font-size: 0.85rem; color: #475569; font-weight: 500; word-break: break-all;"></span>
+          </div>
+          <!-- Button directly below upload -->
+          <button id="generateImgBtn" class="generate-btn-cta" onclick="generateAI()" style="margin-top: 16px;">
+            🖼️ Generate from Image
+          </button>
         </div>
-        <div class="ai-prompt-container">
-          <label class="control-label">Describe your vision</label>
-          <textarea id="ai-prompt" placeholder="e.g. 'Cyberpunk aesthetic with neon birds'"></textarea>
-          <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <button class="add-text-btn" style="flex: 1; background: #000;">Generate</button>
-            <button class="add-text-btn" onclick="clearAI()" style="width: 50px; background: #ef4444;">
-              <i class="fas fa-ban"></i>
-            </button>
+
+        <!-- Choose Style Grid (2 Column SaaS Design) -->
+        <div class="ai-box glass-box" style="margin-top: 16px;">
+          <label class="control-label ai-label" style="margin-bottom: 12px;">Choose Style</label>
+          <div class="image-cards-grid-2">
+            <div class="style-card style-btn active" data-style="anime" onclick="selectAIStyle(this)">
+              <img src="../../images/anime.jpg" alt="Anime">
+              <h4>Anime style</h4>
+            </div>
+            <div class="style-card style-btn" data-style="cartoon" onclick="selectAIStyle(this)">
+              <img src="../../images/cartoon.jpg" alt="Cartoon">
+              <h4>Cartoon style</h4>
+            </div>
+            <div class="style-card style-btn" data-style="sketch" onclick="selectAIStyle(this)">
+              <img src="../../images/sketch.jpg" alt="Sketch">
+              <h4>Sketch style</h4>
+            </div>
+          </div>
+
+          <!-- Prompt Field -->
+          <label class="control-label ai-label" style="margin-top: 20px;">Describe your design</label>
+          <textarea id="aiPrompt" placeholder="E.g., cute anime girl with blue hair in a magical forest..."
+            class="ai-textarea"></textarea>
+
+          <!-- Strength Slider Minimal -->
+          <div style="margin-top: 20px;">
+            <label class="control-label"
+              style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.85rem; margin-bottom: 5px; color: #1e293b;">
+              <span>Strength</span> <span id="aiStrengthValue">45%</span>
+            </label>
+            <input type="range" id="aiStrength" min="0" max="100" value="45" class="ai-slider" style="--value: 45%;"
+              oninput="this.style.setProperty('--value', this.value + '%'); document.getElementById('aiStrengthValue').innerText = this.value + '%'">
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #64748b; margin-top: 6px; font-weight: 500;">
+              <span>Subtle</span>
+              <span>Strong</span>
+            </div>
           </div>
         </div>
 
-        <div style="height: 1px; background: #e2e8f0; margin: 20px 0;"></div>
-
-        <button class="add-text-btn" style="background: linear-gradient(45deg, #6366f1, #8b5cf6); margin-bottom: 10px;">
-          <i class="fas fa-magic"></i> Optimize Layout
-        </button>
-        <button class="add-text-btn" style="background: linear-gradient(45deg, #ec4899, #d946ef);">
-          <i class="fas fa-palette"></i> Suggest Colors
-        </button>
+        <div class="ai-box glass-box" style="margin-top: 16px;">
+          <button id="generateBtn" class="generate-btn-cta" onclick="generateAI()">
+            ✨ Generate from Text
+          </button>
+          <img id="aiResult" style="display:none; width:100%; margin-top: 10px; border-radius: 8px;" />
+          <p id="aiError"
+            style="display:none; margin-top: 10px; border-radius: 6px; padding: 8px; background: #fef2f2; border: 1px solid #fecaca; text-align: center; color: #ef4444; font-weight: 600; font-size: 0.85rem;">
+          </p>
+        </div>
       </div>
 
       <div id="panel-material" class="panel-content">
@@ -1101,9 +1204,15 @@
       <div id="panel-properties" class="panel-content">
         <h3>Edit Properties</h3>
 
-        <div class="no-selection" id="prop-empty">
-          <i class="fas fa-mouse-pointer" style="font-size:3rem; color:#e2e8f0; margin-bottom:10px;"></i>
-          <p style="color:#94a3b8;">Select an element from the canvas to edit properties.</p>
+        <div class="no-selection" id="prop-empty"
+          style="text-align: center; padding: 40px 20px; background: #fafafa; border-radius: 12px; border: 1px dashed #e2e8f0; margin-top: 10px;">
+          <div
+            style="width: 60px; height: 60px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+            <i class="fas fa-mouse-pointer" style="font-size:1.5rem; color:#94a3b8;"></i>
+          </div>
+          <h4 style="font-size: 0.95rem; color: #1e293b; margin-bottom: 8px;">No Element Selected</h4>
+          <p style="color:#64748b; font-size: 0.85rem; line-height: 1.5;">Select any textile, image, or shape on the
+            canvas to customize its appearance here.</p>
         </div>
 
         <div id="prop-text" class="prop-group hidden">
@@ -1180,8 +1289,8 @@
       <div class="canvas-area">
         <div class="scroll-container">
           <div id="canvasPlaceholder" class="canvas-placeholder">
-            <h3>Select a Phone Model</h3>
-            <p>Please choose a model from the left sidebar to start designing.</p>
+            <h3 style="color: #0d2261; font-weight: 800;">Design your custom phone case</h3>
+
           </div>
           <div class="zoom-wrapper">
             <div class="design-sheet" id="design-sheet">
@@ -1195,9 +1304,27 @@
     </div>
 
     <aside class="right-panel">
-      <div class="panel-header-small">Live Preview</div>
+      <div class="panel-header-small"
+        style="display: flex; justify-content: center; align-items: center; padding-bottom: 12px; border-bottom: 1px solid #e2e8f0; margin-bottom: 16px; position: relative;">
+        <span
+          style="font-weight: 800; color: #0d2261; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; font-family: 'Poppins', sans-serif;">Live
+          Preview</span>
+        <div id="previewAiToggle"
+          style="display: none; background: #f1f5f9; border-radius: 10px; padding: 3px; position: absolute; right: 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+          <button id="btnOriginal" onclick="uiToggleOriginal()"
+            style="background: transparent; border: none; padding: 4px 10px; border-radius: 7px; font-size: 0.7rem; font-weight: 600; cursor: pointer; color: #64748b; transition: all 0.2s;">Original</button>
+          <button id="btnAiResult" onclick="uiToggleAiResult()"
+            style="background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: none; padding: 4px 10px; border-radius: 7px; font-size: 0.7rem; font-weight: 600; cursor: pointer; color: #0f172a; transition: all 0.2s;">AI
+            Result</button>
+        </div>
+      </div>
       <div class="preview-stage-real">
         <div id="mirror-container">
+          <!-- Preview Empty State -->
+          <div id="preview-empty-state" class="preview-empty">
+            <i class="fas fa-mobile-alt"></i>
+            <p>Your design will appear here</p>
+          </div>
         </div>
       </div>
     </aside>
@@ -1207,7 +1334,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="/js/design-studio.js"></script>
+  <script src="../../js/design-studio.js"></script>
 
   <!-- Brand Selection Modal -->
   <div id="brandModal" class="model-modal">
@@ -1235,6 +1362,9 @@
       </div>
     </div>
   </div>
+  <button class="mobile-preview-toggle" onclick="toggleMobilePreview()" title="Show/Hide Preview">
+    <i class="fas fa-eye"></i>
+  </button>
 </body>
 
 </html>

@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const emailInput = document.getElementById("email");
   const phoneInput = document.getElementById("phone");
   const addressInput = document.getElementById("address");
+  const jazzcashInput = document.getElementById("jazzcash");
   const saveBtn = document.querySelector(".save-btn");
 
   // ===== Load Profile Data =====
@@ -29,6 +30,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     emailInput.value = user.email || "";
     phoneInput.value = user.phone || "";
     addressInput.value = user.address || "";
+    if (jazzcashInput) {
+      jazzcashInput.value = user.jazzcashNumber || "";
+    }
 
     const avatarLetter = document.getElementById("avatarLetter");
     const profilePic = document.getElementById("profilePic");
@@ -61,11 +65,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: JSON.stringify({
           name: nameInput.value,
           phone: phoneInput.value,
-          address: addressInput.value
+          address: addressInput.value,
+          jazzcashNumber: jazzcashInput ? jazzcashInput.value : ""
         })
       });
 
       const data = await response.json();
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        user.name = nameInput.value;
+        user.jazzcashNumber = jazzcashInput ? jazzcashInput.value : "";
+        localStorage.setItem("user", JSON.stringify(user));
+      }
+
       alert(data.message);
 
     } catch (error) {

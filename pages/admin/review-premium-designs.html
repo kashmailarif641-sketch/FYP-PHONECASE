@@ -49,16 +49,55 @@
     <header class="review-header">
       <h1 class="page-title">Review Premium Designs</h1>
       <p class="page-subtitle">Pending premium submissions awaiting admin approval and purchase</p>
-      <div style="margin-top:10px;display:flex;gap:8px;">
-        <button id="refreshStateBtn" class="approve-btn" style="padding:6px 10px;font-size:13px;">Refresh State</button>
-        <button id="clearStateBtn" class="reject-btn" style="padding:6px 10px;font-size:13px;">Clear State</button>
-      </div>
     </header>
 
     <!-- Dynamic Designs Container -->
     <div id="premiumContainer"></div>
 
   </main>
+
+  <!-- Payment Details Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <input type="hidden" id="mongoOrderId">
+      <input type="hidden" id="mongoUserId">
+      <h3>Payment Details</h3>
+
+      <div class="modal-body">
+        <label>Order ID</label>
+        <input type="text" id="orderId" readonly>
+
+        <label>User Name</label>
+        <input type="text" id="userName" readonly>
+
+        <label>User Number</label>
+        <input type="text" id="userNumber" readonly>
+
+        <label>Amount (Rs)</label>
+        <input type="text" id="amount" readonly>
+
+        <label>Payment Method</label>
+        <select id="paymentMethod">
+          <option value="">Select Method</option>
+          <option>JazzCash</option>
+          <option>EasyPaisa</option>
+          <option>Bank</option>
+        </select>
+
+        <label>Transaction ID</label>
+        <input type="text" id="transactionId" placeholder="Transaction ID">
+
+        <label>Payment Date</label>
+        <input type="date" id="paymentDate">
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:center; gap:10px; margin-top:15px;">
+        <button class="approve-btn" onclick="savePayment()">Save</button>
+        <button class="reject-btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <div class="sidebar-overlay"></div>
   <script src="../../js/admin-common.js"></script>

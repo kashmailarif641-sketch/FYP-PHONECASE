@@ -34,78 +34,7 @@ body {
   min-height: 100vh;
 }
 
-/* -------------------------------------------------------
-   SIDEBAR (Matched to Admin)
-------------------------------------------------------- */
-.sidebar {
-  width: 250px;
-  background: linear-gradient(180deg, var(--brand-light), var(--brand-dark));
-  color: white;
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  /* Changed from space-between to match admin visual top alignment */
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
-  /* Added shadow */
-  border-right: 2px solid var(--btn-right);
-  /* Matched border */
-  /* Sticky behavior can be added if desired, keeping flex for now */
-}
-
-.sidebar .logo {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 40px;
-  letter-spacing: 1px;
-  color: #fdfdfd;
-}
-
-.sidebar .menu {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  /* Matched gap */
-}
-
-.sidebar .menu li a {
-  text-decoration: none;
-  color: #ffffff;
-  font-weight: 500;
-  padding: 12px 14px;
-  /* Matched padding */
-  border-radius: 10px;
-  /* Matched radius */
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  /* Explicitly keeping size, admin has it via inheritance usually */
-  transition: all 0.3s ease;
-}
-
-.sidebar .menu li a i {
-  font-size: 20px;
-  margin-right: 0;
-}
-
-.sidebar .menu li a:hover,
-.sidebar .menu li.active a {
-  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
-  color: #fff;
-  transform: translateX(6px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  /* Matched shadow */
-}
-
-.sidebar .menu li a i {
-  font-size: 18px;
-  color: #fff;
-  margin-right: 5px;
-  /* Added spacing if icons exist */
-}
+/* Sidebar styles moved to user-sidebar.css */
 
 /* -------------------------------------------------------
    CONTENT AREA
@@ -243,63 +172,13 @@ body {
   }
 }
 
-/* -------------------------------------------------------
-   RESPONSIVE
-------------------------------------------------------- */
 @media (max-width: 1024px) {
-  .sidebar {
-    width: 200px;
-  }
-
   .content-area {
     padding: 30px;
   }
 }
 
 @media (max-width: 768px) {
-  .dashboard-wrapper {
-    flex-direction: column;
-  }
-
-  /* Sidebar transforms to Top Nav */
-  .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-    padding: 15px;
-    align-items: center;
-  }
-
-  .sidebar .logo {
-    display: none;
-    /* Hide logo in sidebar on mobile to save space, usually header deals with it or keep small */
-  }
-
-  /* Or keep logo small */
-  .sidebar .logo {
-    display: block;
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-
-  .sidebar .menu {
-    flex-direction: row;
-    overflow-x: auto;
-    /* Allow scrolling */
-    white-space: nowrap;
-    width: 100%;
-    padding-bottom: 5px;
-    gap: 10px;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .sidebar .menu li a {
-    font-size: 14px;
-    padding: 8px 15px;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  /* Content Refinements */
   .content-area {
     padding: 20px 15px;
   }

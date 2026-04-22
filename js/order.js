@@ -56,6 +56,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (premiumCheckbox && premiumBox) {
         premiumCheckbox.addEventListener("change", function () {
             if (this.checked) {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (!user || !user.jazzcashNumber) {
+                    alert("Please add JazzCash number in profile first");
+                    this.checked = false;
+                    window.location.href = "user-profile.html";
+                    return;
+                }
                 premiumBox.style.display = "block";
             } else {
                 premiumBox.style.display = "none";
@@ -148,6 +155,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 };
                 localStorage.setItem("confirmedOrder", JSON.stringify(confirmedOrder));
+
+                // Clear auto-saved design because order placed successfully
+                localStorage.removeItem("savedDesign");
 
                 // Direct redirect (no alert)
                 window.location.href = "payment-confirmation.html";

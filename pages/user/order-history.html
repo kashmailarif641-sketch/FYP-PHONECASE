@@ -8,6 +8,7 @@
 
   <!-- CSS Links -->
   <link rel="stylesheet" href="../../css/user-dashboard.css">
+  <link rel="stylesheet" href="../../css/user-sidebar.css">
   <link rel="stylesheet" href="../../css/order-history.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
@@ -52,6 +53,50 @@
 
     </main>
 
+  </div>
+
+
+  <!-- Premium Payment Details Modal (Form Style) -->
+  <div id="paymentDetailsModal" class="modal" style="display:none;">
+    <div class="modal-content payment-form">
+      <span class="close-modal" onclick="closePaymentModal()">&times;</span>
+      
+      <div class="form-header">
+        <i class="fi fi-rr-receipt"></i>
+        <h2>Payment Details</h2>
+        <p>Please review and confirm your payment</p>
+      </div>
+
+      <div class="form-body">
+        <div class="detail-row">
+          <label>Order Reference:</label>
+          <span id="modalOrderId" class="detail-value"></span>
+        </div>
+        <div class="detail-row">
+          <label>Total Amount:</label>
+          <span class="detail-value highlight">Rs. <span id="modalAmount"></span></span>
+        </div>
+        <div class="detail-row">
+          <label>Payment Method:</label>
+          <span id="modalMethod" class="detail-value"></span>
+        </div>
+        <div class="detail-row">
+          <label>Transaction ID:</label>
+          <span id="modalTransactionId" class="detail-value"></span>
+        </div>
+        <div class="detail-row">
+          <label>Authorized Date:</label>
+          <span id="modalDate" class="detail-value"></span>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button id="confirmInModalBtn" class="confirm-btn-primary">
+          <i class="fi fi-rr-check"></i> Confirm My Payment
+        </button>
+        <p class="disclaimer">By clicking confirm, you verify that you have successfully transferred the amount shown above.</p>
+      </div>
+    </div>
   </div>
 
   <!-- JS -->

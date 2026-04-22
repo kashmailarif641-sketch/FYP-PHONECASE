@@ -579,6 +579,21 @@ const EditorState = {
   selectedId: null
 };
 
+// ===== DEBOUNCE UTILITY =====
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+let isPremium = false;
+
 // ===== SIDEBAR NAVIGATION =====
 function showPanel(panelId) {
   // Hide all panels
@@ -1201,7 +1216,7 @@ function centerSelected() {
 }
 
 // ===== MIRROR PREVIEW =====
-function updatePreview() {
+const updatePreview = debounce(function () {
   const sheet = document.getElementById('design-sheet');
   const mirror = document.getElementById('mirror-container');
 
@@ -1215,10 +1230,8 @@ function updatePreview() {
   // If we have a fabric canvas, we need to sync its content to the clone
   const cloneCanvas = clone.querySelector('#fabric-canvas');
   if (cloneCanvas && fabricCanvas) {
-    // We can use a simplified approach: just replace the clone's canvas with an image of the current fabric canvas
     const dataUrl = fabricCanvas.toDataURL();
     const img = document.createElement('img');
-    img.id = 'finalPreview';
     img.src = dataUrl;
     img.style.width = '100%';
     img.style.height = '100%';
@@ -1227,13 +1240,31 @@ function updatePreview() {
     cloneCanvas.replaceWith(img);
   }
 
-  // Scale to fit mirror-container
+  // Handle Premium Badge in Preview
+  if (isPremium) {
+    const badge = document.createElement('div');
+    badge.innerHTML = '<i class="fas fa-crown"></i> PREMIUM DESIGN';
+    badge.className = 'premium-badge-preview';
+    badge.style.position = 'absolute';
+    badge.style.bottom = '10px';
+    badge.style.left = '50%';
+    badge.style.transform = 'translateX(-50%)';
+    badge.style.background = 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+    badge.style.color = 'white';
+    badge.style.padding = '4px 12px';
+    badge.style.borderRadius = '999px';
+    badge.style.fontSize = '8px';
+    badge.style.fontWeight = 'bold';
+    badge.style.zIndex = '1000';
+    badge.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+    clone.appendChild(badge);
+  }
+
   const mirrorWidth = mirror.clientWidth;
   const sheetWidth = sheet.clientWidth;
   const sheetHeight = sheet.clientHeight;
   const scale = mirrorWidth / sheetWidth;
 
-  // Dynamically adjust mirror height to match the scaled sheet ratio, removing white areas
   mirror.style.height = (sheetHeight * scale) + 'px';
 
   clone.style.transform = `scale(${scale})`;
@@ -1241,6 +1272,36 @@ function updatePreview() {
   clone.style.margin = "0";
 
   mirror.appendChild(clone);
+}, 150);
+
+function togglePremiumDesign() {
+  isPremium = !isPremium;
+  const btn = document.getElementById('premiumToggleBtn');
+  if (btn) {
+    if (isPremium) {
+      btn.style.background = 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+      btn.style.color = 'white';
+      btn.querySelector('i').className = 'fas fa-star';
+      showToast("Marked as Premium Design ⭐");
+    } else {
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.querySelector('i').className = 'far fa-star';
+      showToast("Premium mark removed");
+    }
+  }
+  updatePreview();
+}
+
+function toggleMobilePreview() {
+  const panel = document.querySelector('.right-panel');
+  const btn = document.querySelector('.mobile-preview-toggle i');
+  if (panel) {
+    panel.classList.toggle('active');
+    if (btn) {
+      btn.className = panel.classList.contains('active') ? 'fas fa-eye-slash' : 'fas fa-eye';
+    }
+  }
 }
 
 
@@ -2598,196 +2659,47 @@ function toggleSubPanel() {
   sp.classList.toggle('hidden');
 }
 
-async function saveDesign() {
-  try {
-    // 1️⃣ Get logged in user
-    const userData = JSON.parse(localStorage.getItem("user"));
+function saveDesign() {
+  if (!fabricCanvas) return;
+  const objects = fabricCanvas.getObjects();
+  // Filter out background, clipping path or mockups
+  const hasContent = objects.some(obj => obj.name !== 'phone-body' && obj.name !== 'design-bg' && obj.name !== 'design-bg-img');
 
-    if (!userData || !userData._id) {
-      alert("User not logged in.");
-      return;
-    }
-
-    // 2️⃣ Get design title
-    const designNameEl = document.querySelector(".project-title");
-    const designName = designNameEl ? designNameEl.innerText.trim() : "Untitled Design";
-
-    // 3️⃣ Get selected model
-    const selectedModel = localStorage.getItem("selectedModel");
-
-    if (!selectedModel) {
-      alert("Please select a phone model first.");
-      return;
-    }
-
-    // 4️⃣ Ensure fabricCanvas exists
-    if (!fabricCanvas) {
-      alert("Canvas not initialized.");
-      return;
-    }
-
-    // Remove selection for clean export
-    fabricCanvas.discardActiveObject();
-    fabricCanvas.renderAll();
-
-    // 5️⃣ Get canvas data
-    const canvasData = fabricCanvas.toJSON();
-    const previewImage = fabricCanvas.toDataURL({
-      format: "png",
-      quality: 1
-    });
-
-    // 6️⃣ Send to backend
-    const params = new URLSearchParams(window.location.search);
-    const editId = params.get("id");
-
-    const url = editId
-      ? `http://localhost:5000/api/design/${editId}`
-      : "http://localhost:5000/api/design/save";
-
-    const method = editId ? "PUT" : "POST";
-
-    const response = await fetch(url, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userId: userData._id,
-        designName,
-        model: selectedModel,
-        canvasData,
-        previewImage,
-        material: "Standard"
-      })
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      showToast(editId ? "Design updated successfully ✅" : "Design saved successfully ✅");
-
-      if (editId && window.history.replaceState) {
-        // Remove the ID from the URL so it doesn't stay in "edit mode" on reload
-        const newUrl = window.location.pathname;
-        window.history.replaceState(null, '', newUrl);
-      }
-
-      // Set a small timeout to let the toast show before redirecting
-      setTimeout(() => {
-        window.location.href = "my-designs.html";
-      }, 1000);
-    } else {
-      alert(data.message || "Failed to save design.");
-    }
-
-  } catch (error) {
-    console.error("Save Error:", error);
-    alert("Something went wrong while saving.");
+  if (!hasContent) {
+    showToast("Please add something to the design before saving.", "fa-exclamation-circle");
+    return;
   }
+
+  saveState();
+  let msg = "Design Saved Successfully";
+  if (typeof isPremium !== 'undefined' && isPremium) msg = "Premium " + msg;
+  showToast(msg, "fa-check-circle");
 }
 
 function exportDesign() {
   if (!fabricCanvas) {
-    alert("Canvas not initialized.");
+    showToast("Canvas not initialized", "fa-exclamation-triangle");
     return;
   }
 
-  // 1️⃣ De-select any active object for clean export
+  // De-select any active object for clean export
   fabricCanvas.discardActiveObject();
   fabricCanvas.renderAll();
 
-  // 2️⃣ Get canvas data as image (PNG)
   const dataURL = fabricCanvas.toDataURL({
-    format: "png",
+    format: 'png',
     quality: 1
   });
 
-  // 3️⃣ Trigger download
-  const link = document.createElement("a");
+  const link = document.createElement('a');
+  link.download = 'design.png';
   link.href = dataURL;
-  link.download = "CaseCraft-Design.png";
   link.click();
-
-  if (typeof showToast === 'function') {
-    showToast("Design exported successfully! 🚀");
-  }
-}
-
-function getBasePrice(modelName) {
-  if (modelName.includes("iPhone 6") || modelName.includes("iPhone 7") || modelName.includes("iPhone 8")) {
-    return 1200;
-  }
-  if (modelName.includes("iPhone X") || modelName.includes("iPhone 11")) {
-    return 1500;
-  }
-  if (modelName.includes("iPhone 12") || modelName.includes("iPhone 13")) {
-    return 1700;
-  }
-  if (modelName.includes("iPhone 14") || modelName.includes("iPhone 15") || modelName.includes("iPhone 16") || modelName.includes("iPhone 17")) {
-    return 1900;
-  }
-  if (modelName.includes("Galaxy S22") || modelName.includes("Galaxy S23") || modelName.includes("Galaxy S24")) {
-    return 1800;
-  }
-  if (modelName.includes("Galaxy S20") || modelName.includes("Galaxy S21")) {
-    return 1600;
-  }
-  if (modelName.includes("Galaxy A")) {
-    return 1400;
-  }
-  if (modelName.includes("Note")) {
-    return 1700;
-  }
-  if (modelName.includes("OnePlus")) {
-    return 1700;
-  }
-  if (modelName.includes("Pixel")) {
-    return 1600;
-  }
-  if (modelName.includes("Redmi") || modelName.includes("Xiaomi") || modelName.includes("Oppo") || modelName.includes("Vivo") || modelName.includes("Realme")) {
-    return 1300;
-  }
-  if (modelName.includes("Tecno") || modelName.includes("Infinix")) {
-    return 1100;
-  }
-  if (modelName.includes("Moto")) {
-    return 1400;
-  }
-  return 1300; // default fallback
+  showToast("Exporting Design...", "fa-download");
 }
 
 function placeOrder() {
-  const brand = currentBrand || "iphone";
-  const model = localStorage.getItem("selectedModel") || "iPhone 15";
-  const previewEl = document.getElementById("finalPreview");
-  const image = previewEl ? previewEl.src : "";
-
-  const basePrice = getBasePrice(model);
-
-  let previewImage = image;
-  if (fabricCanvas) {
-    previewImage = fabricCanvas.toDataURL({
-      format: "png",
-      quality: 1
-    });
-  }
-
-  localStorage.setItem("selectedBrand", brand);
-  localStorage.setItem("selectedModel", model);
-  localStorage.setItem("designImage", image); // Original image
-  localStorage.setItem("designPreview", previewImage); // Explicitly the new fabric canvas image preview
-  localStorage.setItem("basePrice", basePrice);
-
-  // Still support the original 'selectedOrder' structure if needed by other components
-  const orderData = {
-    name: (document.querySelector(".project-title")?.innerText || "Custom Design"),
-    image: image,
-    model: model,
-    price: basePrice // Dynamic base price for custom designs
-  };
-  localStorage.setItem("selectedOrder", JSON.stringify(orderData));
-
+  // Redirect to order page in same folder
   window.location.href = 'order.html';
 }
 // Store the current model image path for mask reference
@@ -3552,54 +3464,6 @@ window.goBackToBrands = goBackToBrands;
 window.handleModelSelect = handleModelSelect;
 window.selectModelByName = selectModelByName;
 
-async function loadDesign(id) {
-  try {
-    const response = await fetch(`http://localhost:5000/api/design/${id}`);
-    const data = await response.json();
-
-    if (!response.ok) {
-      alert("Failed to load design");
-      return;
-    }
-
-    // The backend returns the design object in 'data'
-    const design = data;
-
-    // 1️⃣ Canvas JSON load
-    if (design.canvasData && fabricCanvas) {
-      // If canvasData is already an object, use it; if string, parse it
-      const canvasJson = (typeof design.canvasData === 'string')
-        ? JSON.parse(design.canvasData)
-        : design.canvasData;
-
-      fabricCanvas.loadFromJSON(canvasJson, () => {
-        fabricCanvas.renderAll();
-        if (typeof updatePreview === 'function') updatePreview();
-        saveState(); // Record initial state for undo
-      });
-    }
-
-    // 2️⃣ Update title
-    const projectTitle = document.querySelector(".project-title");
-    if (projectTitle) {
-      projectTitle.innerText = design.designName || "Untitled Design";
-    }
-
-    // 3️⃣ Update model in localStorage and visual
-    if (design.model) {
-      localStorage.setItem("selectedModel", design.model);
-      if (typeof selectModelByName === 'function') {
-        selectModelByName(design.model);
-      }
-    }
-
-    console.log("Loaded design:", design);
-
-  } catch (error) {
-    console.error("Load Error:", error);
-  }
-}
-
 // ===== INITIALIZATION & STARTUP =====
 document.addEventListener('DOMContentLoaded', () => {
   // Core Visual Elements
@@ -3614,17 +3478,6 @@ document.addEventListener('DOMContentLoaded', () => {
       preserveObjectStacking: true,
       backgroundColor: 'transparent'
     });
-
-    // Check for design to edit
-    const params = new URLSearchParams(window.location.search);
-    const editId = params.get("id");
-
-    if (editId) {
-      // We need to wait a bit for the canvas and models to be ready
-      setTimeout(() => {
-        loadDesign(editId);
-      }, 500);
-    }
 
     // designLayer is now just a reference to fabricCanvas for direct-add mode
     // We don't use a Group anymore because Group's evented:false blocks selection
@@ -3716,3 +3569,270 @@ document.addEventListener('DOMContentLoaded', () => {
     applyZoom();
   }, 500);
 });
+
+// 🎯 AI GENERATION LOGIC
+document.addEventListener('DOMContentLoaded', () => {
+  const aiInput = document.getElementById("aiImageInput");
+  if (aiInput) {
+    aiInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file || !fabricCanvas) return;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        fabric.Image.fromURL(event.target.result, (img) => {
+          const scale = Math.max(
+            fabricCanvas.width / img.width,
+            fabricCanvas.height / img.height
+          );
+          img.set({
+            width: img.width,
+            height: img.height,
+            scaleX: scale,
+            scaleY: scale,
+            originX: 'center',
+            originY: 'center',
+            left: fabricCanvas.width / 2,
+            top: fabricCanvas.height / 2,
+            selectable: false,
+            evented: false,
+            name: 'design-bg-img'
+          });
+
+          const existingBg = fabricCanvas.getObjects().find(obj => obj.name === 'design-bg' || obj.name === 'design-bg-img');
+          if (existingBg) fabricCanvas.remove(existingBg);
+
+          fabricCanvas.add(img);
+          fabricCanvas.sendToBack(img);
+          const phoneBody = fabricCanvas.getObjects().find(o => o.name === 'phone-body');
+          if (phoneBody) fabricCanvas.sendToBack(phoneBody);
+          fabricCanvas.renderAll();
+
+          if (typeof saveState === 'function') saveState();
+          if (typeof updatePreview === 'function') updatePreview();
+
+          // 🖼️ STEP 1: SHOW THUMBNAIL AND FILENAME
+          const thumbContainer = document.getElementById("aiThumbnailContainer");
+          const thumbImg = document.getElementById("aiThumbnailPreview");
+          const fileName = document.getElementById("aiFileName");
+          const placeholderText = document.getElementById("aiPlaceholderText");
+
+          if (thumbContainer && thumbImg && fileName) {
+            thumbImg.src = event.target.result;
+            fileName.innerText = file.name;
+            thumbContainer.style.display = "flex";
+            if (placeholderText) placeholderText.style.display = "none";
+          }
+
+          // Enable generate button now that image is uploaded
+          const generateBtn = document.getElementById("aiGenerateBtn");
+          if (generateBtn) {
+            generateBtn.disabled = false;
+            generateBtn.style.background = "linear-gradient(45deg, #6366f1, #8b5cf6)";
+            generateBtn.style.cursor = "pointer";
+            generateBtn.innerHTML = '✨ Generate AI Style';
+          }
+
+          // Clear any previous results
+          const actionsBlock = document.getElementById("aiResultActions");
+          const toggleBlock = document.getElementById("previewAiToggle");
+          if (actionsBlock) actionsBlock.style.display = "none";
+          if (toggleBlock) toggleBlock.style.display = "none";
+
+          // Store original for toggle
+          originalAIImageSrc = event.target.result;
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+});
+
+let currentAIStyle = 'anime'; // 👉 GLOBAL STATE
+
+function selectAIStyle(btn) {
+  // Update current style for prompt construction
+  currentAIStyle = btn.dataset.style;
+
+  // Reset all style buttons (Remove active state)
+  document.querySelectorAll(".style-btn").forEach(b => {
+    b.classList.remove("active", "selected-style");
+  });
+
+  // Set clicked button as active
+  btn.classList.add("active", "selected-style");
+
+  console.log("AI Style selected:", currentAIStyle);
+}
+
+async function generateAI() {
+  const prompt = document.getElementById("aiPrompt").value;
+  const generateBtn = document.getElementById("generateBtn");
+  const errorMsg = document.getElementById("aiError");
+  if (generateBtn) {
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+  }
+  if (errorMsg) errorMsg.style.display = 'none';
+
+  try {
+    console.log("Sending to backend...");
+
+    const response = await fetch("http://127.0.0.1:5000/generate-ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Backend error");
+    }
+
+    const blob = await response.blob();
+    const imageURL = URL.createObjectURL(blob);
+
+    console.log("Image received");
+
+    // 👇 canvas me add karo
+    addImageToCanvas(imageURL);
+  } catch (err) {
+    console.error("ERROR:", err);
+    if (errorMsg) {
+      errorMsg.style.display = 'block';
+      errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Generation failed. Check console.';
+    } else {
+      alert("Generation failed");
+    }
+  } finally {
+    if (generateBtn) {
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = '✨ Generate Design';
+    }
+  }
+}
+
+/**
+ * AI Result Toggles and Apply Logic
+ */
+function uiToggleOriginal() {
+  if (!originalAIImageSrc) return;
+
+  const btnOriginal = document.getElementById("btnOriginal");
+  const btnAiResult = document.getElementById("btnAiResult");
+
+  if (btnOriginal) {
+    btnOriginal.style.background = "#fff";
+    btnOriginal.style.boxShadow = "0 1px 3px rgba(0,0,0,0.1)";
+    btnOriginal.style.color = "#0f172a";
+  }
+  if (btnAiResult) {
+    btnAiResult.style.background = "transparent";
+    btnAiResult.style.boxShadow = "none";
+    btnAiResult.style.color = "#475569";
+  }
+
+  addImageToCanvas(originalAIImageSrc);
+  if (typeof showToast === 'function') showToast("Showing Original Image");
+}
+
+function uiToggleAiResult() {
+  if (!generatedAIImageSrc) return;
+
+  const btnOriginal = document.getElementById("btnOriginal");
+  const btnAiResult = document.getElementById("btnAiResult");
+
+  if (btnAiResult) {
+    btnAiResult.style.background = "#fff";
+    btnAiResult.style.boxShadow = "0 1px 3px rgba(0,0,0,0.1)";
+    btnAiResult.style.color = "#0f172a";
+  }
+  if (btnOriginal) {
+    btnOriginal.style.background = "transparent";
+    btnOriginal.style.boxShadow = "none";
+    btnOriginal.style.color = "#475569";
+  }
+
+  addImageToCanvas(generatedAIImageSrc);
+  if (typeof showToast === 'function') showToast("Showing AI Generated Result");
+}
+
+function applyAIDesign() {
+  const actionsBlock = document.getElementById("aiResultActions");
+  const toggleBlock = document.getElementById("previewAiToggle");
+
+  if (actionsBlock) actionsBlock.style.display = "none";
+  if (toggleBlock) toggleBlock.style.display = "none";
+
+  if (typeof showToast === 'function') showToast("AI Design Finalized! ✨");
+  if (typeof saveState === 'function') saveState();
+}
+
+/**
+ * Adds the generated AI image to the Fabric.js canvas.
+ * @param {string} url The URL of the generated image.
+ */
+function addImageToCanvas(url) {
+  if (!fabricCanvas) return;
+  fabric.Image.fromURL(url, function (img) {
+    img.scaleToWidth(250);
+    fabricCanvas.centerObject(img);
+    fabricCanvas.add(img);
+    fabricCanvas.renderAll();
+
+    if (typeof saveState === 'function') {
+      saveState();
+    }
+  }, { crossOrigin: 'anonymous' });
+}
+
+/**
+ * Premium Toast Notification System
+ * @param {string} msg Message to display
+ * @param {string} icon FontAwesome icon class (optional)
+ */
+function showToast(msg, icon = "fa-info-circle") {
+  // Remove existing toasts
+  const existing = document.querySelector('.toast-container');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-container';
+  toast.innerHTML = `
+        <i class="fas ${icon} toast-icon"></i>
+        <span>${msg}</span>
+    `;
+  document.body.appendChild(toast);
+
+  // Trigger animation
+  setTimeout(() => toast.classList.add('show'), 10);
+
+  // Auto-hide
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+/**
+ * One-time hint for discovering properties panel
+ */
+let tipShown = false;
+function showDiscoveryTip() {
+  if (tipShown) return;
+  showToast("Click any element to edit colors/fonts!", "fa-lightbulb");
+  tipShown = true;
+}
+
+// Add event listener to canvas for discovery tip
+if (typeof fabricCanvas !== 'undefined' && fabricCanvas) {
+  fabricCanvas.on('selection:created', showDiscoveryTip);
+} else {
+  // If not initialized yet, wait for initialization (mocking via late attachment)
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#fabric-canvas') && !tipShown) {
+      // We'll let the selection:created event handle it once fabric is up
+    }
+  });
+}
