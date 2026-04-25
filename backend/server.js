@@ -21,7 +21,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/design", designRoutes);
 
-mongoose.connect("mongodb://kashmailarif51_db_user:5qpeWfeNkWE4VAjx@ac-hrw7o3p-shard-00-00.ri4pl9w.mongodb.net:27017,ac-hrw7o3p-shard-00-01.ri4pl9w.mongodb.net:27017,ac-hrw7o3p-shard-00-02.ri4pl9w.mongodb.net:27017/casecraft?ssl=true&replicaSet=atlas-sh99hn-shard-0&authSource=admin&retryWrites=true&w=majority")
+mongoose.connect("mongodb://kashmail:kashmail12345@ac-vewsz6m-shard-00-00.sfuejqp.mongodb.net:27017,ac-vewsz6m-shard-00-01.sfuejqp.mongodb.net:27017,ac-vewsz6m-shard-00-02.sfuejqp.mongodb.net:27017/?ssl=true&replicaSet=atlas-7a8jne-shard-0&authSource=admin&appName=Cluster0")
   .then(() => console.log("MongoDB Atlas Connected"))
   .catch(err => console.log(err));
 
