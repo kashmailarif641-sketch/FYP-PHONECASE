@@ -1,0 +1,304 @@
+/* Page-specific overrides or local variables if needed */
+
+/* Header */
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0d2261;
+  margin-bottom: 8px;
+}
+
+.dashboard-header p {
+  font-size: 15px;
+  color: #7a8895;
+  margin-bottom: 20px;
+}
+
+/* Input & Filter Section */
+.dashboard-header input[type="search"] {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  width: 280px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px var(--shadow-light);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.dashboard-header input[type="search"]:focus {
+  border-color: var(--brand-mid);
+  box-shadow: 0 4px 12px rgba(6, 174, 204, 0.15);
+}
+
+/* Buttons */
+.approve-btn,
+.reject-btn {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 30px;
+  /* Rounded pill shape */
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.approve-btn {
+  background: linear-gradient(90deg, #03095a, #06aecc);
+}
+
+.approve-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(6, 174, 204, 0.25);
+}
+
+.reject-btn {
+  background: linear-gradient(90deg, #ff5f6d, #ffc371);
+  /* Or a nice red gradient */
+  background: linear-gradient(90deg, #d32f2f, #ef5350);
+}
+
+.reject-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(239, 83, 80, 0.3);
+}
+
+/* ===== Gallery Grid ===== */
+.gallery-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+/* Card Styling */
+.gallery-card {
+  width: 260px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(6, 46, 100, 0.06);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #eef2f6;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(6, 46, 100, 0.12);
+  border-color: #dbe4f1;
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.gallery-card:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-info {
+  padding: 18px;
+  flex-grow: 1;
+}
+
+.gallery-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0d2261;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gallery-info p {
+  font-size: 14px;
+  color: #06aecc;
+  /* Brand highlight color for price */
+  font-weight: 600;
+}
+
+/* Actions Footer in Card */
+.gallery-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: #fcfdfe;
+  border-top: 1px solid #f0f4f8;
+}
+
+.gallery-actions label {
+  font-size: 13px;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.gallery-actions input[type="checkbox"] {
+  accent-color: #06aecc;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.delete-single-btn {
+  background: none;
+  border: none;
+  color: #ff5252;
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+.delete-single-btn:hover {
+  transform: scale(1.2);
+  color: #d32f2f;
+}
+
+/* ===== Modal Styling ===== */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 9, 90, 0.5);
+  /* Brand tinted overlay */
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal.open {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.modal.open .modal-content {
+  transform: translateY(0);
+}
+
+.modal h3 {
+  font-size: 22px;
+  color: #0d2261;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.modal label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 6px;
+  margin-top: 15px;
+}
+
+.modal input[type="text"],
+.modal input[type="number"],
+.modal input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #d9e2ef;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+  background: #f9fbfd;
+}
+
+.modal input:focus {
+  border-color: #06aecc;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(6, 174, 204, 0.1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+/* ===== Footer (Matches other pages) ===== */
+.admin-footer {
+  margin-top: auto;
+  /* Pushes footer to bottom */
+  padding: 20px;
+  background: linear-gradient(90deg, #0d2261, #1d5474);
+  color: #fff;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(6, 46, 100, 0.08);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .gallery-cards {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-header input[type="search"] {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .admin-footer {
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+}

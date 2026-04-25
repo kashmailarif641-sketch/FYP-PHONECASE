@@ -1,0 +1,213 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap');
+
+/* Background */
+.login-body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.9), rgba(255, 107, 129, 0.9)),
+              url("images/bg.jpg") no-repeat center center/cover;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Card */
+.login-card {
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  width: 350px;
+  max-width: 90%;
+  box-sizing: border-box;
+  animation: slideUp 0.8s ease;
+  transition: transform 0.3s;
+}
+.login-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(255, 107, 129, 0.25);
+}
+
+/* Logo */
+.logo {
+  width: 70px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  box-shadow: 0px 4px 12px rgba(255, 107, 129, 0.4);
+}
+
+/* Headings */
+.login-card h2 {
+  margin-bottom: 12px;
+  color: #222;
+  font-size: 26px;
+  font-weight: 600;
+}
+.login-card p {
+  margin-bottom: 25px;
+  color: #555;
+  font-size: 14px;
+}
+
+/* Inputs */
+.input-group {
+  margin-bottom: 18px;
+  position: relative;
+}
+.input-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  font-size: 15px;
+  background: #fafafa;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.input-group input:focus {
+  border-color: #ff6b81;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(255, 107, 129, 0.4);
+}
+
+/* Button */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff6b81, #ff4757);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 6px 15px rgba(255, 71, 87, 0.3);
+}
+.btn:hover {
+  background: linear-gradient(135deg, #ff4757, #ff6b81);
+  box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+  transform: scale(1.04);
+}
+
+/* Signup / Login link */
+.signup-text {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #444;
+}
+.signup-text a {
+  color: #ff4757;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+.signup-text a:hover {
+  color: #ff6b81;
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .login-card {
+    width: 380px;
+    padding: 35px 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-body {
+    padding: 16px;
+  }
+  .login-card {
+    width: 90%;
+    max-width: 450px;
+    padding: 25px 20px;
+    border-radius: 14px;
+  }
+  .logo {
+    width: 60px;
+    margin-bottom: 12px;
+  }
+  .login-card h2 {
+    font-size: 20px;
+  }
+  .login-card p {
+    font-size: 13px;
+  }
+  input {
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  .btn {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-body {
+    padding: 12px;
+    height: auto;
+    min-height: 100vh;
+  }
+  .login-card {
+    width: 95%;
+    max-width: 100%;
+    padding: 18px 16px;
+    border-radius: 12px;
+  }
+  .logo {
+    width: 55px;
+    margin-bottom: 10px;
+  }
+  .login-card h2 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .login-card p {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  input {
+    width: 100%;
+    font-size: 12px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+  }
+  .btn {
+    width: 100%;
+    font-size: 12px;
+    padding: 9px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+  }
+  a {
+    font-size: 11px;
+  }
+}

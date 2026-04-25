@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content & Template Management | CaseCraft Admin</title>
+  <link rel="stylesheet" href="../../css/admin-layout.css">
+  <link rel="stylesheet" href="../../css/admin-dashboard.css" />
+  <link rel="stylesheet" href="../../css/content-management.css" />
+  <script defer src="../../js/content-management.js"></script>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+  <!-- ===== Sidebar ===== -->
+  <aside class="admin-sidebar">
+    <div class="logo">
+      <h2>CaseCraft Admin</h2>
+    </div>
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
+        <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
+        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Order</a></li>
+        <li>
+          <a href="manage-vendors.html">
+            <i class="fi fi-rr-shop"></i> Manage Vendors
+            <span id="vendorBadge" class="badge">0</span>
+          </a>
+        </li>
+        <li><a href="payments.html"><i class="fi fi-rr-dollar"></i> Payments & Transactions</a></li>
+        <li><a href="review-premium-designs.html"><i class="fi fi-rr-palette"></i> Review Premium Designs</a></li>
+        <li><a href="manage-gallery.html"><i class="fi fi-rr-picture"></i> Manage Gallery</a></li>
+        <li><a href="reports-analytics.html"><i class="fi fi-rr-chart-histogram"></i> Reports & Analytics</a></li>
+        <li><a href="content-management.html" class="active"><i class="fi fi-rr-folder"></i> Content Management</a></li>
+        <li>
+          <a href="#" id="adminLogout">
+            <i class="fi fi-rr-sign-out-alt"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ===== Main Section ====== -->
+  <main class="admin-main">
+    <button class="menu-toggle">☰</button>
+    <!-- ===== Header ===== -->
+    <header class="dashboard-header">
+      <h1>Content & Template Management</h1>
+      <p>Manage your design categories, templates, and announcements.</p>
+    </header>
+
+    <!-- === Manage Categories === -->
+    <section class="content-card">
+      <h2>🎨 Design Categories</h2>
+      <div class="input-group">
+        <input type="text" id="categoryInput" placeholder="Enter new category name..." />
+        <button id="addCategoryBtn">Add Category</button>
+      </div>
+      <ul id="categoryList" class="item-list">
+        <li>Floral <button class="delete-btn">Delete</button></li>
+        <li>Abstract <button class="delete-btn">Delete</button></li>
+        <li>Minimalist <button class="delete-btn">Delete</button></li>
+      </ul>
+    </section>
+
+    <!-- === Manage Templates === -->
+    <section class="content-card">
+      <h2>🖼️ Design Templates</h2>
+      <div class="upload-section">
+        <input type="file" id="templateUpload" accept="image/*" hidden />
+        <label for="templateUpload" class="upload-btn">Upload New Template</label>
+      </div>
+      <div class="template-gallery">
+        <div class="template-card">
+          <img src="../../assets/templates/template1.jpg" alt="Template 1" />
+          <button class="delete-btn">🗑</button>
+        </div>
+        <div class="template-card">
+          <img src="../../assets/templates/template2.jpg" alt="Template 2" />
+          <button class="delete-btn">🗑</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- === Manage Phone Models (New) === -->
+    <section class="content-card">
+      <h2>📱 Phone Models</h2>
+      <div class="input-group">
+        <input type="text" id="modelNameInput" placeholder="Model Name (e.g., iPhone 15)" />
+        <select id="modelBrandSelect" style="padding: 12px; border-radius: 12px; border: 1px solid var(--light-grey);">
+          <option value="iphone">iPhone</option>
+          <option value="samsung">Samsung</option>
+          <option value="oneplus">OnePlus</option>
+          <option value="xiaomi">Xiaomi</option>
+          <option value="oppo">Oppo</option>
+          <option value="vivo">Vivo</option>
+          <option value="huawei">Huawei</option>
+          <option value="realme">Realme</option>
+          <option value="tecno">Tecno</option>
+          <option value="infinix">Infinix</option>
+          <option value="googlepixel">Google Pixel</option>
+          <option value="motorola">Motorola</option>
+        </select>
+        <div style="display: flex; gap: 10px;">
+          <input type="number" id="basePriceInput" placeholder="Base Price (Rs)" />
+          <input type="number" id="customPriceInput" placeholder="Custom Price (Rs)" />
+        </div>
+        <input type="text" id="modelImgInput" placeholder="Image URL (or use default placeholder)" />
+        <button id="addModelBtn">Add Model</button>
+      </div>
+      <ul id="modelList" class="item-list">
+        <!-- Models will be added here dynamically -->
+      </ul>
+    </section>
+
+    <!-- === Announcements === -->
+    <section class="content-card">
+      <h2>📢 Announcements</h2>
+      <div class="input-group">
+        <textarea id="announcementInput" placeholder="Write a new announcement..."></textarea>
+        <button id="postAnnouncementBtn">Post Announcement</button>
+      </div>
+      <ul id="announcementList" class="item-list">
+        <li>🎉 New AI design generator update available!</li>
+        <li>🚀 Free shipping for orders above Rs 5000 this week!</li>
+      </ul>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer class="admin-footer">
+      <p>© 2025 CaseCraft. All Rights Reserved.</p>
+    </footer>
+  </main>
+
+  <div class="sidebar-overlay"></div>
+  <script src="../../js/admin-common.js"></script>
+</body>
+
+</html>

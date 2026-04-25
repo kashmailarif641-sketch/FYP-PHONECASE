@@ -1,0 +1,233 @@
+/* ===== General Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== Theme Variables ===== */
+:root {
+  --brand-light: #0d2261;
+  --brand-mid: #1d5474;
+  --brand-dark: #076e9b;
+  --btn-left: #03095a;
+  --btn-right: #06aecc;
+  --bg: #f3f7fcfb;
+  --section-bg: #F7F7F7;
+  --card-highlight: #E7E7E7;
+  --light-grey: #D7D7D7;
+}
+
+body {
+  background-color: var(--bg);
+  display: flex;
+  min-height: 100vh;
+  color: #111;
+}
+
+/* ===== Sidebar ===== */
+.vendor-sidebar {
+  width: 250px;
+  background: linear-gradient(180deg, var(--brand-light), var(--brand-dark));
+  color: white;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  border-right: 2px solid var(--btn-right);
+}
+
+.vendor-sidebar .logo {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  color: #fdfdfd;
+}
+
+.vendor-nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vendor-nav a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 12px 14px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
+.vendor-nav a i {
+  font-size: 20px;
+}
+
+.vendor-nav a:hover,
+.vendor-nav a.active {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  color: #fff;
+  transform: translateX(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Main Content ===== */
+.vendor-main {
+  flex: 1;
+  padding: 40px 50px;
+  background: var(--section-bg);
+}
+
+/* ===== Header ===== */
+.dashboard-header h1 {
+  font-size: 32px;
+  color: var(--brand-light);
+  margin-bottom: 10px;
+}
+
+.dashboard-header p {
+  color: #555;
+  margin-bottom: 30px;
+}
+
+/* ===== Summary Cards ===== */
+.payment-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.summary-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 18px;
+  text-align: center;
+  border: 1px solid var(--card-highlight);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
+}
+
+.summary-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.summary-card h3 {
+  color: var(--brand-dark);
+  margin-bottom: 10px;
+}
+
+.summary-card p {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--btn-right);
+}
+
+/* ===== Table Section ===== */
+.payments-table {
+  background: #fff;
+  padding: 25px;
+  border-radius: 20px;
+  border: 1px solid var(--card-highlight);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-mid));
+  color: white;
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--light-grey);
+  font-size: 14px;
+}
+
+tbody tr:hover {
+  background: #f3f7fc;
+}
+
+/* ===== Status Badges ===== */
+.status {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.status.payment-sent {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.status.confirmed {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.status.waiting {
+  background: #E5E7EB;
+  color: #374151;
+}
+
+/* ===== Confirm Button ===== */
+.confirm-btn {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.confirm-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-btn:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+
+  .vendor-sidebar {
+    width: 200px;
+  }
+
+  .vendor-main {
+    padding: 20px;
+  }
+
+  .payment-summary {
+    grid-template-columns: 1fr;
+  }
+}

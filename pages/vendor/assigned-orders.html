@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Assigned Orders | CaseCraft</title>
+  <link rel="stylesheet" href="../../css/assigned-orders.css">
+  <!-- Flaticon Uicons -->
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="vendor-sidebar">
+    <h2 class="logo">Vendor Panel</h2>
+    <nav class="vendor-nav">
+      <ul>
+        <li><a href="vendor-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard</a></li>
+        <li><a href="assigned-orders.html" class="active"><i class="fi fi-rr-clipboard-list"></i> Assigned Orders</a>
+        </li>
+        <li><a href="vendor-payment.html"><i class="fi fi-rr-dollar"></i> Payments</a></li>
+        <li><a href="vendor-profile.html"><i class="fi fi-rr-user"></i> Profile</a></li>
+        <li><a href="../../login.html"><i class="fi fi-rr-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="vendor-main">
+
+    <!-- Page Header -->
+    <header class="dashboard-header">
+      <h1 id="welcomeText">Assigned Orders</h1>
+      <p>View and manage all your assigned orders.</p>
+    </header>
+
+    <!-- Filters -->
+    <div class="orders-filters">
+      <div class="filter-group">
+        <label for="status-filter">Filter by Status:</label>
+        <select id="statusFilter">
+          <option value="All">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Processing">Processing</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="search-orders">Search Orders:</label>
+        <input type="text" id="searchInput" placeholder="Order ID or Customer Name">
+      </div>
+    </div>
+
+    <!-- Orders Cards Container -->
+    <section class="overview-cards">
+      <div id="orders-container" class="vendor-orders-grid">
+        <!-- Cards injected by JS -->
+        <p>Loading assigned orders...</p>
+      </div>
+    </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+      <span class="close-modal">&times;</span>
+      <img class="modal-content" id="modalImage">
+      <div id="caption"></div>
+    </div>
+
+  </main>
+
+  <script src="../../js/assigned-order.js"></script>
+</body>
+
+</html>

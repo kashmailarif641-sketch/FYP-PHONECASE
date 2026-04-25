@@ -1,0 +1,114 @@
+/* ====== General Styles ====== */
+body.login-body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0d2261, #076e9b); /* CaseCraft gradient */
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ====== Login Container ====== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* ====== Card ====== */
+.login-card {
+  background: #F3F7FC; /* CaseCraft card background */
+  border-radius: 20px;
+  padding: 40px;
+  width: 350px;
+  box-shadow: 0 8px 25px rgba(13, 146, 202, 0.3);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+/* ====== Headings ====== */
+.login-card h2 {
+  margin: 10px 0;
+  color: #0d2261; /* brand-light */
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.login-card p {
+  color: #374151;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* ====== Input Groups ====== */
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #1d5474; /* brand-mid */
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: #fff;
+  color: #111111;
+}
+
+.input-group input:focus {
+  border-color: #06aecc; /* btn-right */
+  box-shadow: 0 0 8px rgba(6, 174, 204, 0.3);
+}
+
+/* ====== Button ====== */
+.btn {
+  width: 100%;
+  background: linear-gradient(90deg, #03095a, #06aecc); /* CaseCraft gradient */
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, #1d5474, #076e9b); /* hover gradient */
+  box-shadow: 0 0 12px rgba(6, 174, 204, 0.4);
+}
+
+/* ====== Link Text ====== */
+.signup-text {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.signup-text a {
+  color: #0d2261; /* brand-light */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-text a:hover {
+  color: #06aecc; /* btn-right */
+  text-decoration: underline;
+}
+
+/* ====== Animation ====== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

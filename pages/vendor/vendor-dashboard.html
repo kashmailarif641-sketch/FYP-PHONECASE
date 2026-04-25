@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Vendor Dashboard | CaseCraft</title>
+  <link rel="stylesheet" href="../../css/vendor-dashboard.css">
+  <!-- Flaticon Uicons -->
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="vendor-sidebar">
+    <h2 class="logo">Vendor Panel</h2>
+    <nav class="vendor-nav">
+      <ul>
+        <li><a href="vendor-dashboard.html" class="active"><i class="fi fi-rr-apps"></i> Dashboard</a></li>
+        <li><a href="assigned-orders.html"><i class="fi fi-rr-clipboard-list"></i> Assigned Orders</a></li>
+        <li><a href="vendor-payment.html"><i class="fi fi-rr-dollar"></i> Payments</a></li>
+        <li><a href="vendor-profile.html"><i class="fi fi-rr-user"></i> Profile</a></li>
+        <li><a href="#" id="vendorLogout"><i class="fi fi-rr-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="vendor-main">
+    <!-- Top Bar -->
+    <header class="dashboard-header">
+      <h1 id="welcomeText">Welcome</h1>
+      <p>Here is your daily activity summary.</p>
+    </header>
+
+    <!-- Dashboard Cards -->
+    <section class="overview-cards">
+      <div class="card">
+        <h3 class="card-title">Assigned Orders</h3>
+        <p class="card-value" id="assigned-count">0</p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">In Printing</h3>
+        <p class="card-value" id="printing-count">0</p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Completed</h3>
+        <p class="card-value" id="completed-count">0</p>
+      </div>
+    </section>
+
+    <!-- Recent Activity -->
+    <section class="recent-activity">
+      <h2>Recent Activity</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="recent-orders">
+          <!-- Data populated by JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="../../js/vendor-dashboard.js"></script>
+</body>
+
+</html>

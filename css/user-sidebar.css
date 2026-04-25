@@ -1,0 +1,133 @@
+/* -------------------------------------------------------
+   UNIVERSAL USER SIDEBAR (High-Fidelity Match)
+------------------------------------------------------- */
+.sidebar {
+  width: 270px;
+  background: #0d2261; /* Solid dark blue as seen in pic */
+  color: white;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.sidebar .logo {
+  text-align: left;
+  padding: 0 30px;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
+  color: #fff;
+  text-transform: uppercase;
+  display: block;
+}
+
+.sidebar .menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .menu li {
+  width: 100%;
+  padding: 0 15px; /* Added spacing from edges */
+}
+
+.sidebar .menu li a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  padding: 15px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar .menu li a i {
+  font-size: 18px;
+  min-width: 25px;
+}
+
+.sidebar .menu li a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+/* THE DASHBOARD ACTIVE STYLE */
+.sidebar .menu li.active a {
+  background: linear-gradient(90deg, #03095a, #06aecc);
+  color: #fff;
+  font-weight: 700;
+  border-left: 5px solid #fff; /* White left border as requested */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  transform: translateX(5px);
+  border-radius: 0 12px 12px 0; /* Only rounded on the right like the pic maybe? */
+  margin-left: -15px; /* Stretch back to the edge for the border-left to hit the wall */
+  padding-left: 30px;
+}
+
+/* -------------------------------------------------------
+   RESPONSIVE BEHAVIOR
+------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+    padding: 20px 15px;
+  }
+  .sidebar .logo {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    padding: 10px 20px;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    border-right: none;
+    border-bottom: 2px solid #06aecc;
+  }
+
+  .sidebar .logo {
+    margin-bottom: 0;
+    font-size: 18px;
+    padding: 0;
+  }
+
+  .sidebar .menu {
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px 0;
+  }
+
+  .sidebar .menu li a {
+    padding: 8px 12px;
+    font-size: 13px;
+    white-space: nowrap;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+
+  .sidebar .menu li.active a {
+    border-left: none;
+    border-bottom: 3px solid #fff;
+    transform: none;
+  }
+}

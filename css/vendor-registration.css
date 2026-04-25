@@ -1,0 +1,149 @@
+/* Vendor Registration Styles */
+
+/* Match signup/login page background */
+body {
+  background: linear-gradient(90deg, var(--brand-light) 0%, var(--brand-mid) 50%, var(--brand-dark) 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Match container width exactly with login/signup */
+.vendor-container {
+  max-width: 420px !important;
+}
+
+/* Sizing for vendor specific textarea */
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  outline: none;
+  border: 1px solid #076e9b;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: none;
+}
+
+textarea:focus {
+  border-color: var(--btn-right);
+  box-shadow: #076e9b;
+}
+
+/* Checkbox Section */
+.checkbox-section {
+  text-align: left;
+  margin: 10px 0 20px 0;
+}
+
+.checkbox-section label {
+  font-size: 14px;
+  color: var(--brand-light);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--brand-dark);
+}
+
+/* Note Styling */
+.note {
+  font-size: 12px;
+  color: #666;
+  background: #f0f7ff;
+  padding: 10px;
+  border-radius: 8px;
+  border-left: 4px solid var(--brand-dark);
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Ensure centering on small screens */
+@media (max-width: 1024px) {
+  .vendor-container {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+  .vendor-container {
+    max-width: 100%;
+    padding: 20px;
+  }
+  textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+  }
+  .checkbox-section label {
+    font-size: 13px;
+  }
+  .checkbox-group label {
+    font-size: 12px;
+    gap: 6px;
+  }
+  .note {
+    font-size: 11px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+    min-height: auto;
+  }
+  .vendor-container {
+    padding: 14px;
+    max-width: 100%;
+  }
+  textarea {
+    padding: 8px 10px;
+    font-size: 12px;
+    margin: 6px 0;
+  }
+  .checkbox-section {
+    margin: 8px 0 14px 0;
+  }
+  .checkbox-section label {
+    font-size: 12px;
+  }
+  .checkbox-group label {
+    font-size: 11px;
+    gap: 6px;
+  }
+  .checkbox-group input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+  }
+  .note {
+    font-size: 10px;
+    padding: 7px;
+    margin-bottom: 12px;
+  }
+}

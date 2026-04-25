@@ -1,0 +1,464 @@
+/* Manage Vendors Specifically */
+
+/* -----------------------------------------------------
+   PAGE WRAPPER
+----------------------------------------------------- */
+
+/* -----------------------------------------------------
+   HEADER
+----------------------------------------------------- */
+.admin-header {
+    background: linear-gradient(90deg, var(--brand-light), var(--brand-mid));
+    color: #fff;
+    padding: 22px 40px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    animation: fadeInDown 0.6s ease;
+}
+
+.admin-header .page-title {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+/* -----------------------------------------------------
+   HEADER ACTIONS (Search + Add)
+----------------------------------------------------- */
+.header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#searchVendor {
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text-dark);
+    border-radius: 10px;
+    width: 280px;
+    font-size: 15px;
+    transition: 0.3s ease;
+    box-shadow: 0 2px 6px var(--shadow-light);
+}
+
+#searchVendor:focus {
+    border-color: var(--brand-mid);
+    box-shadow: 0 6px 18px rgba(6, 174, 204, 0.2);
+    outline: none;
+}
+
+/* -----------------------------------------------------
+   TABLE CONTAINER
+----------------------------------------------------- */
+.vendor-table-container {
+    padding: 28px;
+    background: var(--white);
+    border-radius: 18px;
+    box-shadow: 0 10px 28px var(--shadow-light);
+    animation: fadeInUp 0.8s ease;
+    overflow-x: auto;
+}
+
+/* -----------------------------------------------------
+   VENDOR TABLE
+----------------------------------------------------- */
+.vendor-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.vendor-table th {
+    background: #f0f4ff;
+    color: var(--text-dark);
+    padding: 15px 20px;
+    border-bottom: 2px solid var(--border);
+    font-weight: 700;
+    font-size: 15px;
+    text-align: left;
+}
+
+.vendor-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    color: #333;
+}
+
+.vendor-table tr {
+    transition: 0.2s ease;
+}
+
+.vendor-table tr:hover {
+    background: #f5faff;
+}
+
+/* -----------------------------------------------------
+   DETAIL EXPAND ROW
+----------------------------------------------------- */
+.detail-row {
+    background: #f9fbff !important;
+}
+
+.detail-content {
+    padding: 15px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    border-left: 4px solid var(--btn-right);
+    animation: fadeIn 0.3s ease;
+}
+
+.toggle-details {
+    background: var(--brand-mid);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.toggle-details:hover {
+    background: var(--brand-light);
+    transform: scale(1.1);
+}
+
+/* -----------------------------------------------------
+   STATUS BADGES
+----------------------------------------------------- */
+.status {
+    padding: 7px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status.pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.status.approved {
+    background: rgba(6, 174, 204, 0.15);
+    color: var(--btn-right);
+}
+
+.status.blocked {
+    background: rgba(13, 46, 130, 0.15);
+    color: var(--brand-light);
+}
+
+.status.rejected {
+    background: #FFEDD5;
+    color: #9A3412;
+}
+
+.vendor-id-text {
+    color: var(--brand-mid);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Removed vendor-id-badge in favor of plain text sync */
+
+/* -----------------------------------------------------
+   BUTTONS
+----------------------------------------------------- */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: 0.2s ease;
+    box-shadow: 0 4px 10px rgba(6, 46, 100, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Compact version for tables */
+.vendor-table .btn {
+    padding: 7px 14px;
+    font-size: 0.82rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add {
+    background: var(--white);
+    color: var(--brand-light);
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-weight: 700;
+    font-size: 15px;
+    border: 1px solid transparent;
+}
+
+.btn-add:hover {
+    background: #f0f4ff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.approve-btn {
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.reject-btn {
+    background: linear-gradient(90deg, #f97316, #ea580c);
+}
+
+.block-btn {
+    background: linear-gradient(90deg, #0d2261, #194c7d);
+}
+
+.delete-btn {
+    background: #e11d48;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* -----------------------------------------------------
+   MODAL
+----------------------------------------------------- */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(3, 9, 90, 0.6);
+}
+
+.modal-content {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 12px 40px rgba(6, 46, 100, 0.18);
+    z-index: 2;
+}
+
+
+/* -----------------------------------------------------
+   RESPONSIVE
+----------------------------------------------------- */
+@media (max-width: 768px) {
+    .admin-main {
+        padding: 20px;
+    }
+
+    .search-right-wrapper {
+        justify-content: flex-start;
+    }
+
+    #searchVendor {
+        width: 100%;
+    }
+
+    .vendor-table {
+        min-width: 100%;
+    }
+}
+
+/* -----------------------------------------------------
+   ANIMATIONS
+----------------------------------------------------- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* -----------------------------------------------------
+   FOOTER
+----------------------------------------------------- */
+.admin-footer {
+    margin-top: 28px;
+    padding: 18px 20px;
+    background: linear-gradient(90deg, var(--brand-light), var(--brand-mid));
+    color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(6, 46, 100, 0.08);
+    font-size: 14px;
+}
+
+/* ===== COMPREHENSIVE RESPONSIVE DESIGN ===== */
+/* Tablet: 769px - 1024px */
+@media (max-width: 1024px) {
+    .admin-header {
+        padding: 18px 30px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    #searchVendor {
+        width: 100%;
+    }
+}
+
+/* Mobile Tablet: 481px - 768px */
+@media (max-width: 768px) {
+    .admin-header {
+        padding: 16px 20px;
+        margin-top: 60px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    #searchVendor {
+        width: 100%;
+        font-size: 14px;
+    }
+    .btn-add-vendor {
+        width: 100%;
+    }
+    .vendor-table-container {
+        padding: 16px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .vendor-table {
+        min-width: 600px;
+        font-size: 13px;
+    }
+    .modal-content {
+        width: 95%;
+        max-width: 500px;
+        padding: 18px;
+    }
+    .admin-footer {
+        margin-top: 20px;
+        font-size: 12px;
+    }
+}
+
+/* Mobile: 320px - 480px */
+@media (max-width: 480px) {
+    .admin-header {
+        padding: 14px 16px;
+        margin-top: 65px;
+    }
+    .admin-header .page-title {
+        font-size: 18px;
+        width: 100%;
+    }
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+    }
+    #searchVendor {
+        width: 100%;
+        padding: 9px 11px;
+        font-size: 13px;
+    }
+    .btn-add-vendor {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    .vendor-table-container {
+        padding: 12px;
+    }
+    .vendor-table {
+        min-width: 550px;
+        font-size: 12px;
+    }
+    .vendor-table th {
+        padding: 10px;
+        font-size: 11px;
+    }
+    .vendor-table td {
+        padding: 10px;
+        font-size: 12px;
+    }
+    .action-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+    .modal-content {
+        width: 90%;
+        padding: 16px;
+    }
+    .modal-content h2 {
+        font-size: 16px;
+    }
+    .form-group input,
+    .form-group select {
+        font-size: 13px;
+        padding: 9px 10px;
+    }
+    .modal-actions button {
+        padding: 10px;
+        font-size: 13px;
+    }
+    .admin-footer {
+        padding: 12px 14px;
+        font-size: 11px;
+    }
+}

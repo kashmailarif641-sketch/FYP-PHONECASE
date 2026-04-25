@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CaseCraft - Design Your Phone Case</title>
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+</head>
+
+<body>
+  <!-- Announcements Banner -->
+  <div id="announcementBanner"
+    style="display:none; background:#020842; color:white; text-align:center; padding:10px; font-size:14px; position:relative;">
+    <span id="announcementText"></span>
+    <button onclick="this.parentElement.style.display='none'"
+      style="background:none; border:none; color:white; float:right; cursor:pointer; font-size:16px; margin-right:10px;">&times;</button>
+  </div>
+
+  <header class="site-header">
+    <div class="logo">CaseCraft</div>
+    <button class="nav-toggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav-links">
+      <a href="home.html" class="active">Home</a>
+      <a href="premium-gallery.html">Premium Gallery</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Create Your Dream Phone Case</h1>
+      <p>Choose your phone model, upload your design, and watch it come alive instantly!</p>
+      <button class="btn-hero" id="getStartedBtn">Get Started</button>
+      <button class="btn-hero" onclick="window.location.href='pages/vendor/vendor-registration.html'"
+        style="margin-left: 15px;">Become a
+        Vendor</button>
+    </div>
+    <div class="hero-image">
+      <img src="images/Image Mokeup.jpg" alt="Phone Case Mockup" />
+    </div>
+  </section>
+
+  <section class="guidelines">
+    <h2>Bring Your Style to Life</h2>
+    <p class="intro-text">Follow these easy steps to design a case that truly reflects you!</p>
+
+    <!-- CHOOSE MODEL (moved out of carousel) -->
+    <section class="choose-model">
+      <h2>CHOOSE YOUR MODEL</h2>
+      <div class="model-grid">
+        <div class="model-box"><img src="images/iphone logo.jpg">
+          <p>iPhone</p>
+        </div>
+        <div class="model-box"><img src="images/samsung logo.jpg">
+          <p>Samsung</p>
+        </div>
+        <div class="model-box"><img src="images/oneplus logo.jpg">
+          <p>OnePlus</p>
+        </div>
+        <div class="model-box"><img src="images/xiaomi logo.jpg">
+          <p>Xiaomi</p>
+        </div>
+        <div class="model-box"><img src="images/oppo logo.jpg">
+          <p>Oppo</p>
+        </div>
+        <div class="model-box"><img src="images/vivo logo.jpg">
+          <p>Vivo</p>
+        </div>
+        <div class="model-box"><img src="images/huawei logo.jpg">
+          <p>Huawei</p>
+        </div>
+        <div class="model-box"><img src="images/realme logo.jpg">
+          <p>Realme</p>
+        </div>
+        <div class="model-box"><img src="images/techno logo.jpg">
+          <p>Tecno</p>
+        </div>
+        <div class="model-box"><img src="images/infinix logo.jpg">
+          <p>Infinix</p>
+        </div>
+        <div class="model-box"><img src="images/pixel logo.jpg">
+          <p>Pixel</p>
+        </div>
+        <div class="model-box"><img src="images/motrola logo.jpg">
+          <p>Motorola</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOMIZED CASES (moved out of carousel) -->
+    <section class="custom-cases-list">
+      <h2>CUSTOMIZED CASES</h2>
+      <div class="cases-container">
+        <div class="case-card"><img src="images/anime.jpg">
+          <h3> Qrioh Anime Cases </h3>
+          <p class="price">Rs. 1,499.00</p>
+        </div>
+        <div class="case-card"><img src="images/ajrak.jpg">
+          <h3>Ajrak Design Phone Case</h3>
+          <p class="price">Rs. 1,499.00</p>
+        </div>
+        <div class="case-card"><img src="images/persian rug.jpg">
+          <h3>Persian Rugs Design Case</h3>
+          <p class="price">Rs. 1,499.00</p>
+        </div>
+        <div class="case-card"><img src="images/download (4).jpg">
+          <h3>Shadow Racer - HQ Ultra Shine phone Case</h3>
+          <p class="price">Rs. 1,499.00</p>
+        </div>
+        <div class="case-card"><img src="images/gotham.webp">
+          <h3>Batman Gotham Grit Glass Case</h3>
+          <p class="price">Rs. 1,499.00</p>
+        </div>
+      </div>
+      <div class="view-more-area"><a class="view-more-btn" href="premium-gallery.html">View More</a></div>
+    </section>
+
+    <!-- AI Effects Section -->
+    <section class="ai-effects">
+      <h2>AI Effects</h2>
+
+      <div class="ai-grid">
+        <div class="ai-box">
+          <img src="images/ai-animation.jpg" alt="">
+          <p>AI Animation Effect</p>
+        </div>
+
+        <div class="ai-box">
+          <img src="images/ai-neon.jpg" alt="">
+          <p>Neon Effect</p>
+        </div>
+
+        <div class="ai-box">
+          <img src="images/ai-enhance.jpg" alt="">
+          <p>AI HD Enhance</p>
+        </div>
+
+        <div class="ai-box">
+          <img src="images/ai-art.jpg" alt="">
+          <p>AI Art Effect</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW: keep as standalone block (not a slide) -->
+    <section class="preview-block">
+      <h2>PREVIEW YOUR CASE</h2>
+      <p class="intro-text">See your artwork on the case instantly with perfect alignment.</p>
+      <div class="preview-content">
+        <div class="preview-text">
+          <ul class="preview-features">
+            <li>Real-time 2D preview</li>
+            <li>Resize & rotate your design</li>
+            <li>Perfect camera cutout visibility</li>
+            <li>Accurate phone model shape</li>
+          </ul>
+        </div>
+        <div class="preview-image">
+          <img src="images/preview-mockup.jpg" alt="Case Preview">
+        </div>
+      </div>
+    </section>
+  </section>
+
+
+
+  <!-- removed duplicate preview block (moved into the swiper wrapper) -->
+
+
+
+
+
+  <section class="place-order">
+    <h2>PLACE ORDER</h2>
+    <p>Confirm your design, make payment, and track your delivery easily.</p>
+    <div class="order-grid">
+      <div class="order-box"><i class="fa-solid fa-credit-card"></i>
+        <p>Payment</p>
+      </div>
+      <div class="order-box"><i class="fa-solid fa-check-circle"></i>
+        <p>Confirmation</p>
+      </div>
+      <div class="order-box"><i class="fa-solid fa-truck"></i>
+        <p>Delivery Tracking</p>
+      </div>
+      <div class="order-box"><i class="fa-solid fa-cart-shopping"></i>
+        <p>Order Now</p>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section brand">
+        <h3>CaseCraft</h3>
+        <p>Design custom phone cases that reflect your style. Premium quality, instant preview, and fast delivery.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-section links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="premium-gallery.html">Premium Gallery</a></li>
+          <li><a href="pages/user/design-studio.html">Design Studio</a></li>
+          <li><a href="login.html">Login / Sign Up</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section contact">
+        <h4>Contact Us</h4>
+        <ul>
+          <li><i class="fa-solid fa-location-dot"></i> Lahore, Pakistan</li>
+          <li><i class="fa-solid fa-phone"></i> +92 300 1234567</li>
+          <li><i class="fa-solid fa-envelope"></i> support@casecraft.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 CaseCraft. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Swiper JS -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script src="js/home.js"></script>
+  <script>
+    // Load Banner Announcement
+    document.addEventListener("DOMContentLoaded", () => {
+      const banner = document.getElementById("announcementBanner");
+      const textSpan = document.getElementById("announcementText");
+      const announcements = JSON.parse(localStorage.getItem("siteAnnouncements")) || [];
+
+      if (announcements.length > 0) {
+        textSpan.textContent = "📢 " + announcements[0]; // Show latest
+        banner.style.display = "block";
+      }
+    });
+  </script>
+</body>
+
+</html>

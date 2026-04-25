@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaseCraft | Order History</title>
+
+  <!-- CSS Links -->
+  <link rel="stylesheet" href="../../css/user-dashboard.css">
+  <link rel="stylesheet" href="../../css/user-sidebar.css">
+  <link rel="stylesheet" href="../../css/order-history.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+
+  <!-- Wrapper -->
+  <div class="dashboard-wrapper">
+
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <div class="logo">CaseCraft</div>
+      <ul class="menu">
+        <li><a href="user-dashboard.html"><i class="fi fi-rr-home"></i> Home</a></li>
+        <li><a href="design-studio.html"><i class="fi fi-rr-magic-wand"></i> Create Design</a></li>
+        <li><a href="my-designs.html"><i class="fi fi-rr-picture"></i> My Designs</a></li>
+        <li class="active"><a href="order-history.html"><i class="fi fi-rr-shopping-bag"></i> Orders</a></li>
+        <li><a href="user-profile.html"><i class="fi fi-rr-user"></i> Profile</a></li>
+        <li><a href="../../home.html"><i class="fi fi-rr-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- ===== Main Content ===== -->
+    <main class="content-area">
+
+      <!-- Page Header -->
+      <section class="page-header">
+        <h1>My Order History</h1>
+        <p>Track your previous phone case orders below.</p>
+      </section>
+
+      <!-- Orders Container -->
+      <section class="orders-container" id="orders-list">
+        <!-- JS will load orders here -->
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>© 2025 CaseCraft. All rights reserved.</p>
+      </footer>
+
+    </main>
+
+  </div>
+
+
+  <!-- Premium Payment Details Modal (Form Style) -->
+  <div id="paymentDetailsModal" class="modal" style="display:none;">
+    <div class="modal-content payment-form">
+      <span class="close-modal" onclick="closePaymentModal()">&times;</span>
+      
+      <div class="form-header">
+        <i class="fi fi-rr-receipt"></i>
+        <h2>Payment Details</h2>
+        <p>Please review and confirm your payment</p>
+      </div>
+
+      <div class="form-body">
+        <div class="detail-row">
+          <label>Order Reference:</label>
+          <span id="modalOrderId" class="detail-value"></span>
+        </div>
+        <div class="detail-row">
+          <label>Total Amount:</label>
+          <span class="detail-value highlight">Rs. <span id="modalAmount"></span></span>
+        </div>
+        <div class="detail-row">
+          <label>Payment Method:</label>
+          <span id="modalMethod" class="detail-value"></span>
+        </div>
+        <div class="detail-row">
+          <label>Transaction ID:</label>
+          <span id="modalTransactionId" class="detail-value"></span>
+        </div>
+        <div class="detail-row">
+          <label>Authorized Date:</label>
+          <span id="modalDate" class="detail-value"></span>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button id="confirmInModalBtn" class="confirm-btn-primary">
+          <i class="fi fi-rr-check"></i> Confirm My Payment
+        </button>
+        <p class="disclaimer">By clicking confirm, you verify that you have successfully transferred the amount shown above.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../../js/order-history.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaseCraft | Review Premium Designs</title>
+  <link rel="stylesheet" href="../../css/admin-layout.css">
+  <link rel="stylesheet" href="../../css/admin-dashboard.css">
+  <link rel="stylesheet" href="../../css/review-premium-designs.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+  <!-- ===== Sidebar ===== -->
+  <aside class="admin-sidebar">
+    <div class="logo">
+      <h2>CaseCraft Admin</h2>
+    </div>
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
+        <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
+        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Order</a></li>
+        <li>
+          <a href="manage-vendors.html">
+            <i class="fi fi-rr-shop"></i> Manage Vendors
+            <span id="vendorBadge" class="badge">0</span>
+          </a>
+        </li>
+        <li><a href="payments.html"><i class="fi fi-rr-dollar"></i> Payments & Transactions</a></li>
+        <li><a href="review-premium-designs.html" class="active"><i class="fi fi-rr-palette"></i> Review Premium
+            Designs</a></li>
+        <li><a href="manage-gallery.html"><i class="fi fi-rr-picture"></i> Manage Gallery</a></li>
+        <li><a href="reports-analytics.html"><i class="fi fi-rr-chart-histogram"></i> Reports & Analytics</a></li>
+        <li><a href="content-management.html"><i class="fi fi-rr-folder"></i> Content Management</a></li>
+        <li>
+          <a href="#" id="adminLogout">
+            <i class="fi fi-rr-sign-out-alt"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Container -->
+  <main class="admin-main review-container">
+    <button class="menu-toggle">☰</button>
+    <header class="review-header">
+      <h1 class="page-title">Review Premium Designs</h1>
+      <p class="page-subtitle">Pending premium submissions awaiting admin approval and purchase</p>
+    </header>
+
+    <!-- Dynamic Designs Container -->
+    <div id="premiumContainer"></div>
+
+  </main>
+
+  <!-- Payment Details Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <input type="hidden" id="mongoOrderId">
+      <input type="hidden" id="mongoUserId">
+      <h3>Payment Details</h3>
+
+      <div class="modal-body">
+        <label>Order ID</label>
+        <input type="text" id="orderId" readonly>
+
+        <label>User Name</label>
+        <input type="text" id="userName" readonly>
+
+        <label>User Number</label>
+        <input type="text" id="userNumber" readonly>
+
+        <label>Amount (Rs)</label>
+        <input type="text" id="amount" readonly>
+
+        <label>Payment Method</label>
+        <select id="paymentMethod">
+          <option value="">Select Method</option>
+          <option>JazzCash</option>
+          <option>EasyPaisa</option>
+          <option>Bank</option>
+        </select>
+
+        <label>Transaction ID</label>
+        <input type="text" id="transactionId" placeholder="Transaction ID">
+
+        <label>Payment Date</label>
+        <input type="date" id="paymentDate">
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:center; gap:10px; margin-top:15px;">
+        <button class="approve-btn" onclick="savePayment()">Save</button>
+        <button class="reject-btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-overlay"></div>
+  <script src="../../js/admin-common.js"></script>
+  <script src="../../js/review-premium-designs.js"></script>
+</body>
+
+</html>

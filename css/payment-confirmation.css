@@ -1,0 +1,172 @@
+/* ===== General Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== Theme Variables (CaseCraft) ===== */
+:root {
+  --brand-light: #0d2261;
+  --brand-mid: #1d5474;
+  --brand-dark: #076e9b;
+  --btn-left: #03095a;
+  --btn-right: #06aecc;
+  --highlight: #F59E0B;
+}
+
+/* ===== Background ===== */
+body {
+  background-color: #F3F7FCFB;
+  color: #374151;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== Header ===== */
+.site-header {
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-dark));
+  color: white;
+  padding: 15px 60px;
+  text-align: left;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== Confirmation Section ===== */
+.confirmation-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, var(--btn-right) 10%, var(--brand-light) 90%);
+}
+
+/* ===== Card ===== */
+.confirmation-card {
+  background: #ffffff;
+  border-radius: 25px;
+  padding: 50px 40px;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 1s ease;
+}
+
+/* ===== Success Icon ===== */
+.success-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #22C55E, #16A34A);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 25px;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+
+.checkmark {
+  width: 60px;
+  height: 60px;
+  stroke-width: 4;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  animation: stroke 0.8s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+  stroke: #fff;
+  fill: none;
+  animation: stroke 0.6s ease-in-out forwards;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s 0.6s ease-in-out forwards;
+}
+
+/* ===== Text ===== */
+h1 {
+  font-size: 1.8rem;
+  color: var(--brand-light);
+  margin-bottom: 12px;
+}
+
+p {
+  color: #374151;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+/* ===== Button ===== */
+button {
+  background: linear-gradient(90deg, var(--btn-left), var(--btn-right));
+  color: #fff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(7, 110, 155, 0.3);
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: var(--highlight);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  background: var(--brand-light);
+  color: white;
+  text-align: center;
+  padding: 18px 0;
+  font-size: 0.9rem;
+}
+
+.site-footer span {
+  color: var(--highlight);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

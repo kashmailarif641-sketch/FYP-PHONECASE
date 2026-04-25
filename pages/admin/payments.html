@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CaseCraft | Payment & Transaction Monitoring</title>
+  <link rel="stylesheet" href="../../css/admin-layout.css">
+  <link rel="stylesheet" href="../../css/admin-dashboard.css">
+  <link rel="stylesheet" href="../../css/payments.css">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+
+<body>
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="admin-sidebar">
+    <div class="logo">
+      <h2>CaseCraft Admin</h2>
+    </div>
+    <nav class="admin-nav">
+      <ul>
+        <li><a href="admin-dashboard.html"><i class="fi fi-rr-apps"></i> Dashboard Overview</a></li>
+        <li><a href="manage-users.html"><i class="fi fi-rr-users-alt"></i> Manage Users</a></li>
+        <li><a href="manage-orders.html"><i class="fi fi-rr-shopping-bag"></i> Manage Order</a></li>
+        <li>
+          <a href="manage-vendors.html">
+            <i class="fi fi-rr-shop"></i> Manage Vendors
+            <span id="vendorBadge" class="badge">0</span>
+          </a>
+        </li>
+        <li><a href="payments.html" class="active"><i class="fi fi-rr-dollar"></i> Payments & Transactions</a></li>
+        <li><a href="review-premium-designs.html"><i class="fi fi-rr-palette"></i> Review Premium Designs</a></li>
+        <li><a href="manage-gallery.html"><i class="fi fi-rr-picture"></i> Manage Gallery</a></li>
+        <li><a href="reports-analytics.html"><i class="fi fi-rr-chart-histogram"></i> Reports & Analytics</a></li>
+        <li><a href="content-management.html"><i class="fi fi-rr-folder"></i> Content Management</a></li>
+        <li>
+          <a href="#" id="adminLogout">
+            <i class="fi fi-rr-sign-out-alt"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ===== Main Content ===== -->
+  <main class="admin-main">
+    <button class="menu-toggle">☰</button>
+
+    <header class="dashboard-header">
+      <h1>Payment & Transaction Monitoring</h1>
+      <p>Track and verify all payment-related activities.</p>
+    </header>
+
+    <!-- ===== Customer Transactions Section ===== -->
+    <section class="recent-activity">
+      <h2>Customer Transactions</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Internal TXN ID</th>
+            <th>User</th>
+            <th>Order ID</th>
+            <th>Amount</th>
+            <th>Payment Method</th>
+            <th>Payment Reference</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="transactionTable">
+          <!-- Data loaded via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== Vendor Payouts Section ===== -->
+    <section class="vendor-payout-section">
+      <div class="section-header">
+        <h2>Vendor Payouts</h2>
+        <button class="btn-primary" onclick="openPayoutModal()">+ Initiate Payout</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Payout ID</th>
+            <th>Vendor</th>
+            <th>Order ID</th>
+            <th>Total Amount</th>
+            <th>Commission</th>
+            <th>Vendor Payable</th>
+            <th>Payment Method</th>
+            <th>Transaction Reference</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Data loaded via JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== Premium Design Payments Section ===== -->
+    <section class="premium-payments-section recent-activity" style="margin-top: 30px;">
+      <h2>Premium Design Payments</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ORDER ID</th>
+            <th>USER</th>
+            <th>USER NUMBER</th>
+            <th>AMOUNT</th>
+            <th>PAYMENT METHOD</th>
+            <th>TRANSACTION ID</th>
+            <th>PAYMENT DATE</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+
+        <tbody id="premiumPaymentsTable">
+          <!-- Dynamic rows yahan add hongi -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- ===== Payout Modal ===== -->
+  <div id="payout-modal" class="modal">
+    <div class="modal-content">
+      <h2>Initiate Vendor Payout</h2>
+
+      <div class="form-group">
+        <label>Vendor ID</label>
+        <input type="text" id="payout-vendor" placeholder="Vendor ObjectId">
+      </div>
+
+      <div class="form-group">
+        <label>Order ID</label>
+        <input type="text" id="payout-order" placeholder="Order ObjectId">
+      </div>
+
+      <div class="form-group">
+        <label>Total Amount (Rs)</label>
+        <input type="number" id="payout-amount" placeholder="0.00">
+      </div>
+
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select id="payout-method">
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="JazzCash">JazzCash</option>
+          <option value="EasyPaisa">EasyPaisa</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Transaction Reference</label>
+        <input type="text" id="payout-reference" placeholder="TXN12345">
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closePayoutModal()">Cancel</button>
+        <button class="btn-confirm" onclick="savePayout()">Confirm Payout</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-overlay"></div>
+  <script src="../../js/admin-common.js"></script>
+  <script src="../../js/payments.js"></script>
+
+</body>
+
+</html>

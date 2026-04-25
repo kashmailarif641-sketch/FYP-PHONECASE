@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="login-card">
+
+      <img src="images/signup logo.jpg" class="logo">
+
+      <h2>Create Account</h2>
+      <p class="subtitle">Sign up to get started</p>
+
+      <form id="signupForm">
+
+        <input type="text" name="name" placeholder="Full Name" required>
+        <span class="error-msg" id="nameError"></span>
+        <input type="email" name="email" placeholder="Email" required>
+        <span class="error-msg" id="emailError"></span>
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+        <span class="error-msg" id="phoneError"></span>
+        <div class="password-container">
+          <input type="password" name="password" id="password" placeholder="Password" required>
+          <i class="fas fa-eye-slash toggle-password" onclick="togglePassword('password', this)"></i>
+        </div>
+        <span class="error-msg" id="passwordError"></span>
+
+        <div class="password-container">
+          <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
+          <i class="fas fa-eye-slash toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+        </div>
+        <span class="error-msg" id="confirmPasswordError"></span>
+
+        <button type="submit" class="login-btn">Sign Up</button>
+
+        <div class="or">OR</div>
+
+        <button type="button" class="google-btn" onclick="window.location.href='http://localhost:5000/auth/google'">
+          <i class="fab fa-google"></i> Continue with Google
+        </button>
+
+      </form>
+
+      <p class="signup">Already have an account?
+        <a href="login.html">Login</a>
+      </p>
+
+    </div>
+  </div>
+  </div>
+
+  <!-- Mock Google Login Modal -->
+  <div id="googleModal" class="google-modal-overlay">
+    <div class="google-modal">
+      <div class="google-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"
+          class="google-logo-sm">
+        <h3>Sign in with Google</h3>
+      </div>
+      <div class="google-body">
+        <p class="choose-text">Choose an account</p>
+        <p class="site-text">to invoke <strong>CaseCraft</strong></p>
+
+        <div class="account-item">
+          <div class="avatar">K</div>
+          <div class="account-info">
+            <span class="account-name">Kashmail User</span>
+            <span class="account-email">kashmail_user@gmail.com</span>
+          </div>
+        </div>
+
+        <div class="account-item use-another">
+          <div class="avatar icon">👤</div>
+          <div class="account-info">
+            <span class="account-name">Use another account</span>
+          </div>
+        </div>
+      </div>
+      <div class="google-footer">
+        <p>To continue, Google will share your name, email address, and language preference with CaseCraft.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/signup.js"></script>
+</body>
+
+</html>
