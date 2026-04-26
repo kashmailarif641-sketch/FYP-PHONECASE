@@ -70,7 +70,7 @@ async function loadOrders() {
           </div>
           <hr>
           <div class="info-row">
-            <span><strong>Model:</strong> ${order.brand} ${order.model}</span>
+            <span><strong>Model:</strong> ${order.model}</span>
             <span><strong>Material:</strong> ${order.material}</span>
           </div>
           <div class="info-row">

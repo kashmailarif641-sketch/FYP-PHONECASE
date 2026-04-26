@@ -693,7 +693,9 @@ function saveState() {
   EditorState.pointer = EditorState.history.length - 1;
 
   // Auto-save to LocalStorage to restore after navigation
-  localStorage.setItem("savedDesign", JSON.stringify({ fabric: canvasJson, bg: bgColor }));
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?._id;
+  localStorage.setItem(`savedDesign_${userId}`, JSON.stringify({ fabric: canvasJson, bg: bgColor }));
 
   updatePreview();
 }
@@ -2798,6 +2800,12 @@ function placeOrder() {
   const designJSON = fabricCanvas.toJSON();
   localStorage.setItem("designJSON", JSON.stringify(designJSON));
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?._id;
+  localStorage.removeItem(`savedDesign_${userId}`);
+
+
+
   // Try capturing high-quality PNG first
   try {
     const designImage = fabricCanvas.toDataURL({
@@ -3739,7 +3747,18 @@ document.addEventListener('DOMContentLoaded', () => {
     applyZoom();
 
     // RESTORE SAVED DESIGN & MODEL (if returning from Order page etc.)
-    const savedDesignStr = localStorage.getItem('savedDesign');
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?._id;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const designId = urlParams.get('id');
+
+    if (!designId) {
+      if (fabricCanvas) fabricCanvas.clear();
+      localStorage.removeItem(`savedDesign_${userId}`);
+    }
+
+    const savedDesignStr = localStorage.getItem(`savedDesign_${userId}`);
     const selectedModel = localStorage.getItem('selectedModel');
     
     if (savedDesignStr && selectedModel) {

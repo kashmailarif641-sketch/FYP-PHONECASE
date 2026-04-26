@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("confirmedOrder", JSON.stringify(confirmedOrder));
 
                 // Clear auto-saved design because order placed successfully
-                localStorage.removeItem("savedDesign");
+                localStorage.removeItem(`savedDesign_${user._id}`);
 
                 // Direct redirect (no alert)
                 window.location.href = "payment-confirmation.html";
