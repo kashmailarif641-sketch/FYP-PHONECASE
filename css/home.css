@@ -299,7 +299,7 @@ body {
 .model-box img {
   width: 65px;
   height: 65px;
-  object-fit: cover;
+  object-fit: contain;
   margin: 0 auto 10px auto;
   display: block;
 }
