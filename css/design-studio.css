@@ -4155,3 +4155,95 @@ textarea:focus {
   pointer-events: none;
   z-index: -1;
 }
+
+/* =======================================
+   STICKER LIBRARY ENHANCEMENTS
+======================================= */
+
+.sticker-categories-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  margin-top: 15px;
+  padding-bottom: 8px;
+  scrollbar-width: none; /* Hide scrollbar for clean look */
+}
+
+.sticker-categories-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.sticker-tab {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.sticker-tab:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.sticker-tab.active {
+  background: var(--primary-gradient);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(13, 34, 97, 0.2);
+}
+
+.sticker-btn {
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1.8rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.sticker-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+  border-color: var(--accent);
+}
+
+.sticker-btn.quote-sticker {
+  font-size: 0.8rem;
+  padding: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  background: #f8fafc;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.sticker-grid {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.sticker-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sticker-grid::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}

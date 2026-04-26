@@ -596,14 +596,29 @@ let isPremium = false;
 
 // ===== SIDEBAR NAVIGATION =====
 function showPanel(panelId) {
-  // Hide all panels
-  document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
-  // Deactivate all buttons
+  const subPanel = document.getElementById('sub-panel');
+  const target = document.getElementById('panel-' + panelId);
+  
+  if (!target) return;
+
+  // If clicking the ALREADY ACTIVE panel, toggle it closed
+  if (target.classList.contains('active') && subPanel && subPanel.classList.contains('active')) {
+    subPanel.classList.remove('active');
+    target.classList.remove('active');
+    // Deactivate all buttons
+    document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+    return;
+  }
+
+  // Otherwise, hide others and show this one
+  document.querySelectorAll('.panel-content').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = ''; 
+  });
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
 
-  // Show target
-  const target = document.getElementById('panel-' + panelId);
-  if (target) target.classList.add('active');
+  target.classList.add('active');
+  if (subPanel) subPanel.classList.add('active');
 
   // Activate button
   const btn = document.querySelector(`.menu-btn[onclick*="'${panelId}'"]`);
@@ -989,27 +1004,110 @@ function addShape(shape) {
   saveState();
 }
 
-function addSticker(emoji) {
+/**
+ * Adds a sticker to the canvas.
+ * @param {string|object} sticker The sticker content or object.
+ * @param {string} type 'emoji', 'image', or 'text'.
+ */
+function addSticker(sticker, type = 'emoji') {
   if (!fabricCanvas) return;
 
-  const textObj = new fabric.Text(emoji, {
+  let stickerObj;
+  const common = {
     left: fabricCanvas.width / 2,
     top: fabricCanvas.height / 2,
-    fontSize: 64,
     originX: "center",
     originY: "center",
     name: 'sticker'
-  });
+  };
 
-  if (designLayer) {
-    designLayer.add(textObj);
-  } else {
-    fabricCanvas.add(textObj);
+  if (type === 'emoji') {
+    stickerObj = new fabric.Text(sticker, {
+      ...common,
+      fontSize: 80,
+    });
+    addAndSelect(stickerObj);
+  } else if (type === 'image') {
+    fabric.Image.fromURL(sticker, function (img) {
+      img.set(common);
+      img.scaleToWidth(120);
+      addAndSelect(img);
+    }, { crossOrigin: 'anonymous' });
+  } else if (type === 'text') {
+    // For text stickers (quotes)
+    stickerObj = new fabric.Textbox(sticker.content || sticker, {
+      ...common,
+      width: 200,
+      fontSize: 24,
+      fontFamily: sticker.font || 'Poppins',
+      fill: sticker.color || '#333',
+      textAlign: 'center',
+      fontWeight: 'bold'
+    });
+    addAndSelect(stickerObj);
   }
+}
 
-  fabricCanvas.setActiveObject(textObj);
+function addAndSelect(obj) {
+  if (designLayer) {
+    designLayer.add(obj);
+  } else {
+    fabricCanvas.add(obj);
+  }
+  fabricCanvas.setActiveObject(obj);
   fabricCanvas.renderAll();
   saveState();
+  if (typeof showToast === 'function') showToast("Sticker Added! ✨", "fa-smile");
+}
+
+function switchStickerCategory(category) {
+  // Update active tab UI
+  document.querySelectorAll('.sticker-tab').forEach(tab => {
+    tab.classList.remove('active');
+    if (tab.innerText.toLowerCase() === category.toLowerCase() || 
+        (category === 'text' && tab.innerText.toLowerCase() === 'quotes')) {
+      tab.classList.add('active');
+    }
+  });
+
+  renderStickers(category);
+}
+
+function renderStickers(category) {
+  const grid = document.getElementById('dynamic-sticker-grid');
+  if (!grid || !STICKER_LIBRARY) return;
+
+  grid.innerHTML = '';
+
+  // Add "Clear" button first
+  const clearBtn = document.createElement('div');
+  clearBtn.className = 'sticker-item clear-tool-item';
+  clearBtn.title = 'Remove Stickers';
+  clearBtn.innerHTML = '<i class="fas fa-ban"></i>';
+  clearBtn.onclick = clearElements;
+  clearBtn.style.cssText = 'aspect-ratio: 1/1; border-radius: 12px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; background: #fff1f2; color: #ef4444; cursor: pointer; border: 1px solid #fecaca;';
+  grid.appendChild(clearBtn);
+
+  const stickers = STICKER_LIBRARY[category] || [];
+
+  stickers.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'sticker-btn';
+    if (s.type === 'text') btn.classList.add('quote-sticker');
+    
+    if (s.type === 'emoji') {
+      btn.innerText = s.content;
+    } else if (s.type === 'image') {
+      btn.innerHTML = `<img src="${s.content}" style="width: 100%; height: 100%; object-fit: contain;">`;
+    } else if (s.type === 'text') {
+      btn.innerText = s.content;
+      btn.style.fontFamily = s.font || 'Poppins';
+      btn.style.color = s.color || '#333';
+    }
+
+    btn.onclick = () => addSticker(s.type === 'text' ? s : s.content, s.type);
+    grid.appendChild(btn);
+  });
 }
 
 // ===== DRAG LOGIC (Simplified) =====
@@ -2976,7 +3074,8 @@ function autoFit() {
     currentActiveId = targetId;
   }
 
-  // Hook into sidebar buttons
+  // (Redundant click listener removed to prevent conflict with showPanel)
+  /*
   document.querySelectorAll('.sidebar-container .menu-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const onclickAttr = btn.getAttribute('onclick') || "";
@@ -2984,6 +3083,7 @@ function autoFit() {
       if (match) togglePanel(match[1]);
     });
   });
+  */
 
   // 2. Project Title: Double-Click Rename
   if (projectTitle) {
@@ -3311,18 +3411,16 @@ function filterBackgrounds(query) {
 
 function filterElements(query) {
   const q = query.toLowerCase();
-  const shapes = document.querySelectorAll('#panel-elements .shape-icon');
-  const stickers = document.querySelectorAll('#panel-elements .sticker-grid span');
+  const stickerBtns = document.querySelectorAll('#dynamic-sticker-grid .sticker-btn');
 
-  shapes.forEach(shape => {
-    const type = shape.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '';
-    shape.style.display = type.toLowerCase().includes(q) ? 'flex' : 'none';
-  });
-
-  stickers.forEach(sticker => {
-    const emo = sticker.innerText || '';
-    // Simple emoji search is hard, but we can match literal characters
-    sticker.style.display = emo.includes(q) || q === '' ? 'inline-block' : 'none';
+  stickerBtns.forEach(btn => {
+    const text = btn.innerText.toLowerCase();
+    // Also check for 'name' if we stored it, but for now just innerText
+    if (text.includes(q) || q === '') {
+      btn.style.display = 'flex';
+    } else {
+      btn.style.display = 'none';
+    }
   });
 }
 
@@ -4173,5 +4271,10 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
       }, 100);
     }
+  }
+
+  // Initialize Sticker Library
+  if (typeof renderStickers === 'function') {
+    renderStickers('flowers');
   }
 });
