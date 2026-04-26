@@ -1212,14 +1212,6 @@ function deleteSelected() {
   }
 }
 
-function centerSelected() {
-  const activeObject = fabricCanvas ? fabricCanvas.getActiveObject() : null;
-  if (activeObject) {
-    fabricCanvas.centerObject(activeObject);
-    fabricCanvas.renderAll();
-    saveState();
-  }
-}
 
 // ===== MIRROR PREVIEW =====
 const updatePreview = debounce(function () {
@@ -3660,6 +3652,69 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!obj || obj.lockRotation) return;
 
       obj.rotate((obj.angle || 0) + 90);
+      fabricCanvas.requestRenderAll();
+      saveState();
+    };
+
+    window.cropObjectSelection = function () {
+      if (!fabricCanvas) return;
+      const obj = fabricCanvas.getActiveObject();
+      if (!obj) return;
+      
+      if (obj.type !== 'image') {
+        if (typeof showToast === 'function') showToast("Crop only works on images.", "fa-info-circle");
+        return;
+      }
+      
+      // Toggle between Circle Crop and None
+      if (!obj.clipPath) {
+        const radius = Math.min(obj.width, obj.height) / 2;
+        const circle = new fabric.Circle({
+          radius: radius,
+          originX: 'center',
+          originY: 'center',
+        });
+        obj.set({ clipPath: circle });
+        if (typeof showToast === 'function') showToast("Circle crop applied", "fa-crop");
+      } else {
+        obj.set({ clipPath: null });
+        if (typeof showToast === 'function') showToast("Crop removed", "fa-undo");
+      }
+      
+      fabricCanvas.requestRenderAll();
+      saveState();
+    };
+
+    window.adjustObjectSelection = function () {
+      if (!fabricCanvas) return;
+      const obj = fabricCanvas.getActiveObject();
+      if (!obj) return;
+      
+      if (obj.type !== 'image') {
+        if (typeof showToast === 'function') showToast("Adjustments only work on images.", "fa-info-circle");
+        return;
+      }
+      
+      // Cycle through filters: Grayscale -> Sepia -> Invert -> None
+      if (!obj.filters) obj.filters = [];
+      const currentFilterType = obj.filters.length > 0 ? obj.filters[0].type : 'none';
+      
+      obj.filters = []; // clear first
+      
+      if (currentFilterType === 'none') {
+        obj.filters.push(new fabric.Image.filters.Grayscale());
+        if (typeof showToast === 'function') showToast("Grayscale applied", "fa-sliders-h");
+      } else if (currentFilterType === 'Grayscale') {
+        obj.filters.push(new fabric.Image.filters.Sepia());
+        if (typeof showToast === 'function') showToast("Sepia applied", "fa-sliders-h");
+      } else if (currentFilterType === 'Sepia') {
+        obj.filters.push(new fabric.Image.filters.Invert());
+        if (typeof showToast === 'function') showToast("Invert applied", "fa-sliders-h");
+      } else {
+        if (typeof showToast === 'function') showToast("Filters removed", "fa-undo");
+      }
+      
+      obj.applyFilters();
       fabricCanvas.requestRenderAll();
       saveState();
     };

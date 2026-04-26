@@ -1247,8 +1247,7 @@
       <div class="floating-toolbar">
         <button onclick="undo()" title="Undo"><i class="fas fa-undo"></i></button>
         <button onclick="redo()" title="Redo"><i class="fas fa-redo"></i></button>
-        <div class="divider"></div>
-        <button onclick="centerSelected()" title="Center Element"><i class="fas fa-align-center"></i></button>
+
         <div class="divider"></div>
         <button onclick="zoomOut()" title="Zoom Out"><i class="fas fa-minus"></i></button>
         <span id="zoom-level">50%</span>
@@ -1264,8 +1263,8 @@
             class="fas fa-unlock"></i></button>
         <div class="divider"></div>
         <button onclick="rotateObjectSelection()" title="Rotate 90°"><i class="fas fa-sync-alt"></i></button>
-        <button onclick="alert('Crop feature coming soon!')" title="Crop"><i class="fas fa-crop-alt"></i></button>
-        <button onclick="alert('Adjustments coming soon!')" title="Adjustments"><i
+        <button onclick="cropObjectSelection()" title="Crop Image"><i class="fas fa-crop-alt"></i></button>
+        <button onclick="adjustObjectSelection()" title="Image Filters"><i
             class="fas fa-sliders-h"></i></button>
         <div class="divider"></div>
         <button onclick="deleteObjectSelection()" title="Delete" style="color: #ef4444;"><i
