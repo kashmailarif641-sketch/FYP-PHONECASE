@@ -2571,28 +2571,7 @@ function getCameraSafePosition(orientation) {
 function escapeHtml(s) { return String(s).replace(/[&<>\"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[c]; }); }
 
 // ===== Toast helper for visual feedback =====
-function showToast(message, duration = 1600) {
-  let t = document.getElementById('studio-toast');
-  if (!t) {
-    t = document.createElement('div');
-    t.id = 'studio-toast';
-    t.style.position = 'fixed';
-    t.style.left = '50%';
-    t.style.transform = 'translateX(-50%)';
-    t.style.bottom = '28px';
-    t.style.padding = '10px 16px';
-    t.style.background = 'rgba(17,24,39,0.9)';
-    t.style.color = '#fff';
-    t.style.borderRadius = '8px';
-    t.style.fontWeight = '600';
-    t.style.zIndex = 9999;
-    document.body.appendChild(t);
-  }
-  t.textContent = message;
-  t.style.opacity = '1';
-  t.style.transition = '';
-  setTimeout(() => { t.style.transition = 'opacity 300ms'; t.style.opacity = '0'; }, duration);
-}
+// Unified showToast is handled at the bottom of the file
 
 // ===== MATERIAL & FINISH =====
 function setMaterial(type) {
@@ -3578,6 +3557,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const file = e.target.files[0];
       if (!file || !fabricCanvas) return;
 
+      // Store the file for sending to API
+      aiUploadedFile = file;
+
       const reader = new FileReader();
       reader.onload = function (event) {
         fabric.Image.fromURL(event.target.result, (img) => {
@@ -3625,7 +3607,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           // Enable generate button now that image is uploaded
-          const generateBtn = document.getElementById("aiGenerateBtn");
+          const generateBtn = document.getElementById("generateImgBtn");
           if (generateBtn) {
             generateBtn.disabled = false;
             generateBtn.style.background = "linear-gradient(45deg, #6366f1, #8b5cf6)";
@@ -3665,7 +3647,8 @@ function selectAIStyle(btn) {
   console.log("AI Style selected:", currentAIStyle);
 }
 
-async function generateAI() {
+async function generateAI(event) {
+  if (event) event.preventDefault();
   const prompt = document.getElementById("aiPrompt").value;
   const generateBtn = document.getElementById("generateBtn");
   const errorMsg = document.getElementById("aiError");
@@ -3678,10 +3661,11 @@ async function generateAI() {
   try {
     console.log("Sending to backend...");
 
-    const response = await fetch("http://127.0.0.1:5000/generate-ai", {
+    const response = await fetch("http://127.0.0.1:5000/api/ai/text", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
       body: JSON.stringify({ prompt }),
     });
@@ -3709,6 +3693,90 @@ async function generateAI() {
     if (generateBtn) {
       generateBtn.disabled = false;
       generateBtn.innerHTML = '✨ Generate Design';
+    }
+  }
+}
+
+let aiUploadedFile = null;
+
+async function generateAIFromImage(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  
+  if (!aiUploadedFile) {
+    showToast("Please upload an image first", "fa-exclamation-circle");
+    return;
+  }
+
+  const generateBtn = document.getElementById("generateImgBtn");
+  const errorMsg = document.getElementById("aiError");
+
+  if (generateBtn) {
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+  }
+  if (errorMsg) errorMsg.style.display = 'none';
+
+  try {
+    const formData = new FormData();
+    formData.append("image", aiUploadedFile);
+    formData.append("style", currentAIStyle);
+    formData.append("model", currentModelId || "Unknown Model");
+
+    if (typeof fabricCanvas !== 'undefined' && fabricCanvas) {
+      const mockFrameData = fabricCanvas.toDataURL({
+        format: 'png',
+        quality: 0.8
+      });
+      formData.append("mockFrame", mockFrameData);
+    }
+
+    const response = await fetch("http://127.0.0.1:5000/api/ai/image", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || "Generation failed on server");
+    }
+
+    const data = await response.json();
+    console.log("AI result:", data);
+
+    if (data.imageUrl) {
+      // Clear thumbnail once generated
+      const thumbContainer = document.getElementById("aiThumbnailContainer");
+      if (thumbContainer) thumbContainer.style.display = "none";
+      
+      const resultImg = document.getElementById("aiResult");
+      if (resultImg) {
+        resultImg.src = data.imageUrl;
+        resultImg.style.display = "block";
+      }
+
+      // Add to canvas as a high-resolution cover image
+      addImageToCanvas(data.imageUrl);
+      showToast("AI Design Applied! ✨", "fa-check-circle");
+    }
+
+  } catch (err) {
+    console.error("AI ERROR:", err);
+    if (errorMsg) {
+      errorMsg.style.display = 'block';
+      errorMsg.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${err.message}`;
+    } else {
+        showToast(err.message, "fa-exclamation-triangle");
+    }
+  } finally {
+    if (generateBtn) {
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = '✨ Generate AI Style';
     }
   }
 }
@@ -3775,15 +3843,53 @@ function applyAIDesign() {
  */
 function addImageToCanvas(url) {
   if (!fabricCanvas) return;
+
+  // Show a subtle indicator
+  showToast("Applying style to canvas...", "fa-sync fa-spin");
+
   fabric.Image.fromURL(url, function (img) {
-    img.scaleToWidth(250);
-    fabricCanvas.centerObject(img);
+    // 1. Calculate aspect-ratio aware scaling to COVER the entire phone case
+    const scaleX = fabricCanvas.width / img.width;
+    const scaleY = fabricCanvas.height / img.height;
+    
+    // Choose the larger scale to ensure no white gaps are left (Cover mode)
+    const scale = Math.max(scaleX, scaleY);
+    
+    img.set({
+      scaleX: scale,
+      scaleY: scale,
+      originX: 'center',
+      originY: 'center',
+      left: fabricCanvas.width / 2,
+      top: fabricCanvas.height / 2,
+      selectable: true,
+      hasControls: true,
+      name: 'generated-ai-image'
+    });
+
+    // 2. Remove any previous background or generated images to prevent overlap bloat
+    const objectsToRemove = fabricCanvas.getObjects().filter(obj => 
+      obj.name === 'generated-ai-image' || obj.name === 'design-bg-img'
+    );
+    objectsToRemove.forEach(obj => fabricCanvas.remove(obj));
+
+    // 3. Add image to canvas
     fabricCanvas.add(img);
+
+    // 4. Send it back behind any stickers/text but remain above the phone frame background
+    fabricCanvas.sendToBack(img);
+    
+    const phoneBody = fabricCanvas.getObjects().find(o => o.name === 'phone-body');
+    if (phoneBody) {
+      // The phone frame (mask) should stay at the absolute bottom index
+      fabricCanvas.sendToBack(phoneBody);
+    }
+
+    fabricCanvas.setActiveObject(img);
     fabricCanvas.renderAll();
 
-    if (typeof saveState === 'function') {
-      saveState();
-    }
+    if (typeof saveState === 'function') saveState();
+    if (typeof updatePreview === 'function') updatePreview();
   }, { crossOrigin: 'anonymous' });
 }
 

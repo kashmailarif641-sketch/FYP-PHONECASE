@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 const vendorRoutes = require("./routes/vendor");
@@ -9,8 +11,7 @@ const passport = require("./config/passport");
 const designRoutes = require("./routes/design");
 const orderRoutes = require("./routes/order");
 const payoutRoutes = require("./routes/payoutRoutes");
-
-
+const aiRoutes = require("./routes/aiRoutes");
 
 
 const app = express();
@@ -19,17 +20,26 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/uploads", express.static("uploads"));
+app.use("/generatedImages", express.static("generatedImages"));
 app.use("/api/design", designRoutes);
 
 mongoose.connect("mongodb://kashmailarif51_db_user:5qpeWfeNkWE4VAjx@ac-hrw7o3p-shard-00-00.ri4pl9w.mongodb.net:27017,ac-hrw7o3p-shard-00-01.ri4pl9w.mongodb.net:27017,ac-hrw7o3p-shard-00-02.ri4pl9w.mongodb.net:27017/casecraft?ssl=true&replicaSet=atlas-sh99hn-shard-0&authSource=admin&retryWrites=true&w=majority")
   .then(() => console.log("MongoDB Atlas Connected"))
   .catch(err => console.log(err));
+  
+if (process.env.HF_TOKEN) {
+  console.log("API Key Loaded");
+} else {
+  console.log("API Key Not Loaded");
+  process.exit(1);
+}
 
 app.use("/api", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payouts", payoutRoutes);
+app.use("/api/ai", aiRoutes);
 app.use(session({
   secret: "casecraft_secret",
   resave: false,
