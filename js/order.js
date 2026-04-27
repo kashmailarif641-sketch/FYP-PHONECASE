@@ -1,12 +1,13 @@
 // ===== order.js =====
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Load Data from LocalStorage
-    const studioImage = localStorage.getItem("designImage");
+    const selectedDesign = JSON.parse(localStorage.getItem("selectedOrderDesign"));
+    const studioImage = selectedDesign ? selectedDesign.image : localStorage.getItem("designImage");
     const studioBrand = localStorage.getItem("selectedBrand");
     const studioModel = localStorage.getItem("selectedModel");
-    const studioBasePrice = parseInt(localStorage.getItem("basePrice")) || 1300;
-
-    let orderData = JSON.parse(localStorage.getItem("selectedOrder")) || {};
+    
+    // Use selectedDesign price if available, otherwise fallback to studioBasePrice or 1300
+    const studioBasePrice = selectedDesign ? parseInt(selectedDesign.price) : (parseInt(localStorage.getItem("basePrice")) || 1300);
 
     // 2. Setup Display
     const previewImg = document.getElementById("orderDesignImg");
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalPriceDisplay = document.getElementById("totalPriceDisplay");
 
     if (studioImage && previewImg) previewImg.src = studioImage;
-    if (heading) heading.textContent = `Order: ${orderData.name || "Custom Case"}`;
+    if (heading) heading.textContent = `Order: ${selectedDesign ? selectedDesign.name : "Custom Case"}`;
     if (brandDisplay) brandDisplay.textContent = studioBrand || "Generic";
     if (modelDisplay) modelDisplay.textContent = studioModel || "Device";
 
@@ -110,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const user = JSON.parse(localStorage.getItem("user"));
-        const designImage = localStorage.getItem("designPreview");
+        const designImage = studioImage || localStorage.getItem("designPreview");
 
         const orderData = {
             userId: user._id,
@@ -158,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Clear auto-saved design because order placed successfully
                 localStorage.removeItem(`savedDesign_${user._id}`);
+                localStorage.removeItem("selectedOrderDesign");
 
                 // Direct redirect (no alert)
                 window.location.href = "payment-confirmation.html";

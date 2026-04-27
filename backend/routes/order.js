@@ -255,6 +255,7 @@ router.put("/:id/premium-approve", async (req, res) => {
 
         order.premiumStatus = "approved";
         order.payment.status = "paid";
+        order.addedToGallery = true;
 
         await order.save();
 
@@ -273,6 +274,16 @@ router.put("/:id/premium-approve", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Premium approval failed" });
+    }
+});
+
+// Reset Gallery Flag
+router.put("/:id/premium-unapprove", async (req, res) => {
+    try {
+        await Order.findByIdAndUpdate(req.params.id, { addedToGallery: false });
+        res.json({ message: "Gallery flag reset" });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to reset gallery flag" });
     }
 });
 

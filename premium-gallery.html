@@ -15,6 +15,11 @@
   <!-- ===== Header ===== -->
   <header class="site-header">
     <div class="logo">CaseCraft</div>
+    <button class="nav-toggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav-links">
+      <a href="home.html">Home</a>
+      <a href="premium-gallery.html" class="active">Premium Gallery</a>
+    </nav>
   </header>
 
   <!-- ===== Hero Section ===== -->
@@ -30,14 +35,10 @@
 
   <!-- ===== Gallery Section ===== -->
   <section class="gallery">
-    <!-- Filters will be injected here by JS -->
-    <div class="filter-container" id="categoryFilters"
-      style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;"></div>
-
     <h2>Featured Premium Designs</h2>
     <p>Choose a premium design and order it instantly!</p>
 
-    <div class="design-grid" id="premiumGrid"></div>
+    <div id="galleryContainer"></div>
   </section>
 
   <!-- ===== Footer ===== -->
