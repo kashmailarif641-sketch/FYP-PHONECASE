@@ -1113,7 +1113,7 @@
               style="font-size: 0.85rem; color: #475569; font-weight: 500; word-break: break-all;"></span>
           </div>
           <!-- Button directly below upload -->
-          <button id="generateImgBtn" class="generate-btn-cta" onclick="generateAI()" style="margin-top: 16px;">
+          <button id="generateImgBtn" type="button" class="generate-btn-cta" onclick="generateAIFromImage(event); event.stopPropagation();" style="margin-top: 16px;">
             🖼️ Generate from Image
           </button>
         </div>
@@ -1158,7 +1158,7 @@
         </div>
 
         <div class="ai-box glass-box" style="margin-top: 16px;">
-          <button id="generateBtn" class="generate-btn-cta" onclick="generateAI()">
+          <button id="generateBtn" type="button" class="generate-btn-cta" onclick="generateAI(event); event.stopPropagation();">
             ✨ Generate from Text
           </button>
           <img id="aiResult" style="display:none; width:100%; margin-top: 10px; border-radius: 8px;" />

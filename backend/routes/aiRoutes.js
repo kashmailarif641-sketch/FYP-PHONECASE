@@ -22,16 +22,7 @@ const authMiddleware = (req, res, next) => {
     }
 };
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const dir = "aiImageInput/";
-        if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-        cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-    }
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 const stylePrompts = {
@@ -52,8 +43,7 @@ const handleAIImageUpload = async (req, res) => {
         console.log("🚀 AI Generation Started");
         console.log("👤 User ID:", req.user.id);
         
-        const userImageBuffer = fs.readFileSync(req.file.path);
-        const userImageBase64 = userImageBuffer.toString("base64");
+        const userImageBase64 = req.file.buffer.toString("base64");
         const selectedPrompt = stylePrompts[style] || "High quality artistic transformation";
 
         console.log("🎨 Calling Flux AI via HF Router...");
