@@ -80,9 +80,10 @@
 
 .design-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 25px;
   padding: 0 20px;
+  justify-content: center;
 }
 
 /* Also ensure card doesn't get too wide if we stick with 1fr */
@@ -94,6 +95,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #eee;
+  max-width: 250px;
+  margin: 0 auto;
 }
 
 .design-card:hover {
