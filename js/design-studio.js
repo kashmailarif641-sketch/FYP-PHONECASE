@@ -4277,4 +4277,5 @@ window.addEventListener("DOMContentLoaded", async () => {
   if (typeof renderStickers === 'function') {
     renderStickers('flowers');
   }
+
 });

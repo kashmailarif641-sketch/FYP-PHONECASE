@@ -4278,13 +4278,4 @@ textarea:focus {
   max-height: 400px;
   overflow-y: auto;
   padding-right: 5px;
-}
-
-.sticker-grid::-webkit-scrollbar {
-  width: 5px;
-}
-
-.sticker-grid::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
-  border-radius: 10px;
 }
