@@ -393,8 +393,12 @@ function selectModelByName(modelName) {
     sidebarSelectedText.innerText = modelName;
   }
 
-  // Persist for page reloads
+  // ✅ SAVE brand + model
+  if (currentBrand) {
+    localStorage.setItem("selectedBrand", currentBrand);
+  }
   localStorage.setItem("selectedModel", modelName);
+  console.log("Saved selections:", currentBrand, modelName);
 
   // Set active state on wrapper for CSS visibility
   const editorWrapper = document.querySelector('.editor-wrapper');
@@ -3585,6 +3589,8 @@ let currentBrand = null;
 
 function selectBrand(brandKey) {
   currentBrand = brandKey;
+  localStorage.setItem("selectedBrand", brandKey);
+  console.log("Brand selected:", brandKey);
   closeBrandModal();
   openModelListForBrand(brandKey);
 }
