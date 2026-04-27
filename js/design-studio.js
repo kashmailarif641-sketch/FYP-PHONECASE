@@ -877,7 +877,7 @@ function addImageToCanvasFromSrc(src) {
 
     fabricCanvas.renderAll();
     saveState();
-  });
+  }, { crossOrigin: 'anonymous' });
 }
 
 // Attach upload listener
@@ -3948,83 +3948,37 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 🎯 AI GENERATION LOGIC
+let originalAIImageSrc = null;
 document.addEventListener('DOMContentLoaded', () => {
   const aiInput = document.getElementById("aiImageInput");
   if (aiInput) {
     aiInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
-      if (!file || !fabricCanvas) return;
+      if (!file) return;
 
       const reader = new FileReader();
       reader.onload = function (event) {
-        fabric.Image.fromURL(event.target.result, (img) => {
-          const scale = Math.max(
-            fabricCanvas.width / img.width,
-            fabricCanvas.height / img.height
-          );
-          img.set({
-            width: img.width,
-            height: img.height,
-            scaleX: scale,
-            scaleY: scale,
-            originX: 'center',
-            originY: 'center',
-            left: fabricCanvas.width / 2,
-            top: fabricCanvas.height / 2,
-            selectable: true,
-            evented: true,
-            lockMovementX: true,
-            lockMovementY: true,
-            lockRotation: true,
-            lockScalingX: true,
-            lockScalingY: true,
-            hasControls: false,
-            name: 'design-bg-img'
-          });
+        // 🖼️ STEP 1: SHOW THUMBNAIL AND FILENAME
+        const thumbContainer = document.getElementById("aiThumbnailContainer");
+        const thumbImg = document.getElementById("aiThumbnailPreview");
+        const fileName = document.getElementById("aiFileName");
+        const placeholderText = document.getElementById("aiPlaceholderText");
 
-          const existingBg = fabricCanvas.getObjects().find(obj => obj.name === 'design-bg' || obj.name === 'design-bg-img');
-          if (existingBg) fabricCanvas.remove(existingBg);
+        if (thumbContainer && thumbImg && fileName) {
+          thumbImg.src = event.target.result;
+          fileName.innerText = file.name;
+          thumbContainer.style.display = "flex";
+          if (placeholderText) placeholderText.style.display = "none";
+        }
 
-          fabricCanvas.add(img);
-          fabricCanvas.sendToBack(img);
-          const phoneBody = fabricCanvas.getObjects().find(o => o.name === 'phone-body');
-          if (phoneBody) fabricCanvas.sendToBack(phoneBody);
-          fabricCanvas.renderAll();
-
-          if (typeof saveState === 'function') saveState();
-          if (typeof updatePreview === 'function') updatePreview();
-
-          // 🖼️ STEP 1: SHOW THUMBNAIL AND FILENAME
-          const thumbContainer = document.getElementById("aiThumbnailContainer");
-          const thumbImg = document.getElementById("aiThumbnailPreview");
-          const fileName = document.getElementById("aiFileName");
-          const placeholderText = document.getElementById("aiPlaceholderText");
-
-          if (thumbContainer && thumbImg && fileName) {
-            thumbImg.src = event.target.result;
-            fileName.innerText = file.name;
-            thumbContainer.style.display = "flex";
-            if (placeholderText) placeholderText.style.display = "none";
-          }
-
-          // Enable generate button now that image is uploaded
-          const generateBtn = document.getElementById("aiGenerateBtn");
-          if (generateBtn) {
-            generateBtn.disabled = false;
-            generateBtn.style.background = "linear-gradient(45deg, #6366f1, #8b5cf6)";
-            generateBtn.style.cursor = "pointer";
-            generateBtn.innerHTML = '✨ Generate AI Style';
-          }
-
-          // Clear any previous results
-          const actionsBlock = document.getElementById("aiResultActions");
-          const toggleBlock = document.getElementById("previewAiToggle");
-          if (actionsBlock) actionsBlock.style.display = "none";
-          if (toggleBlock) toggleBlock.style.display = "none";
-
-          // Store original for toggle
-          originalAIImageSrc = event.target.result;
-        });
+        // Store original for toggle
+        originalAIImageSrc = event.target.result;
+        
+        // Clear any previous results
+        const actionsBlock = document.getElementById("aiResultActions");
+        const toggleBlock = document.getElementById("previewAiToggle");
+        if (actionsBlock) actionsBlock.style.display = "none";
+        if (toggleBlock) toggleBlock.style.display = "none";
       };
       reader.readAsDataURL(file);
     });
@@ -4048,10 +4002,23 @@ function selectAIStyle(btn) {
   console.log("AI Style selected:", currentAIStyle);
 }
 
-async function generateAI() {
-  const prompt = document.getElementById("aiPrompt").value;
-  const generateBtn = document.getElementById("generateBtn");
+async function generateAIFromImage(event) {
+  console.log("🚀 Generate from Image triggered");
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("✅ Event prevented and stopped");
+  }
+  
+  const imageInput = document.getElementById("aiImageInput");
+  const generateBtn = document.getElementById("generateImgBtn");
   const errorMsg = document.getElementById("aiError");
+  
+  if (!imageInput.files[0]) {
+    alert("Please upload an image first.");
+    return;
+  }
+
   if (generateBtn) {
     generateBtn.disabled = true;
     generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
@@ -4059,10 +4026,84 @@ async function generateAI() {
   if (errorMsg) errorMsg.style.display = 'none';
 
   try {
-    console.log("Sending to backend...");
+    const formData = new FormData();
+    formData.append("image", imageInput.files[0]);
+    const selectedStyle = (typeof currentAIStyle !== 'undefined') ? currentAIStyle : "anime";
+    formData.append("style", selectedStyle);
+    formData.append("model", currentModelId || "Unknown");
 
-    // If the page is served from a different port (live server), call the local backend directly.
-    const apiUrl = (location.hostname === '127.0.0.1' && location.port && location.port !== '5000')
+    const token = localStorage.getItem("token");
+    const isLocalhost = (location.hostname === '127.0.0.1' || location.hostname === 'localhost');
+    const apiUrl = (isLocalhost && location.port && location.port !== '5000')
+      ? 'http://127.0.0.1:5000/api/ai/image'
+      : '/api/ai/image';
+
+    console.log("Calling Image-to-Image AI API:", apiUrl);
+
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    const data = await response.json();
+    console.log("Backend Response Received:", data);
+
+    if (!response.ok) {
+      throw new Error(data.message || "Backend error");
+    }
+
+    if (data.imageUrl) {
+      console.log("Adding AI image to canvas:", data.imageUrl);
+      addImageToCanvasFromSrc(data.imageUrl);
+      if (typeof showToast === 'function') showToast("AI Design Generated from Image! ✨");
+    }
+  } catch (err) {
+    console.error("AI GENERATION ERROR:", err);
+    if (errorMsg) {
+      errorMsg.style.display = 'block';
+      errorMsg.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${err.message}`;
+    } else {
+      alert("Generation failed: " + err.message);
+    }
+  } finally {
+    if (generateBtn) {
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = '🖼️ Generate from Image';
+    }
+  }
+}
+
+async function generateAI(event) {
+  console.log("🚀 Generate from Text triggered");
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("✅ Event prevented and stopped");
+  }
+
+  const prompt = document.getElementById("aiPrompt").value;
+  const generateBtn = document.getElementById("generateBtn");
+  const errorMsg = document.getElementById("aiError");
+
+  if (!prompt) {
+    alert("Please enter a prompt first.");
+    return;
+  }
+
+  if (generateBtn) {
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+  }
+  if (errorMsg) errorMsg.style.display = 'none';
+
+  try {
+    console.log("Calling Text-to-Image AI API...");
+
+    const isLocalhost = (location.hostname === '127.0.0.1' || location.hostname === 'localhost');
+    const apiUrl = (isLocalhost && location.port && location.port !== '5000')
       ? 'http://127.0.0.1:5000/generate-ai'
       : '/generate-ai';
 
@@ -4080,13 +4121,11 @@ async function generateAI() {
 
     const blob = await response.blob();
     const imageURL = URL.createObjectURL(blob);
+    console.log("Text-to-Image received, population on canvas...");
 
-    console.log("Image received");
-
-    // 👇 canvas me add karo
     addImageToCanvasFromSrc(imageURL);
   } catch (err) {
-    console.error("ERROR:", err);
+    console.error("AI TEXT GENERATION ERROR:", err);
     if (errorMsg) {
       errorMsg.style.display = 'block';
       errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Generation failed. Check console.';
@@ -4096,7 +4135,7 @@ async function generateAI() {
   } finally {
     if (generateBtn) {
       generateBtn.disabled = false;
-      generateBtn.innerHTML = '✨ Generate Design';
+      generateBtn.innerHTML = '✨ Generate from Text';
     }
   }
 }
