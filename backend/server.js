@@ -12,6 +12,9 @@ const designRoutes = require("./routes/design");
 const orderRoutes = require("./routes/order");
 const payoutRoutes = require("./routes/payoutRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const premiumGalleryRoutes = require("./routes/PremiumGallery");
+
+
 
 
 const app = express();
@@ -40,6 +43,7 @@ app.use("/api/vendor", vendorRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payouts", payoutRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/premium-gallery", premiumGalleryRoutes);
 app.use(session({
   secret: "casecraft_secret",
   resave: false,
@@ -70,6 +74,44 @@ app.get("/auth/google/callback",
   }
 );
 
+// 🔥 AI ROUTE
+app.post("/generate-ai", async (req, res) => {
+  const { prompt, steps } = req.body;
+
+  try {
+    const width = 1024;
+    const height = 1024;
+    const model = "flux"; // you can optionally specify model like flux or turbo
+
+    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=${width}&height=${height}&model=${model}&nologo=true`;
+    
+    // Fetch image from Pollinations API
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.statusText}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    res.set("Content-Type", "image/jpeg");
+    res.send(buffer);
+
+  } catch (error) {
+    console.error("SERVER ERROR:", error.message);
+
+    res.status(500).json({
+      error: error.message || "Server error",
+    });
+  }
+});
+
 app.listen(5000, () => {
   console.log("Server started on port 5000");
 });
+ 
+
+
+
+

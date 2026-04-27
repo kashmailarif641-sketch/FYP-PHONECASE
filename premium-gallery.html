@@ -12,9 +12,21 @@
 </head>
 
 <body>
-  <!-- ===== Header ===== -->
+  <!-- Announcements Banner -->
+  <div id="announcementBanner"
+    style="display:none; background:#020842; color:white; text-align:center; padding:10px; font-size:14px; position:relative;">
+    <span id="announcementText"></span>
+    <button onclick="this.parentElement.style.display='none'"
+      style="background:none; border:none; color:white; float:right; cursor:pointer; font-size:16px; margin-right:10px;">&times;</button>
+  </div>
+
   <header class="site-header">
     <div class="logo">CaseCraft</div>
+    <button class="nav-toggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav-links">
+      <a href="home.html">Home</a>
+      <a href="premium-gallery.html" class="active">Premium Gallery</a>
+    </nav>
   </header>
 
   <!-- ===== Hero Section ===== -->
@@ -30,14 +42,10 @@
 
   <!-- ===== Gallery Section ===== -->
   <section class="gallery">
-    <!-- Filters will be injected here by JS -->
-    <div class="filter-container" id="categoryFilters"
-      style="display:flex; justify-content:center; gap:10px; margin-bottom:30px; flex-wrap:wrap;"></div>
-
     <h2>Featured Premium Designs</h2>
     <p>Choose a premium design and order it instantly!</p>
 
-    <div class="design-grid" id="premiumGrid"></div>
+    <div id="galleryContainer" class="design-grid"></div>
   </section>
 
   <!-- ===== Footer ===== -->

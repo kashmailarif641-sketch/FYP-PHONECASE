@@ -19,7 +19,7 @@ async function loadTransactions() {
         transactions.forEach(txn => {
             const row = `
                 <tr>
-                    <td>${txn.transactionId}</td>
+                    <td>${txn.internalTransactionId || "N/A"}</td>
                     <td>${txn.user?.name || "N/A"}</td>
                     <td>${txn.order?._id || "N/A"}</td>
                     <td>Rs ${txn.amount}</td>

@@ -72,6 +72,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ["Pending", "Verified"],
         default: "Pending"
+    },
+    addedToGallery: {
+        type: Boolean,
+        default: false
     }
 
 }, { timestamps: true });

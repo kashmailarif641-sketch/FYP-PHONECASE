@@ -33,17 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // LOAD DESIGNS
   async function loadDesigns() {
     try {
-      const response = await fetch("http://localhost:5000/api/admin/all-designs");
+      const response = await fetch("http://localhost:5000/api/premium-gallery/");
       const designs = await response.json();
 
       galleryContainer.innerHTML = "";
 
       designs.forEach(design => {
+        const imageUrl = design.image.startsWith("http") ? design.image : `http://localhost:5000/${design.image}`;
         const card = `
                     <div class="gallery-card">
-                        <img src="${design.image}" alt="${design.designName}"/>
+                        <img src="${imageUrl}" alt="${design.name}"/>
                         <div class="gallery-info">
-                            <h3>${design.designName}</h3>
+                            <h3>${design.name}</h3>
                             <p>Price: Rs ${design.price}</p>
                         </div>
                         <div class="gallery-actions">
@@ -72,24 +73,24 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const formData = new FormData();
-      formData.append("designName", designName);
+      formData.append("name", designName);
       formData.append("price", price);
       formData.append("image", imageFile);
 
       try {
-        const response = await fetch("http://localhost:5000/api/admin/add-design", {
+        const response = await fetch("http://localhost:5000/api/premium-gallery/add-manual", {
           method: "POST",
           body: formData
         });
 
         const data = await response.json();
 
-        if (data.success) {
-          alert("Design Added Successfully");
+        if (response.ok) {
+          alert("Design Added Successfully ✅");
           loadDesigns(); // reload gallery
           closeModal();
         } else {
-          alert("Error: " + data.message);
+          alert("Error: " + (data.error || "Failed to upload"));
         }
 
       } catch (error) {

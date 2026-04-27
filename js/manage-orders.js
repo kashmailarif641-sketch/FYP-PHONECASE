@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <p><strong>User:</strong> ${order.userId ? order.userId.name : "N/A"}</p>
               <p><strong>Phone:</strong> ${order.phone}</p>
               <p><strong>Address:</strong> ${order.address}</p>
-              <p><strong>Model:</strong> ${order.brand} ${order.model}</p>
+              <p><strong>Model:</strong> ${order.model}</p>
               <p><strong>Material:</strong> ${order.material}</p>
               <p><strong>Amount:</strong> Rs ${order.totalPrice}</p>
             </div>

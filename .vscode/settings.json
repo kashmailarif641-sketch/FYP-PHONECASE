@@ -1,8 +1,1 @@
-{
-    "liveServer.settings.ignoreFiles": [
-        ".vscode/**",
-        "**/*.scss",
-        "**/backend/aiImageInput/*",
-        "**/backend/generatedImages/*"
-    ]
-}
+{}

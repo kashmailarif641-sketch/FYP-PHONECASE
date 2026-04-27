@@ -5,8 +5,8 @@
 // Run once the page content is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Select Track Order button
-  const trackOrderBtn = document.getElementById("trackOrderBtn");
+  // Select Back to Home button
+  const backHomeBtn = document.getElementById("backHomeBtn");
 
   // Animate success icon smoothly when page loads
   const checkmark = document.querySelector(".checkmark");
@@ -32,14 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 400);
   }
 
-  // Handle "Track Order" button click
-  if (trackOrderBtn) {
-    trackOrderBtn.addEventListener("click", () => {
+  // Handle "Back to Home" button click
+  if (backHomeBtn) {
+    backHomeBtn.addEventListener("click", () => {
       // Add a small button animation
-      trackOrderBtn.classList.add("clicked");
+      backHomeBtn.classList.add("clicked");
       setTimeout(() => {
-        // Redirect to track order page
-        window.location.href = "track-order.html";
+        // Redirect to dashboard page
+        window.location.href = "user-dashboard.html";
       }, 500);
     });
   }

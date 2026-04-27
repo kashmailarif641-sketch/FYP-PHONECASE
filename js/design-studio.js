@@ -596,14 +596,29 @@ let isPremium = false;
 
 // ===== SIDEBAR NAVIGATION =====
 function showPanel(panelId) {
-  // Hide all panels
-  document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
-  // Deactivate all buttons
+  const subPanel = document.getElementById('sub-panel');
+  const target = document.getElementById('panel-' + panelId);
+  
+  if (!target) return;
+
+  // If clicking the ALREADY ACTIVE panel, toggle it closed
+  if (target.classList.contains('active') && subPanel && subPanel.classList.contains('active')) {
+    subPanel.classList.remove('active');
+    target.classList.remove('active');
+    // Deactivate all buttons
+    document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+    return;
+  }
+
+  // Otherwise, hide others and show this one
+  document.querySelectorAll('.panel-content').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = ''; 
+  });
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
 
-  // Show target
-  const target = document.getElementById('panel-' + panelId);
-  if (target) target.classList.add('active');
+  target.classList.add('active');
+  if (subPanel) subPanel.classList.add('active');
 
   // Activate button
   const btn = document.querySelector(`.menu-btn[onclick*="'${panelId}'"]`);
@@ -678,7 +693,8 @@ function saveState() {
   if (!fabricCanvas) return;
 
   // Capture Fabric Canvas JSON and Background Layer state
-  const canvasJson = JSON.stringify(fabricCanvas.toJSON());
+  const propertiesToInclude = ['name', 'lockMovementX', 'lockMovementY', 'lockRotation', 'lockScalingX', 'lockScalingY', 'hasControls', 'selectable', 'evented', 'id'];
+  const canvasJson = JSON.stringify(fabricCanvas.toJSON(propertiesToInclude));
   const bgColor = backgroundLayer ? backgroundLayer.style.background : "";
 
   // Truncate redo history
@@ -690,6 +706,11 @@ function saveState() {
   if (EditorState.history.length > EditorState.max) EditorState.history.shift();
 
   EditorState.pointer = EditorState.history.length - 1;
+
+  // Auto-save to LocalStorage to restore after navigation
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?._id;
+  localStorage.setItem(`savedDesign_${userId}`, JSON.stringify({ fabric: canvasJson, bg: bgColor }));
 
   updatePreview();
 }
@@ -983,27 +1004,110 @@ function addShape(shape) {
   saveState();
 }
 
-function addSticker(emoji) {
+/**
+ * Adds a sticker to the canvas.
+ * @param {string|object} sticker The sticker content or object.
+ * @param {string} type 'emoji', 'image', or 'text'.
+ */
+function addSticker(sticker, type = 'emoji') {
   if (!fabricCanvas) return;
 
-  const textObj = new fabric.Text(emoji, {
+  let stickerObj;
+  const common = {
     left: fabricCanvas.width / 2,
     top: fabricCanvas.height / 2,
-    fontSize: 64,
     originX: "center",
     originY: "center",
     name: 'sticker'
-  });
+  };
 
-  if (designLayer) {
-    designLayer.add(textObj);
-  } else {
-    fabricCanvas.add(textObj);
+  if (type === 'emoji') {
+    stickerObj = new fabric.Text(sticker, {
+      ...common,
+      fontSize: 80,
+    });
+    addAndSelect(stickerObj);
+  } else if (type === 'image') {
+    fabric.Image.fromURL(sticker, function (img) {
+      img.set(common);
+      img.scaleToWidth(120);
+      addAndSelect(img);
+    }, { crossOrigin: 'anonymous' });
+  } else if (type === 'text') {
+    // For text stickers (quotes)
+    stickerObj = new fabric.Textbox(sticker.content || sticker, {
+      ...common,
+      width: 200,
+      fontSize: 24,
+      fontFamily: sticker.font || 'Poppins',
+      fill: sticker.color || '#333',
+      textAlign: 'center',
+      fontWeight: 'bold'
+    });
+    addAndSelect(stickerObj);
   }
+}
 
-  fabricCanvas.setActiveObject(textObj);
+function addAndSelect(obj) {
+  if (designLayer) {
+    designLayer.add(obj);
+  } else {
+    fabricCanvas.add(obj);
+  }
+  fabricCanvas.setActiveObject(obj);
   fabricCanvas.renderAll();
   saveState();
+  if (typeof showToast === 'function') showToast("Sticker Added! ✨", "fa-smile");
+}
+
+function switchStickerCategory(category) {
+  // Update active tab UI
+  document.querySelectorAll('.sticker-tab').forEach(tab => {
+    tab.classList.remove('active');
+    if (tab.innerText.toLowerCase() === category.toLowerCase() || 
+        (category === 'text' && tab.innerText.toLowerCase() === 'quotes')) {
+      tab.classList.add('active');
+    }
+  });
+
+  renderStickers(category);
+}
+
+function renderStickers(category) {
+  const grid = document.getElementById('dynamic-sticker-grid');
+  if (!grid || !STICKER_LIBRARY) return;
+
+  grid.innerHTML = '';
+
+  // Add "Clear" button first
+  const clearBtn = document.createElement('div');
+  clearBtn.className = 'sticker-item clear-tool-item';
+  clearBtn.title = 'Remove Stickers';
+  clearBtn.innerHTML = '<i class="fas fa-ban"></i>';
+  clearBtn.onclick = clearElements;
+  clearBtn.style.cssText = 'aspect-ratio: 1/1; border-radius: 12px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; background: #fff1f2; color: #ef4444; cursor: pointer; border: 1px solid #fecaca;';
+  grid.appendChild(clearBtn);
+
+  const stickers = STICKER_LIBRARY[category] || [];
+
+  stickers.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'sticker-btn';
+    if (s.type === 'text') btn.classList.add('quote-sticker');
+    
+    if (s.type === 'emoji') {
+      btn.innerText = s.content;
+    } else if (s.type === 'image') {
+      btn.innerHTML = `<img src="${s.content}" style="width: 100%; height: 100%; object-fit: contain;">`;
+    } else if (s.type === 'text') {
+      btn.innerText = s.content;
+      btn.style.fontFamily = s.font || 'Poppins';
+      btn.style.color = s.color || '#333';
+    }
+
+    btn.onclick = () => addSticker(s.type === 'text' ? s : s.content, s.type);
+    grid.appendChild(btn);
+  });
 }
 
 // ===== DRAG LOGIC (Simplified) =====
@@ -1206,14 +1310,6 @@ function deleteSelected() {
   }
 }
 
-function centerSelected() {
-  const activeObject = fabricCanvas ? fabricCanvas.getActiveObject() : null;
-  if (activeObject) {
-    fabricCanvas.centerObject(activeObject);
-    fabricCanvas.renderAll();
-    saveState();
-  }
-}
 
 // ===== MIRROR PREVIEW =====
 const updatePreview = debounce(function () {
@@ -1453,8 +1549,14 @@ function applyDesignBackground(fill) {
     width: fabricCanvas.width,
     height: fabricCanvas.height,
     fill: backgroundFill,
-    selectable: false,
-    evented: false,
+    selectable: true,
+    evented: true,
+    lockMovementX: true,
+    lockMovementY: true,
+    lockRotation: true,
+    lockScalingX: true,
+    lockScalingY: true,
+    hasControls: false,
     name: 'design-bg',
     originX: 'left',
     originY: 'top',
@@ -1496,8 +1598,14 @@ if (bgUploadInput) {
           originY: 'center',
           left: fabricCanvas.width / 2,
           top: fabricCanvas.height / 2,
-          selectable: false,
-          evented: false,
+          selectable: true,
+          evented: true,
+          lockMovementX: true,
+          lockMovementY: true,
+          lockRotation: true,
+          lockScalingX: true,
+          lockScalingY: true,
+          hasControls: false,
           name: 'design-bg-img'
         });
 
@@ -1572,10 +1680,6 @@ function clearRecentUploads() {
   fabricCanvas.discardActiveObject();
   fabricCanvas.renderAll();
   saveState();
-}
-function resetMaterial() {
-  setMaterial('silicone');
-  setFinish('matte');
 }
 
 function clearAI() {
@@ -2571,48 +2675,35 @@ function getCameraSafePosition(orientation) {
 function escapeHtml(s) { return String(s).replace(/[&<>\"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": "&#39;" }[c]; }); }
 
 // ===== Toast helper for visual feedback =====
-// Unified showToast is handled at the bottom of the file
+function showToast(message, duration = 1600) {
+  let t = document.getElementById('studio-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'studio-toast';
+    t.style.position = 'fixed';
+    t.style.left = '50%';
+    t.style.transform = 'translateX(-50%)';
+    t.style.bottom = '28px';
+    t.style.padding = '10px 16px';
+    t.style.background = 'rgba(17,24,39,0.9)';
+    t.style.color = '#fff';
+    t.style.borderRadius = '8px';
+    t.style.fontWeight = '600';
+    t.style.zIndex = 9999;
+    document.body.appendChild(t);
+  }
+  t.textContent = message;
+  t.style.opacity = '1';
+  t.style.transition = '';
+  setTimeout(() => { t.style.transition = 'opacity 300ms'; t.style.opacity = '0'; }, duration);
+}
 
 // ===== MATERIAL & FINISH =====
-function setMaterial(type) {
-  const previewStage = document.querySelector('.preview-stage-real');
-  if (previewStage) {
-    // Change class on preview container only
-    previewStage.classList.remove('mat-silicone', 'mat-plastic', 'mat-leather');
-    previewStage.classList.add('mat-' + type);
-  }
-  // if (typeof showToast === 'function') showToast(`Material set to ${type}`);
-  saveState();
-}
 
-function setFinish(finish) {
-  const btns = document.querySelectorAll('.style-btns button');
-  btns.forEach(b => b.classList.remove('active'));
-
-  btns.forEach(b => {
-    if (b.innerText.toLowerCase() === finish.toLowerCase()) b.classList.add('active');
-  });
-
-  const previewStage = document.querySelector('.preview-stage-real');
-  if (previewStage) {
-    previewStage.classList.remove('finish-matte', 'finish-glossy');
-    previewStage.classList.add('finish-' + finish);
-  }
-
-  // if (typeof showToast === 'function') showToast(`Finish set to ${finish}`);
-  saveState();
-}
-
-function updateMaterialVisuals() {
-  const sel = document.getElementById('material-select');
-  if (sel) setMaterial(sel.value);
-}
 
 // Ensure initial state saved
 setTimeout(() => {
   saveState();
-  // Default finish
-  setFinish('matte');
 }, 500);
 
 // ==========================================
@@ -2638,10 +2729,9 @@ function toggleSubPanel() {
   sp.classList.toggle('hidden');
 }
 
-function saveDesign() {
+async function saveDesign() {
   if (!fabricCanvas) return;
   const objects = fabricCanvas.getObjects();
-  // Filter out background, clipping path or mockups
   const hasContent = objects.some(obj => obj.name !== 'phone-body' && obj.name !== 'design-bg' && obj.name !== 'design-bg-img');
 
   if (!hasContent) {
@@ -2650,36 +2740,191 @@ function saveDesign() {
   }
 
   saveState();
-  let msg = "Design Saved Successfully";
-  if (typeof isPremium !== 'undefined' && isPremium) msg = "Premium " + msg;
-  showToast(msg, "fa-check-circle");
+
+  try {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (!userData || !userData._id) {
+      showToast("Please login to save designs", "fa-exclamation-triangle");
+      return;
+    }
+
+    fabricCanvas.discardActiveObject();
+    fabricCanvas.renderAll();
+
+    const canvasData = JSON.stringify(fabricCanvas.toJSON());
+    const previewImage = fabricCanvas.toDataURL({ format: 'png', quality: 0.8 });
+    const model = currentModelId || "Unknown Model";
+    
+    const titleEl = document.querySelector('.project-title');
+    const designName = titleEl ? titleEl.innerText : "Untitled Design";
+
+    const payload = {
+      userId: userData._id,
+      designName: designName,
+      model: model,
+      canvasData: canvasData,
+      previewImage: previewImage,
+      material: "Standard"
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const designId = urlParams.get('id');
+
+    let endpoint = "http://localhost:5000/api/design/save";
+    let method = "POST";
+
+    if (designId) {
+      endpoint = `http://localhost:5000/api/design/${designId}`;
+      method = "PUT";
+    }
+
+    const btn = document.querySelector('.header-btn[onclick="saveDesign()"]');
+    const originalText = btn ? btn.innerHTML : '<i class="fas fa-save"></i> Save';
+    if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+    const response = await fetch(endpoint, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (btn) btn.innerHTML = originalText;
+
+    if (response.ok) {
+      let msg = "Design Saved Successfully";
+      if (typeof isPremium !== 'undefined' && isPremium) msg = "Premium " + msg;
+      showToast(msg, "fa-check-circle");
+      
+      if (method === "POST") {
+        const data = await response.json();
+        if (data.design && data.design._id) {
+          const newUrl = new URL(window.location.href);
+          newUrl.searchParams.set('id', data.design._id);
+          window.history.pushState({ path: newUrl.href }, '', newUrl.href);
+        }
+      }
+    } else {
+      showToast("Failed to save design", "fa-times-circle");
+    }
+  } catch (err) {
+    console.error("Save Error:", err);
+    showToast("Error saving design", "fa-times-circle");
+    const btn = document.querySelector('.header-btn[onclick="saveDesign()"]');
+    if (btn) btn.innerHTML = '<i class="fas fa-save"></i> Save';
+  }
 }
 
-function exportDesign() {
+async function exportDesign() {
   if (!fabricCanvas) {
     showToast("Canvas not initialized", "fa-exclamation-triangle");
     return;
   }
 
+  showToast("Preparing Download...", "fa-spinner fa-spin");
+
   // De-select any active object for clean export
   fabricCanvas.discardActiveObject();
   fabricCanvas.renderAll();
 
-  const dataURL = fabricCanvas.toDataURL({
-    format: 'png',
-    quality: 1
-  });
-
-  const link = document.createElement('a');
-  link.download = 'design.png';
-  link.href = dataURL;
-  link.click();
-  showToast("Exporting Design...", "fa-download");
+  try {
+    const designSheet = document.getElementById('design-sheet');
+    
+    // If html2canvas is available, use it for a pixel-perfect DOM screenshot
+    if (typeof html2canvas !== 'undefined') {
+      const canvas = await html2canvas(designSheet, {
+        scale: 3, // High quality
+        useCORS: true,
+        backgroundColor: null
+      });
+      
+      const dataURL = canvas.toDataURL('image/png');
+      triggerDownload(dataURL);
+    } else {
+      // Fallback to fabric canvas export
+      const dataURL = fabricCanvas.toDataURL({
+        format: 'png',
+        quality: 1,
+        multiplier: 3 // High resolution
+      });
+      triggerDownload(dataURL);
+    }
+    
+    function triggerDownload(dataURL) {
+      const link = document.createElement('a');
+      const titleEl = document.querySelector('.project-title');
+      const designName = titleEl ? titleEl.innerText.trim().replace(/[^a-z0-9]/gi, '_').toLowerCase() : "casecraft_design";
+      
+      link.download = designName + '.png';
+      link.href = dataURL;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showToast("Design Downloaded Successfully!", "fa-check-circle");
+    }
+  } catch (error) {
+    console.error("Export Error:", error);
+    showToast("Failed to export design", "fa-exclamation-triangle");
+  }
 }
 
 function placeOrder() {
-  // Redirect to order page in same folder
-  window.location.href = 'order.html';
+  const btn = document.querySelector('.header-btn[onclick="placeOrder()"]');
+  if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+  localStorage.setItem("orderSource", "design-studio");
+
+  if (!fabricCanvas) {
+    window.location.href = 'order.html';
+    return;
+  }
+
+  // De-select active objects so handles don't show up in image
+  fabricCanvas.discardActiveObject();
+  fabricCanvas.renderAll();
+  
+  saveState(); // Guarantee the latest canvas json is flushed to localStorage before navigating
+
+  // Save JSON (important for edit)
+  const designJSON = fabricCanvas.toJSON();
+  localStorage.setItem("designJSON", JSON.stringify(designJSON));
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?._id;
+  localStorage.removeItem(`savedDesign_${userId}`);
+
+
+
+  // Try capturing high-quality PNG first
+  try {
+    const designImage = fabricCanvas.toDataURL({
+      format: 'png',
+      quality: 1
+    });
+    localStorage.setItem("designImage", designImage);
+    localStorage.setItem("designPreview", designImage);
+  } catch (err) {
+    console.warn("Storage error or Canvas too large for PNG. Falling back to compressed JPEG...", err);
+    // Fallback: Use low-quality JPEG to significantly reduce string size to fit in localStorage quota limits
+    try {
+      const fallbackURL = fabricCanvas.toDataURL({
+        format: 'jpeg',
+        quality: 0.6
+      });
+      localStorage.setItem("designImage", fallbackURL);
+      localStorage.setItem("designPreview", fallbackURL);
+    } catch (fallbackErr) {
+      console.error("Critical failure saving canvas:", fallbackErr);
+    }
+  }
+
+  // Redirect to order page
+  setTimeout(() => {
+    window.location.href = 'order.html';
+  }, 100);
 }
 // Store the current model image path for mask reference
 // Positioning camera cutout is now handled by applyDynamicCutout(config)
@@ -2831,7 +3076,8 @@ function autoFit() {
     currentActiveId = targetId;
   }
 
-  // Hook into sidebar buttons
+  // (Redundant click listener removed to prevent conflict with showPanel)
+  /*
   document.querySelectorAll('.sidebar-container .menu-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const onclickAttr = btn.getAttribute('onclick') || "";
@@ -2839,6 +3085,7 @@ function autoFit() {
       if (match) togglePanel(match[1]);
     });
   });
+  */
 
   // 2. Project Title: Double-Click Rename
   if (projectTitle) {
@@ -3166,18 +3413,16 @@ function filterBackgrounds(query) {
 
 function filterElements(query) {
   const q = query.toLowerCase();
-  const shapes = document.querySelectorAll('#panel-elements .shape-icon');
-  const stickers = document.querySelectorAll('#panel-elements .sticker-grid span');
+  const stickerBtns = document.querySelectorAll('#dynamic-sticker-grid .sticker-btn');
 
-  shapes.forEach(shape => {
-    const type = shape.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '';
-    shape.style.display = type.toLowerCase().includes(q) ? 'flex' : 'none';
-  });
-
-  stickers.forEach(sticker => {
-    const emo = sticker.innerText || '';
-    // Simple emoji search is hard, but we can match literal characters
-    sticker.style.display = emo.includes(q) || q === '' ? 'inline-block' : 'none';
+  stickerBtns.forEach(btn => {
+    const text = btn.innerText.toLowerCase();
+    // Also check for 'name' if we stored it, but for now just innerText
+    if (text.includes(q) || q === '') {
+      btn.style.display = 'flex';
+    } else {
+      btn.style.display = 'none';
+    }
   });
 }
 
@@ -3190,14 +3435,6 @@ function filterAITools(query) {
   });
 }
 
-function filterMaterials(query) {
-  const q = query.toLowerCase();
-  const cards = document.querySelectorAll('#panel-material .material-card');
-  cards.forEach(card => {
-    const text = card.innerText || '';
-    card.style.display = text.toLowerCase().includes(q) ? 'block' : 'none';
-  });
-}
 
 function clearRecentUploads() {
   const grid = document.getElementById('upload-preview-grid');
@@ -3484,23 +3721,140 @@ document.addEventListener('DOMContentLoaded', () => {
     fabricCanvas.on('selection:updated', (e) => updatePropertyPanels(e.selected[0]));
     fabricCanvas.on('selection:cleared', () => updatePropertyPanels(null));
 
+    // Active Object Toolbar Functions
+    window.toggleObjectLock = function () {
+      if (!fabricCanvas) return;
+      const obj = fabricCanvas.getActiveObject();
+      if (!obj) return;
+
+      const isLocked = obj.lockMovementX;
+      obj.set({
+        lockMovementX: !isLocked,
+        lockMovementY: !isLocked,
+        lockRotation: !isLocked,
+        lockScalingX: !isLocked,
+        lockScalingY: !isLocked,
+        hasControls: isLocked, // hide controls when locked
+        selectable: true,      // keep selectable to allow unlocking
+        evented: true
+      });
+
+      const btnIcon = document.querySelector('#st-lock i');
+      if (btnIcon) btnIcon.className = isLocked ? 'fas fa-unlock' : 'fas fa-lock';
+
+      fabricCanvas.requestRenderAll();
+      saveState();
+    };
+
+    window.rotateObjectSelection = function () {
+      if (!fabricCanvas) return;
+      const obj = fabricCanvas.getActiveObject();
+      if (!obj || obj.lockRotation) return;
+
+      obj.rotate((obj.angle || 0) + 90);
+      fabricCanvas.requestRenderAll();
+      saveState();
+    };
+
+    window.cropObjectSelection = function () {
+      if (!fabricCanvas) return;
+      const obj = fabricCanvas.getActiveObject();
+      if (!obj) return;
+      
+      if (obj.type !== 'image') {
+        if (typeof showToast === 'function') showToast("Crop only works on images.", "fa-info-circle");
+        return;
+      }
+      
+      // Toggle between Circle Crop and None
+      if (!obj.clipPath) {
+        const radius = Math.min(obj.width, obj.height) / 2;
+        const circle = new fabric.Circle({
+          radius: radius,
+          originX: 'center',
+          originY: 'center',
+        });
+        obj.set({ clipPath: circle });
+        if (typeof showToast === 'function') showToast("Circle crop applied", "fa-crop");
+      } else {
+        obj.set({ clipPath: null });
+        if (typeof showToast === 'function') showToast("Crop removed", "fa-undo");
+      }
+      
+      fabricCanvas.requestRenderAll();
+      saveState();
+    };
+
+    window.adjustObjectSelection = function () {
+      if (!fabricCanvas) return;
+      const obj = fabricCanvas.getActiveObject();
+      if (!obj) return;
+      
+      if (obj.type !== 'image') {
+        if (typeof showToast === 'function') showToast("Adjustments only work on images.", "fa-info-circle");
+        return;
+      }
+      
+      // Cycle through filters: Grayscale -> Sepia -> Invert -> None
+      if (!obj.filters) obj.filters = [];
+      const currentFilterType = obj.filters.length > 0 ? obj.filters[0].type : 'none';
+      
+      obj.filters = []; // clear first
+      
+      if (currentFilterType === 'none') {
+        obj.filters.push(new fabric.Image.filters.Grayscale());
+        if (typeof showToast === 'function') showToast("Grayscale applied", "fa-sliders-h");
+      } else if (currentFilterType === 'Grayscale') {
+        obj.filters.push(new fabric.Image.filters.Sepia());
+        if (typeof showToast === 'function') showToast("Sepia applied", "fa-sliders-h");
+      } else if (currentFilterType === 'Sepia') {
+        obj.filters.push(new fabric.Image.filters.Invert());
+        if (typeof showToast === 'function') showToast("Invert applied", "fa-sliders-h");
+      } else {
+        if (typeof showToast === 'function') showToast("Filters removed", "fa-undo");
+      }
+      
+      obj.applyFilters();
+      fabricCanvas.requestRenderAll();
+      saveState();
+    };
+
+    window.deleteObjectSelection = function () {
+      if (!fabricCanvas) return;
+      const obj = fabricCanvas.getActiveObject();
+      if (!obj || obj.name === 'phone-body') return;
+
+      fabricCanvas.remove(obj);
+      fabricCanvas.discardActiveObject();
+      fabricCanvas.requestRenderAll();
+      saveState();
+    };
+
     // Function to update properties panel based on selected object
     function updatePropertyPanels(obj) {
       const propEmpty = document.getElementById('prop-empty');
       const propText = document.getElementById('prop-text');
       const propImage = document.getElementById('prop-image');
       const propActions = document.getElementById('prop-actions');
+      const selectionToolbar = document.getElementById('selection-toolbar');
 
       if (!obj || obj.name === 'phone-body') {
         if (propEmpty) propEmpty.classList.remove('hidden');
         if (propText) propText.classList.add('hidden');
         if (propImage) propImage.classList.add('hidden');
         if (propActions) propActions.classList.add('hidden');
+        if (selectionToolbar) selectionToolbar.style.display = 'none';
         return;
       }
 
       if (propEmpty) propEmpty.classList.add('hidden');
       if (propActions) propActions.classList.remove('hidden');
+
+      if (selectionToolbar) {
+        selectionToolbar.style.display = 'flex';
+        const btnIcon = document.querySelector('#st-lock i');
+        if (btnIcon) btnIcon.className = obj.lockMovementX ? 'fas fa-lock' : 'fas fa-unlock';
+      }
 
       if (obj.type === 'textbox' || obj.type === 'i-text') {
         if (propText) propText.classList.remove('hidden');
@@ -3546,6 +3900,44 @@ document.addEventListener('DOMContentLoaded', () => {
   // Final layout sync
   setTimeout(() => {
     applyZoom();
+
+    // RESTORE SAVED DESIGN & MODEL (if returning from Order page etc.)
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?._id;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const designId = urlParams.get('id');
+
+    if (!designId) {
+      if (fabricCanvas) fabricCanvas.clear();
+      localStorage.removeItem(`savedDesign_${userId}`);
+    }
+
+    const savedDesignStr = localStorage.getItem(`savedDesign_${userId}`);
+    const selectedModel = localStorage.getItem('selectedModel');
+    
+    if (savedDesignStr && selectedModel) {
+      try {
+        const state = JSON.parse(savedDesignStr);
+        
+        if (state && fabricCanvas) {
+          fabricCanvas.loadFromJSON(state.fabric, () => {
+            // Re-apply the phone mask and body correctly on top of the loaded objects
+            selectModelByName(selectedModel);
+            
+            if (backgroundLayer && state.bg) {
+              backgroundLayer.style.background = state.bg;
+            }
+            fabricCanvas.requestRenderAll();
+            
+            setTimeout(() => { updatePreview(); }, 200);   
+          });
+        }
+      } catch (err) {
+        console.error("Failed to restore design:", err);
+      }
+    }
+
   }, 500);
 });
 
@@ -3556,9 +3948,6 @@ document.addEventListener('DOMContentLoaded', () => {
     aiInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file || !fabricCanvas) return;
-
-      // Store the file for sending to API
-      aiUploadedFile = file;
 
       const reader = new FileReader();
       reader.onload = function (event) {
@@ -3576,8 +3965,14 @@ document.addEventListener('DOMContentLoaded', () => {
             originY: 'center',
             left: fabricCanvas.width / 2,
             top: fabricCanvas.height / 2,
-            selectable: false,
-            evented: false,
+            selectable: true,
+            evented: true,
+            lockMovementX: true,
+            lockMovementY: true,
+            lockRotation: true,
+            lockScalingX: true,
+            lockScalingY: true,
+            hasControls: false,
             name: 'design-bg-img'
           });
 
@@ -3607,7 +4002,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           // Enable generate button now that image is uploaded
-          const generateBtn = document.getElementById("generateImgBtn");
+          const generateBtn = document.getElementById("aiGenerateBtn");
           if (generateBtn) {
             generateBtn.disabled = false;
             generateBtn.style.background = "linear-gradient(45deg, #6366f1, #8b5cf6)";
@@ -3647,8 +4042,7 @@ function selectAIStyle(btn) {
   console.log("AI Style selected:", currentAIStyle);
 }
 
-async function generateAI(event) {
-  if (event) event.preventDefault();
+async function generateAI() {
   const prompt = document.getElementById("aiPrompt").value;
   const generateBtn = document.getElementById("generateBtn");
   const errorMsg = document.getElementById("aiError");
@@ -3661,11 +4055,15 @@ async function generateAI(event) {
   try {
     console.log("Sending to backend...");
 
-    const response = await fetch("http://127.0.0.1:5000/api/ai/text", {
+    // If the page is served from a different port (live server), call the local backend directly.
+    const apiUrl = (location.hostname === '127.0.0.1' && location.port && location.port !== '5000')
+      ? 'http://127.0.0.1:5000/generate-ai'
+      : '/generate-ai';
+
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
       },
       body: JSON.stringify({ prompt }),
     });
@@ -3680,7 +4078,7 @@ async function generateAI(event) {
     console.log("Image received");
 
     // 👇 canvas me add karo
-    addImageToCanvas(imageURL);
+    addImageToCanvasFromSrc(imageURL);
   } catch (err) {
     console.error("ERROR:", err);
     if (errorMsg) {
@@ -3693,90 +4091,6 @@ async function generateAI(event) {
     if (generateBtn) {
       generateBtn.disabled = false;
       generateBtn.innerHTML = '✨ Generate Design';
-    }
-  }
-}
-
-let aiUploadedFile = null;
-
-async function generateAIFromImage(event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-  
-  if (!aiUploadedFile) {
-    showToast("Please upload an image first", "fa-exclamation-circle");
-    return;
-  }
-
-  const generateBtn = document.getElementById("generateImgBtn");
-  const errorMsg = document.getElementById("aiError");
-
-  if (generateBtn) {
-    generateBtn.disabled = true;
-    generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-  }
-  if (errorMsg) errorMsg.style.display = 'none';
-
-  try {
-    const formData = new FormData();
-    formData.append("image", aiUploadedFile);
-    formData.append("style", currentAIStyle);
-    formData.append("model", currentModelId || "Unknown Model");
-
-    if (typeof fabricCanvas !== 'undefined' && fabricCanvas) {
-      const mockFrameData = fabricCanvas.toDataURL({
-        format: 'png',
-        quality: 0.8
-      });
-      formData.append("mockFrame", mockFrameData);
-    }
-
-    const response = await fetch("http://127.0.0.1:5000/api/ai/image", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || "Generation failed on server");
-    }
-
-    const data = await response.json();
-    console.log("AI result:", data);
-
-    if (data.imageUrl) {
-      // Clear thumbnail once generated
-      const thumbContainer = document.getElementById("aiThumbnailContainer");
-      if (thumbContainer) thumbContainer.style.display = "none";
-      
-      const resultImg = document.getElementById("aiResult");
-      if (resultImg) {
-        resultImg.src = data.imageUrl;
-        resultImg.style.display = "block";
-      }
-
-      // Add to canvas as a high-resolution cover image
-      addImageToCanvas(data.imageUrl);
-      showToast("AI Design Applied! ✨", "fa-check-circle");
-    }
-
-  } catch (err) {
-    console.error("AI ERROR:", err);
-    if (errorMsg) {
-      errorMsg.style.display = 'block';
-      errorMsg.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${err.message}`;
-    } else {
-        showToast(err.message, "fa-exclamation-triangle");
-    }
-  } finally {
-    if (generateBtn) {
-      generateBtn.disabled = false;
-      generateBtn.innerHTML = '✨ Generate AI Style';
     }
   }
 }
@@ -3843,53 +4157,15 @@ function applyAIDesign() {
  */
 function addImageToCanvas(url) {
   if (!fabricCanvas) return;
-
-  // Show a subtle indicator
-  showToast("Applying style to canvas...", "fa-sync fa-spin");
-
   fabric.Image.fromURL(url, function (img) {
-    // 1. Calculate aspect-ratio aware scaling to COVER the entire phone case
-    const scaleX = fabricCanvas.width / img.width;
-    const scaleY = fabricCanvas.height / img.height;
-    
-    // Choose the larger scale to ensure no white gaps are left (Cover mode)
-    const scale = Math.max(scaleX, scaleY);
-    
-    img.set({
-      scaleX: scale,
-      scaleY: scale,
-      originX: 'center',
-      originY: 'center',
-      left: fabricCanvas.width / 2,
-      top: fabricCanvas.height / 2,
-      selectable: true,
-      hasControls: true,
-      name: 'generated-ai-image'
-    });
-
-    // 2. Remove any previous background or generated images to prevent overlap bloat
-    const objectsToRemove = fabricCanvas.getObjects().filter(obj => 
-      obj.name === 'generated-ai-image' || obj.name === 'design-bg-img'
-    );
-    objectsToRemove.forEach(obj => fabricCanvas.remove(obj));
-
-    // 3. Add image to canvas
+    img.scaleToWidth(250);
+    fabricCanvas.centerObject(img);
     fabricCanvas.add(img);
-
-    // 4. Send it back behind any stickers/text but remain above the phone frame background
-    fabricCanvas.sendToBack(img);
-    
-    const phoneBody = fabricCanvas.getObjects().find(o => o.name === 'phone-body');
-    if (phoneBody) {
-      // The phone frame (mask) should stay at the absolute bottom index
-      fabricCanvas.sendToBack(phoneBody);
-    }
-
-    fabricCanvas.setActiveObject(img);
     fabricCanvas.renderAll();
 
-    if (typeof saveState === 'function') saveState();
-    if (typeof updatePreview === 'function') updatePreview();
+    if (typeof saveState === 'function') {
+      saveState();
+    }
   }, { crossOrigin: 'anonymous' });
 }
 
@@ -3942,3 +4218,66 @@ if (typeof fabricCanvas !== 'undefined' && fabricCanvas) {
     }
   });
 }
+
+window.addEventListener("DOMContentLoaded", async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const designId = urlParams.get('id');
+
+  if (designId) {
+    try {
+      const response = await fetch(`http://localhost:5000/api/design/${designId}`);
+      if (response.ok) {
+        const designData = await response.json();
+        
+        // Update Title
+        const titleEl = document.querySelector('.project-title');
+        if (titleEl && designData.designName) {
+          titleEl.innerText = designData.designName;
+        }
+
+        // Apply Model
+        if (designData.model) {
+           selectModelByName(designData.model);
+        }
+
+        setTimeout(() => {
+          if (fabricCanvas && designData.canvasData) {
+            try {
+              const canvasJSON = JSON.parse(designData.canvasData);
+              fabricCanvas.loadFromJSON(canvasJSON, () => {
+                fabricCanvas.renderAll();
+              });
+            } catch (e) {
+              console.error("Error parsing design canvas data", e);
+            }
+          }
+        }, 150);
+      }
+    } catch (err) {
+      console.error("Error loading design:", err);
+    }
+  } else {
+    // If no ID in URL, just load from localStorage normally
+    const savedDesign = localStorage.getItem("designJSON");
+    if (savedDesign) {
+      // A slight delay to ensure canvas is fully initialized
+      setTimeout(() => {
+        if (fabricCanvas) {
+          try {
+            fabricCanvas.loadFromJSON(JSON.parse(savedDesign), () => {
+              fabricCanvas.renderAll();
+            });
+          } catch (e) {
+            console.error("Error loading design from localStorage", e);
+          }
+        }
+      }, 100);
+    }
+  }
+
+  // Initialize Sticker Library
+  if (typeof renderStickers === 'function') {
+    renderStickers('flowers');
+  }
+
+});

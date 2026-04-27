@@ -55,16 +55,7 @@ const userSchema = new mongoose.Schema({
   },
   resetTokenExpiry: {
     type: Date
-  },
-  aiImages: [
-    {
-      url: String,
-      prompt: String,
-      style: String,
-      model: String,
-      createdAt: { type: Date, default: Date.now }
-    }
-  ]
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.models.User || mongoose.model("User", userSchema);
