@@ -27,10 +27,10 @@ mongoose.connect("mongodb://kashmailarif51_db_user:5qpeWfeNkWE4VAjx@ac-hrw7o3p-s
   .then(() => console.log("MongoDB Atlas Connected"))
   .catch(err => console.log(err));
   
-if (process.env.HF_TOKEN) {
-  console.log("API Key Loaded");
+if (process.env.HF_TOKEN || process.env.clientID || process.env.clientSecret) {
+  console.log("Environment Variables Loaded Successfully");
 } else {
-  console.log("API Key Not Loaded");
+  console.log("Error: Missing required environment variables. Please check your .env file.");
   process.exit(1);
 }
 
