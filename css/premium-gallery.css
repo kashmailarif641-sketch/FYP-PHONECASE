@@ -80,26 +80,19 @@
 
 .design-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  /* auto-fill prevents single item from stretching full width */
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
   padding: 0 20px;
-  justify-items: center;
-  /* Center items if they don't fill the row */
 }
 
 /* Also ensure card doesn't get too wide if we stick with 1fr */
 .design-card {
-  width: 100%;
-  max-width: 320px;
-  /* Constrain max width to match home page style roughly */
   background: #fff;
   border-radius: 12px;
-  /* Match home.css card radius */
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  padding: 15px;
   text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #eee;
 }
 
@@ -110,20 +103,19 @@
 
 .design-card img {
   width: 100%;
-  height: 250px;
+  height: auto;
+  max-height: 250px;
   object-fit: contain;
-  /* Ensure full image is visible */
-  background: #fdfdfd;
-  /* Light background for padding areas */
+  background: #f8fafc;
   padding: 10px;
-  /* Add some internal spacing */
+  border-radius: 10px;
 }
 
 .design-card h3 {
-  font-size: 20px;
-  color: #020842;
-  margin: 15px 0 8px;
+  font-size: 16px;
   font-weight: 600;
+  color: #0d2261;
+  margin: 10px 0;
 }
 
 .design-card p {

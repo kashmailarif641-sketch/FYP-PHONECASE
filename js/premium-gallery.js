@@ -25,11 +25,11 @@ fetch("http://localhost:5000/api/premium-gallery")
       }
 
       container.innerHTML += `
-        <div class="card">
-          <img src="${imageSrc}" />
+        <div class="design-card">
+          <img src="${imageSrc}" alt="${design.name || "No Name"}" />
           <h3>${design.name || "No Name"}</h3>
-          <p style="color:red;">Rs. ${design.price || 0}</p>
-          <button onclick="orderDesign('${design.name || "No Name"}', '${design.price || 0}', '${imageSrc}')">Order This Design</button>
+          <p class="price">Rs. ${design.price || 0}</p>
+          <button class="order-btn" onclick="orderDesign('${design.name || "No Name"}', '${design.price || 0}', '${imageSrc}')">Order This Design</button>
         </div>
       `;
     });
