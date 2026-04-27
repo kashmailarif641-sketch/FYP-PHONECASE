@@ -46,14 +46,29 @@
           <input type="tel" placeholder="03XX-XXXXXXX">
         </div>
 
-        <div class="form-group row">
+        <div id="brandModelDisplay" class="form-group row" style="display: none;">
           <div class="col-half">
             <label>Selected Brand</label>
-            <div class="display-box" id="displayBrand">Loading...</div>
+            <div class="display-box" id="selectedBrand">Not Selected</div>
           </div>
           <div class="col-half">
             <label>Selected Model</label>
-            <div class="display-box" id="displayModel">Loading...</div>
+            <div class="display-box" id="selectedModel">Not Selected</div>
+          </div>
+        </div>
+
+        <div id="deviceDropdownContainer" class="form-group row" style="display: none;">
+          <div class="col-half">
+            <label for="brandSelect">Selected Brand</label>
+            <select id="brandSelect">
+              <option value="">Select Brand</option>
+            </select>
+          </div>
+          <div class="col-half">
+            <label for="modelSelect">Selected Model</label>
+            <select id="modelSelect">
+              <option value="">Select Model</option>
+            </select>
           </div>
         </div>
 

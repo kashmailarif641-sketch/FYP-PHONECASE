@@ -2875,6 +2875,8 @@ function placeOrder() {
   const btn = document.querySelector('.header-btn[onclick="placeOrder()"]');
   if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
+  localStorage.setItem("orderSource", "design-studio");
+
   if (!fabricCanvas) {
     window.location.href = 'order.html';
     return;

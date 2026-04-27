@@ -83,6 +83,12 @@ function orderDesign(designName, designPrice, designImage) {
   // save selected design
   localStorage.setItem("selectedOrderDesign", JSON.stringify(design));
 
+  // set source
+  localStorage.setItem("orderSource", "premium-gallery");
+  // clear old brand/model so it doesn't leak
+  localStorage.removeItem("selectedBrand");
+  localStorage.removeItem("selectedModel");
+
   // redirect
   window.location.href = "pages/user/order.html";
 }
