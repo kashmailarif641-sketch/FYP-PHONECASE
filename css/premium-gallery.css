@@ -2,10 +2,7 @@
 /* Reset, Body, Header, Footer are handled by home.css */
 
 /* Overrides for simplified layout on Premium Gallery */
-.site-header {
-  justify-content: center;
-  /* Center the single logo */
-}
+
 
 .site-footer {
   text-align: center;
@@ -348,9 +345,7 @@
 
 /* Mobile Tablet: 481px - 768px */
 @media (max-width: 768px) {
-  .site-header {
-    padding: 12px 18px;
-  }
+
 
   .hero {
     padding: 16px 18px;
@@ -429,13 +424,7 @@
     overflow-x: hidden;
   }
 
-  .site-header {
-    padding: 10px 12px;
-  }
 
-  .site-header .logo {
-    font-size: 18px;
-  }
 
   .hero {
     padding: 12px 12px;

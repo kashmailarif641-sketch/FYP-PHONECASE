@@ -37,14 +37,38 @@ fetch("http://localhost:5000/api/premium-gallery")
   })
   .catch(err => console.error(err));
 
-// Mobile nav toggle
+// Mobile nav toggle & Scroll Logic & Banner
 document.addEventListener("DOMContentLoaded", () => {
   const navToggle = document.querySelector('.nav-toggle');
   const navLinks = document.querySelector('.nav-links');
+  const header = document.querySelector(".site-header");
+  const banner = document.getElementById("announcementBanner");
+  const textSpan = document.getElementById("announcementText");
+  let lastScroll = 0;
+
+  // Mobile Toggle
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', () => {
       navLinks.classList.toggle('active');
     });
+  }
+
+  // Scroll Hide
+  window.addEventListener("scroll", () => {
+    const currentScroll = window.pageYOffset;
+    if (currentScroll > lastScroll && currentScroll > 60) {
+      header.classList.add("hidden");
+    } else {
+      header.classList.remove("hidden");
+    }
+    lastScroll = currentScroll;
+  });
+
+  // Load Banner Announcement
+  const announcements = JSON.parse(localStorage.getItem("siteAnnouncements")) || [];
+  if (announcements.length > 0 && banner && textSpan) {
+    textSpan.textContent = "📢 " + announcements[0];
+    banner.style.display = "block";
   }
 });
 

@@ -12,7 +12,14 @@
 </head>
 
 <body>
-  <!-- ===== Header ===== -->
+  <!-- Announcements Banner -->
+  <div id="announcementBanner"
+    style="display:none; background:#020842; color:white; text-align:center; padding:10px; font-size:14px; position:relative;">
+    <span id="announcementText"></span>
+    <button onclick="this.parentElement.style.display='none'"
+      style="background:none; border:none; color:white; float:right; cursor:pointer; font-size:16px; margin-right:10px;">&times;</button>
+  </div>
+
   <header class="site-header">
     <div class="logo">CaseCraft</div>
     <button class="nav-toggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button>
