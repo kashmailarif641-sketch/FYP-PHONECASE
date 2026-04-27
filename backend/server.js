@@ -9,6 +9,7 @@ const passport = require("./config/passport");
 const designRoutes = require("./routes/design");
 const orderRoutes = require("./routes/order");
 const payoutRoutes = require("./routes/payoutRoutes");
+const premiumGalleryRoutes = require("./routes/PremiumGallery");
 
 
 
@@ -30,6 +31,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/vendor", vendorRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payouts", payoutRoutes);
+app.use("/api/premium-gallery", premiumGalleryRoutes);
 app.use(session({
   secret: "casecraft_secret",
   resave: false,
