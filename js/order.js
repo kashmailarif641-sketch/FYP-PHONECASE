@@ -43,11 +43,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedModelField = document.getElementById("selectedModel");
     const brandSelect = document.getElementById("brandSelect");
     const modelSelect = document.getElementById("modelSelect");
+    const premiumSubmitBox = document.getElementById("premiumSubmitBox");
 
     // Clear potentially stale brand/model if coming from gallery
     if (orderSource === "premium-gallery") {
         localStorage.removeItem("selectedBrand");
         localStorage.removeItem("selectedModel");
+        if (premiumSubmitBox) premiumSubmitBox.style.display = "none";
+    } else {
+        if (premiumSubmitBox) premiumSubmitBox.style.display = "block";
     }
 
     const studioImage = (orderSource === "premium-gallery" && selectedDesign) ? selectedDesign.image : localStorage.getItem("designImage");
